@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,8 +50,8 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public RoomDTO deleteRoom(long id) {
+    public String deleteRoom(long id) {
         roomRepository.deleteById(id);
-        return null;
+        return "Delete Room OK";
     }
 }
