@@ -17,10 +17,11 @@ public class Room extends BaseModel {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "room_type")
-    private RoomType roomType;
+    private RoomType type;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private RoomStatus status;
 
     @OneToMany(mappedBy = "room")
     private List<Equipment> equipmentList;
