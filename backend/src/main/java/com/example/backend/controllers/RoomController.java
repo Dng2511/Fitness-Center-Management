@@ -1,8 +1,13 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.EquipmentDTO;
 import com.example.backend.dtos.RoomDTO;
+import com.example.backend.services.EquipmentService;
 import com.example.backend.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +29,11 @@ public class RoomController {
     public ResponseEntity<RoomDTO> getRoomById(@PathVariable Long id) {
         RoomDTO room = roomService.getRoomById(id);
         return room != null ? ResponseEntity.ok(room) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/equipments")
+    public ResponseEntity<List<EquipmentDTO>> getRoomEquipments(@PathVariable Long id) {
+        return  ResponseEntity.ok(roomService.getEquipments(id));
     }
 
     @PostMapping
