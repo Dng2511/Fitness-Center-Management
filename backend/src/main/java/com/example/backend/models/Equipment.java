@@ -15,9 +15,6 @@ public class Equipment extends BaseModel {
     @Column(name = "equipment_name")
     private String equipmentName;
 
-    @Column(name = "quantity")
-    private Integer quantity;
-
     @Column(name = "import_date")
     private LocalDate importDate;
 

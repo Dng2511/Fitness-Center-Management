@@ -25,7 +25,8 @@ public class RoomDTO {
     @JsonProperty("id")
     private Long roomId;
 
-    private String room_name;
+    @JsonProperty("room_name")
+    private String roomName;
 
     private String type; // dùng String để chuyển enum sang tên
 

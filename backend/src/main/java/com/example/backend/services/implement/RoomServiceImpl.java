@@ -1,14 +1,17 @@
 package com.example.backend.services.implement;
 
+import com.example.backend.dtos.EquipmentDTO;
 import com.example.backend.dtos.RoomDTO;
 import com.example.backend.models.Room;
 import com.example.backend.models.RoomStatus;
 import com.example.backend.models.RoomType;
+import com.example.backend.repositories.EquipmentRepository;
 import com.example.backend.repositories.RoomRepository;
 import com.example.backend.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Objects;
 
@@ -16,8 +19,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
-
-
+    private final EquipmentRepository equipmentRepository;
     @Override
     public List<RoomDTO> getRooms() {
         return roomRepository.findAll().stream().map(RoomDTO::fromEntity).toList();
@@ -29,9 +31,16 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public List<EquipmentDTO> getEquipments( Long id) {
+        Room room = roomRepository.findById(id).orElse(null);
+        assert room != null;
+        return room.getEquipmentList().stream().map(EquipmentDTO::fromEntity).toList();
+    }
+
+    @Override
     public RoomDTO createRoom(RoomDTO roomDTO) {
         Room room = new Room();
-        room.setRoomName(roomDTO.getRoom_name());
+        room.setRoomName(roomDTO.getRoomName());
         room.setType(RoomType.valueOf(roomDTO.getType().toUpperCase()));
         room.setStatus(RoomStatus.valueOf(roomDTO.getStatus().toUpperCase()));
         roomRepository.save(room);
@@ -41,7 +50,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public RoomDTO updateRoom(RoomDTO roomDTO, long id) {
         roomRepository.findById(id).ifPresent(room -> {
-            room.setRoomName(roomDTO.getRoom_name());
+            room.setRoomName(roomDTO.getRoomName());
             room.setType(RoomType.valueOf(roomDTO.getType().toUpperCase()));
             room.setStatus(RoomStatus.valueOf(roomDTO.getStatus().toUpperCase()));
             roomRepository.save(room);
