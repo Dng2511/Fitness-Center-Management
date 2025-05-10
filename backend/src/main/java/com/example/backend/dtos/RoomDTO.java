@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
         "room_name",
         "type",
         "status",
-        "createdAt",
-        "updatedAt"
+        "created_at",
+        "updated_at"
 })
 public class RoomDTO {
 
@@ -32,8 +32,9 @@ public class RoomDTO {
 
     private String status;
 
+    @JsonProperty("created_at")
     private LocalDateTime createdAt;
-
+    @JsonProperty("updated_at")
     private LocalDateTime updatedAt;
 
     public static RoomDTO fromEntity(Room room) {

@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,7 +20,9 @@ import java.time.LocalDate;
         "warranty",
         "origin",
         "status",
-        "room"
+        "room",
+        "created_at",
+        "updated_at"
 })
 public class EquipmentDTO {
     @JsonProperty("id")
@@ -37,6 +40,10 @@ public class EquipmentDTO {
     private String status;
 
     private RoomDTO room;
+    @JsonProperty("created_at")
+    private LocalDateTime createdAt;
+    @JsonProperty("updated_at")
+    private LocalDateTime updatedAt;
 
     public static EquipmentDTO fromEntity(Equipment equipment) {
         return new EquipmentDTO(
@@ -46,7 +53,9 @@ public class EquipmentDTO {
                 equipment.getWarranty(),
                 equipment.getOrigin(),
                 equipment.getStatus(),
-                RoomDTO.fromEntity(equipment.getRoom())
+                RoomDTO.fromEntity(equipment.getRoom()),
+                equipment.getCreatedAt(),
+                equipment.getUpdatedAt()
         );
     }
 }
