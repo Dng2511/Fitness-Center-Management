@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
         "phone_number",
         "birthday",
         "address",
+        "package_id",
         "user_id"
 })
 public class MemberDTO {
@@ -33,6 +34,9 @@ public class MemberDTO {
     private LocalDate birthday;
     private String address;
 
+    @JsonProperty("package_id")
+    private Long trainingPackageId;
+
     @JsonProperty("user_id")
     private Long userId;
 
@@ -43,6 +47,7 @@ public class MemberDTO {
                 member.getPhoneNumber(),
                 member.getBirthday(),
                 member.getAddress(),
+                member.getTrainingPackage() != null ? member.getTrainingPackage().getId() : null,
                 member.getUser() != null ? member.getUser().getId() : null
         );
     }

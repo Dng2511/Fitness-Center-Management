@@ -57,6 +57,13 @@ public class TrainingPackageServiceImpl implements TrainingPackageService {
     public TrainingPackageDTO deleteTrainingPackage(Long id) {
         TrainingPackage trainingPackage = trainingPackageRepository.findById(id).orElseThrow();
 
+        if (!trainingPackage.getMembers().isEmpty()) {
+            throw new IllegalStateException(
+                    "Cannot delete training package because it is being used by " +
+                    trainingPackage.getMembers().size() + " member(s)"
+            );
+        }
+
         trainingPackageRepository.delete(trainingPackage);
 
         return TrainingPackageDTO.fromEntity(trainingPackage);
