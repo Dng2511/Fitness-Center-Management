@@ -3,15 +3,18 @@ package com.example.backend.dtos;
 import com.example.backend.models.Room;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonPropertyOrder({
         "id",
         "room_name",
@@ -23,19 +26,19 @@ import java.time.LocalDateTime;
 public class RoomDTO {
 
     @JsonProperty("id")
-    private Long roomId;
+    Long roomId;
 
     @JsonProperty("room_name")
-    private String roomName;
+    String roomName;
 
-    private String type; // dùng String để chuyển enum sang tên
+    String type; // dùng String để chuyển enum sang tên
 
-    private String status;
+    String status;
 
     @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
     @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    LocalDateTime updatedAt;
 
     public static RoomDTO fromEntity(Room room) {
         return new RoomDTO(

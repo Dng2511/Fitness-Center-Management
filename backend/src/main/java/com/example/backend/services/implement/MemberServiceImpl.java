@@ -7,7 +7,9 @@ import com.example.backend.models.User;
 import com.example.backend.repositories.MemberRepository;
 import com.example.backend.repositories.TrainingPackageRepository;
 import com.example.backend.services.MemberService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,11 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MemberServiceImpl implements MemberService {
 
-    private final TrainingPackageRepository trainingPackageRepository;
-    private final MemberRepository memberRepository;
+    TrainingPackageRepository trainingPackageRepository;
+    MemberRepository memberRepository;
     //private final UserRepository userRepository;
 
     @Override

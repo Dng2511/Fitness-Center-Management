@@ -4,7 +4,9 @@ import com.example.backend.dtos.EquipmentDTO;
 import com.example.backend.dtos.RoomDTO;
 import com.example.backend.services.EquipmentService;
 import com.example.backend.services.RoomService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,9 +18,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/rooms")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoomController {
 
-    private final RoomService roomService;
+    RoomService roomService;
 
     @GetMapping
     public ResponseEntity<List<RoomDTO>> getAllRooms() {

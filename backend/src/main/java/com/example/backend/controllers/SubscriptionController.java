@@ -4,7 +4,9 @@ package com.example.backend.controllers;
 import com.example.backend.dtos.SubscriptionDTO;
 import com.example.backend.services.SubscriptionService;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/subscriptions")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SubscriptionController {
-    private final SubscriptionService subscriptionService;
+    SubscriptionService subscriptionService;
 
     @GetMapping
     public ResponseEntity<Page<SubscriptionDTO>> getAllEquipments(@RequestParam(value = "page", defaultValue = "1") int page,

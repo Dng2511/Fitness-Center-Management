@@ -2,8 +2,10 @@ package com.example.backend.models;
 
 import com.example.backend.models.enums.SubscriptionStatus;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
@@ -11,28 +13,29 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "subscriptions")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Subscription extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    Member member;
 
     @ManyToOne
     @JoinColumn(name = "package_id", nullable = false)
-    private TrainingPackage trainingPackage;
+    TrainingPackage trainingPackage;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
+    LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
+    LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private SubscriptionStatus status; // ACTIVE, EXPIRED, RENEWED
+    SubscriptionStatus status; // ACTIVE, EXPIRED, RENEWED
 
     @Column(name = "renewal_date")
-    private LocalDate renewalDate;
+    LocalDate renewalDate;
 
     // Getters and Setters
 }

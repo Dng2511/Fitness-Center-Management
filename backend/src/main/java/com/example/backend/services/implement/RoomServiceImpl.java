@@ -8,16 +8,20 @@ import com.example.backend.models.enums.RoomType;
 import com.example.backend.repositories.EquipmentRepository;
 import com.example.backend.repositories.RoomRepository;
 import com.example.backend.services.RoomService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RoomServiceImpl implements RoomService {
-    private final RoomRepository roomRepository;
-    private final EquipmentRepository equipmentRepository;
+    RoomRepository roomRepository;
+    EquipmentRepository equipmentRepository;
+
     @Override
     public List<RoomDTO> getRooms() {
         return roomRepository.findAll().stream().map(RoomDTO::fromEntity).toList();

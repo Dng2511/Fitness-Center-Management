@@ -1,8 +1,10 @@
 package com.example.backend.models;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.List;
 
@@ -10,21 +12,22 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "training_packages")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainingPackage extends BaseModel {
 
     @Column(name = "package_name")
-    private String packageName;
+    String packageName;
 
     @Column(name = "duration_months") // ví dụ: 3, 6, 12 tháng
-    private Integer durationMonths;
+    Integer durationMonths;
 
     @Column(name = "price")
-    private Double price;
+    Double price;
 
     @Column(name = "type") // theo buổi, tháng, năm, VIP
-    private String type;
+    String type;
 
     @OneToMany(mappedBy = "trainingPackage")
-    private List<Member> members;
+    List<Member> members;
 }
 

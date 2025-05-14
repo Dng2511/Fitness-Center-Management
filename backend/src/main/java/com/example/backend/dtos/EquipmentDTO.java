@@ -3,9 +3,11 @@ package com.example.backend.dtos;
 import com.example.backend.models.Equipment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonPropertyOrder({
         "id",
         "equipment_name",
@@ -26,24 +29,24 @@ import java.time.LocalDateTime;
 })
 public class EquipmentDTO {
     @JsonProperty("id")
-    private Long equipmentId;
+    Long equipmentId;
 
     @JsonProperty("equipment_name")
-    private String equipmentName;
+    String equipmentName;
 
-    private LocalDate importDate;
+    LocalDate importDate;
 
-    private String warranty;
+    String warranty;
 
-    private String origin;
+    String origin;
 
-    private String status;
+    String status;
 
-    private RoomDTO room;
+    RoomDTO room;
     @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
     @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    LocalDateTime updatedAt;
 
     public static EquipmentDTO fromEntity(Equipment equipment) {
         return new EquipmentDTO(

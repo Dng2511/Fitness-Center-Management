@@ -6,13 +6,16 @@ import java.time.LocalDate;
 
 import com.example.backend.models.Member;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonPropertyOrder({
         "id",
         "name",
@@ -24,21 +27,21 @@ import lombok.NoArgsConstructor;
 })
 public class MemberDTO {
 
-    private Long id;
+    Long id;
 
-    private String name;
+    String name;
 
     @JsonProperty("phone_number")
-    private String phoneNumber;
+    String phoneNumber;
 
-    private LocalDate birthday;
-    private String address;
+    LocalDate birthday;
+    String address;
 
     @JsonProperty("package_id")
-    private Long trainingPackageId;
+    Long trainingPackageId;
 
     @JsonProperty("user_id")
-    private Long userId;
+    Long userId;
 
     public static MemberDTO fromEntity(Member member) {
         return new MemberDTO(

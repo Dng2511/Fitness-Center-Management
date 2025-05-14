@@ -4,7 +4,9 @@ import com.example.backend.dtos.TrainingPackageDTO;
 import com.example.backend.models.TrainingPackage;
 import com.example.backend.repositories.TrainingPackageRepository;
 import com.example.backend.services.TrainingPackageService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,9 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TrainingPackageServiceImpl implements TrainingPackageService {
-    private final TrainingPackageRepository trainingPackageRepository;
+    TrainingPackageRepository trainingPackageRepository;
 
 
     @Override

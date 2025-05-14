@@ -3,7 +3,9 @@ package com.example.backend.controllers;
 import com.example.backend.dtos.EquipmentDTO;
 import com.example.backend.services.EquipmentService;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/equipments")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EquipmentController {
-    private final EquipmentService equipmentService;
+    EquipmentService equipmentService;
 
     @GetMapping
     public ResponseEntity<Page<EquipmentDTO>> getAllEquipments(@RequestParam(value = "page", defaultValue = "1") int page,

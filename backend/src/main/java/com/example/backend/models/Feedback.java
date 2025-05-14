@@ -1,26 +1,29 @@
 package com.example.backend.models;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "feedback")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Feedback extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
-    private Member member;
+    Member member;
 
     @Column(name = "content")
-    private String content;
+    String content;
 
     @Column(name = "rating") // đánh giá từ 1-5 sao
-    private Integer rating;
+    Integer rating;
 
     @Column(name = "type") // feedback về nhân viên, phòng tập, thiết bị
-    private String type;
+    String type;
 }
 

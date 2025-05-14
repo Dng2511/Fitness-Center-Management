@@ -1,17 +1,18 @@
 package com.example.backend.models;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "staffs")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Staff extends BaseModel{
 
     @Column(name = "name")
-    private String name;
+    String name;
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User user;
-
-
+    User user;
 }
