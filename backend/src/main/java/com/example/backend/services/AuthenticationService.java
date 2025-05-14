@@ -1,7 +1,13 @@
 package com.example.backend.services;
 
 import com.example.backend.dtos.AuthenticationDTO;
+import com.example.backend.dtos.IntrospectDTO;
+import com.nimbusds.jose.JOSEException;
+
+import java.text.ParseException;
 
 public interface AuthenticationService {
-    boolean authenticate(AuthenticationDTO authenticationDTO);
+    AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO);
+
+    IntrospectDTO introspect(IntrospectDTO introspectDTO) throws JOSEException, ParseException;
 }

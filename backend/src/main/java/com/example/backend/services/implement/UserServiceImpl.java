@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +60,7 @@ public class UserServiceImpl implements UserService {
         return UserDTO.fromEntity(userRepository.save(user));
     }
 
+    @Transactional
     @Override
     public UserDTO deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
