@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.AuthenticationDTO;
+import com.example.backend.services.AuthenticationService;
 import com.example.backend.services.implement.AuthenticationServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
-    AuthenticationServiceImpl authenticationService;
+    AuthenticationService authenticationService;
 
     @PostMapping("/login")
     ResponseEntity<?> authenticate(@RequestBody AuthenticationDTO authenticationDTO) {
         boolean result = authenticationService.authenticate(authenticationDTO);
 
-        return ResponseEntity.ok(result);
+        AuthenticationDTO responseDTO = new AuthenticationDTO();
+        responseDTO.setUsername(authenticationDTO.getUsername());
+        responseDTO.setAuthenticated(result);
+
+        return ResponseEntity.ok(responseDTO);
     }
 }
