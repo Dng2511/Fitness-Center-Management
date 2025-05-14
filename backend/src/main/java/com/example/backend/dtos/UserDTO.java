@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -32,11 +34,13 @@ public class UserDTO {
     @Size(min = 3, message = "Username must be at least 3 characters long")
     String username;
 
-    @JsonProperty("password")
+    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     @Size(min = 8, message = "Password must be at least 8 characters long")
     String password;
 
-    String role;
+    @JsonProperty("roles")
+    Set<String> roles;
+
     MemberDTO memberInfo;
 
     public static UserDTO fromEntity(User user) {
@@ -44,7 +48,7 @@ public class UserDTO {
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
-                user.getRole().name(),
+                user.getRoles(),
                 user.getMemberInfo() != null ? MemberDTO.fromEntity(user.getMemberInfo()) : null
         );
     }

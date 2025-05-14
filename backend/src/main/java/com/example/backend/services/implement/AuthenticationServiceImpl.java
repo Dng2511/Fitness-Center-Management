@@ -2,6 +2,7 @@ package com.example.backend.services.implement;
 
 import com.example.backend.dtos.AuthenticationDTO;
 import com.example.backend.dtos.IntrospectDTO;
+import com.example.backend.models.User;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.AuthenticationService;
 import com.nimbusds.jose.*;
@@ -19,11 +20,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
 import java.util.Date;
+import java.util.StringJoiner;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +38,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @NonFinal
     @Value("${jwt.secret}")
-    protected String SIGNER_KEY;
+    private String SIGNER_KEY;
+
+    @NonFinal
+    @Value("${jwt.expiration}")
+    private long jwtExpiration;
 
     public AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO) {
         var user = userRepository.findByUsername(authenticationDTO.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -45,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (!authenticated) throw new RuntimeException("Unauthenticated"); // Nhap sai mat khau
 
-        var token = generateToken(authenticationDTO.getUsername());
+        var token = generateToken(user);
 
         return AuthenticationDTO.builder().
                 username(authenticationDTO.getUsername()).
@@ -68,15 +76,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return IntrospectDTO.builder().valid(verified && expirationTime.after(new Date())).build();
     }
 
-    private String generateToken(String username) {
+    private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512); // Lay token voi thuat toan HMAC-SHA512
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().
-                subject(username).
+                subject(user.getUsername()).
                 issuer("chu nig").
                 issueTime(new Date()).
-                expirationTime(new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli())). // thoi diem hien tai + tgian het han
-                claim("customClaim", "customValue").
+                expirationTime(new Date(Instant.now().plusMillis(jwtExpiration).toEpochMilli())). // thoi diem hien tai + tgian het han
+                claim("scope", buildScope(user)).
                 build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -90,5 +98,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Error generating token", e);
             throw new RuntimeException(e);
         }
+    }
+
+    private String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (!CollectionUtils.isEmpty(user.getRoles())) user.getRoles().forEach(stringJoiner::add);
+
+        return stringJoiner.toString();
     }
 }

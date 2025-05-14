@@ -6,15 +6,18 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
     UserService userService;
@@ -25,6 +28,13 @@ public class UserController {
             @RequestParam(value = "limit", defaultValue = "10") int limit
     ) {
         PageRequest pageable = PageRequest.of(page - 1, limit);
+
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Kiem tra xem user vua login co role gi
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority() + " "));
+
         Page<UserDTO> userDTOPage = userService.getAllUsers(pageable);
         return ResponseEntity.ok(userDTOPage);
     }
@@ -32,6 +42,12 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable("id") Long id) {
         UserDTO userDTO = userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
+    }
+
+    @GetMapping("/my-info")
+    public ResponseEntity<?> getMyInfo() {
+        UserDTO userDTO = userService.getMyInfo();
         return ResponseEntity.ok(userDTO);
     }
 
