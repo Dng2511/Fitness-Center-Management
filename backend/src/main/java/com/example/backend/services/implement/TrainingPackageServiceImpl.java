@@ -26,7 +26,7 @@ public class TrainingPackageServiceImpl implements TrainingPackageService {
 
     @Override
     public TrainingPackageDTO getTrainingPackageById(Long id) {
-        return TrainingPackageDTO.fromEntity(Objects.requireNonNull(trainingPackageRepository.findById(id).orElse(null)));
+        return TrainingPackageDTO.fromEntity(Objects.requireNonNull(trainingPackageRepository.findById(id).orElseThrow(() -> new RuntimeException("Training package not found with id: " + id))));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class TrainingPackageServiceImpl implements TrainingPackageService {
 
     @Override
     public TrainingPackageDTO updateTrainingPackage(Long id, TrainingPackageDTO trainingPackageDTO) {
-        TrainingPackage trainingPackage = trainingPackageRepository.findById(id).orElseThrow();
+        TrainingPackage trainingPackage = trainingPackageRepository.findById(id).orElseThrow(() -> new RuntimeException("Training package not found with id: " + id));
 
         if (trainingPackageDTO.getPackageName() != null) trainingPackage.setPackageName(trainingPackageDTO.getPackageName());
         if (trainingPackageDTO.getDuration() != null) trainingPackage.setDurationMonths(trainingPackageDTO.getDuration());
@@ -55,7 +55,7 @@ public class TrainingPackageServiceImpl implements TrainingPackageService {
 
     @Override
     public TrainingPackageDTO deleteTrainingPackage(Long id) {
-        TrainingPackage trainingPackage = trainingPackageRepository.findById(id).orElseThrow();
+        TrainingPackage trainingPackage = trainingPackageRepository.findById(id).orElseThrow(() -> new RuntimeException("Training package not found with id: " + id));
 
         if (!trainingPackage.getMembers().isEmpty()) {
             throw new IllegalStateException(

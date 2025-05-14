@@ -3,7 +3,7 @@ package com.example.backend.services.implement;
 import com.example.backend.dtos.SubscriptionDTO;
 import com.example.backend.models.Member;
 import com.example.backend.models.Subscription;
-import com.example.backend.models.SubscriptionStatus;
+import com.example.backend.models.enums.SubscriptionStatus;
 import com.example.backend.models.TrainingPackage;
 import com.example.backend.repositories.MemberRepository;
 import com.example.backend.repositories.SubscriptionRepository;

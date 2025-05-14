@@ -29,7 +29,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public EquipmentDTO getEquipmentById(Long id) {
-        return EquipmentDTO.fromEntity(Objects.requireNonNull(equipmentRepository.findById(id).orElse(null)));
+        return EquipmentDTO.fromEntity(Objects.requireNonNull(equipmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Equipment not found with id: " + id))));
     }
 
     @Override

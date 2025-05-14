@@ -30,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO getMemberById(Long id) {
-        return MemberDTO.fromEntity(Objects.requireNonNull(memberRepository.findById(id).orElse(null)));
+        return MemberDTO.fromEntity(Objects.requireNonNull(memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found with id: " + id))));
     }
 
     @Override
@@ -38,6 +38,9 @@ public class MemberServiceImpl implements MemberService {
         Member member = new Member();
 
         member.setName(memberDTO.getName());
+        if (memberRepository.existsByPhoneNumber(memberDTO.getPhoneNumber())) {
+            throw new RuntimeException("Member with phone number " + memberDTO.getPhoneNumber() + " already exists");
+        }
         member.setPhoneNumber(memberDTO.getPhoneNumber());
         member.setAddress(memberDTO.getAddress());
         member.setAddress(memberDTO.getAddress());
@@ -59,13 +62,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDTO updateMember(Long id, MemberDTO memberDTO) {
-        Member member = memberRepository.findById(id).orElseThrow();
+        Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
 
         if (memberDTO.getName() != null) member.setName(memberDTO.getName());
         if (memberDTO.getAddress() != null) member.setAddress(memberDTO.getAddress());
         if (memberDTO.getTrainingPackageId() != null) {
             TrainingPackage trainingPackage = trainingPackageRepository.findById(memberDTO.getTrainingPackageId())
-                    .orElseThrow();
+                    .orElseThrow(() -> new RuntimeException("Training package not found with id: " + memberDTO.getTrainingPackageId()));
             member.setTrainingPackage(trainingPackage);
         }
 
@@ -73,12 +76,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    @Transactional
     public MemberDTO deleteMember(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow();
+        Member member = memberRepository.findById(id).orElseThrow(() -> new RuntimeException("Member not found with id: " + id));
 
         if (member.getTrainingPackage() != null) {
-            member.getTrainingPackage().getMembers().remove(member);
+            TrainingPackage trainingPackage = member.getTrainingPackage();
+            trainingPackage.getMembers().remove(member);
             member.setTrainingPackage(null);
+            trainingPackageRepository.save(trainingPackage);
         }
 
         memberRepository.delete(member);

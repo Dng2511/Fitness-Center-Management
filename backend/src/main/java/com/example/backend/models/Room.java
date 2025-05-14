@@ -1,5 +1,7 @@
 package com.example.backend.models;
 
+import com.example.backend.models.enums.RoomStatus;
+import com.example.backend.models.enums.RoomType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
