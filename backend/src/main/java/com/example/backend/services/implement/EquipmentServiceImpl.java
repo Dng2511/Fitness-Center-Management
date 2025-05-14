@@ -7,7 +7,9 @@ import com.example.backend.repositories.EquipmentRepository;
 import com.example.backend.repositories.RoomRepository;
 import com.example.backend.services.EquipmentService;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,10 +19,11 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class EquipmentServiceImpl implements EquipmentService {
 
-    private final EquipmentRepository equipmentRepository;
-    private final RoomRepository roomRepository;
+    EquipmentRepository equipmentRepository;
+    RoomRepository roomRepository;
 
     @Override
     public Page<EquipmentDTO> getAllEquipment(Pageable pageable) {

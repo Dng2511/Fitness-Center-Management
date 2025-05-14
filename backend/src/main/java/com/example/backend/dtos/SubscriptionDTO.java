@@ -3,9 +3,11 @@ package com.example.backend.dtos;
 import com.example.backend.models.Subscription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonPropertyOrder({
         "id",
         "member",
@@ -25,19 +28,19 @@ import java.time.LocalDateTime;
         "updated_at"
 })
 public class SubscriptionDTO {
-    private Long id;
-    private MemberDTO member;
+    Long id;
+    MemberDTO member;
 
     @JsonProperty("training_package")
-    private TrainingPackageDTO trainingPackage;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private String status;
-    private LocalDate renewalDate;
+    TrainingPackageDTO trainingPackage;
+    LocalDate startDate;
+    LocalDate endDate;
+    String status;
+    LocalDate renewalDate;
     @JsonProperty("created_at")
-    private LocalDateTime createdAt;
+    LocalDateTime createdAt;
     @JsonProperty("updated_at")
-    private LocalDateTime updatedAt;
+    LocalDateTime updatedAt;
 
     public static SubscriptionDTO fromEntity(Subscription subscription) {
         return new SubscriptionDTO(

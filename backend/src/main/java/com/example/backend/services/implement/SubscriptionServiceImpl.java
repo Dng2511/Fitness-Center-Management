@@ -10,7 +10,9 @@ import com.example.backend.repositories.SubscriptionRepository;
 import com.example.backend.repositories.TrainingPackageRepository;
 import com.example.backend.services.SubscriptionService;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,11 +23,12 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private final SubscriptionRepository subscriptionRepository;
-    private final MemberRepository memberRepository;
-    private final TrainingPackageRepository trainingPackageRepository;
+    SubscriptionRepository subscriptionRepository;
+    MemberRepository memberRepository;
+    TrainingPackageRepository trainingPackageRepository;
 
     public String createOrRenewSubscription(JsonNode subscriptionData) {
         Member member = memberRepository.findById(subscriptionData.get("member_id").asLong())

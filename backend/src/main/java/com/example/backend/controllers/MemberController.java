@@ -2,7 +2,9 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.MemberDTO;
 import com.example.backend.services.MemberService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,8 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MemberController {
-    private final MemberService memberService;
+    MemberService memberService;
 
     @GetMapping
     public ResponseEntity<?> getAllMembers(

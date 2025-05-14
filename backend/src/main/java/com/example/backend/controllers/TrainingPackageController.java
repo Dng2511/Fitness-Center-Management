@@ -2,7 +2,9 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.TrainingPackageDTO;
 import com.example.backend.services.TrainingPackageService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -14,8 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/packages")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TrainingPackageController {
-    private final TrainingPackageService trainingPackageService;
+    TrainingPackageService trainingPackageService;
 
     @GetMapping("")
     public ResponseEntity<?> getAllTrainingPackages(
