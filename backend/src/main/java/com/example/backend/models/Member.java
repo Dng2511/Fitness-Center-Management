@@ -33,7 +33,7 @@ public class Member extends BaseModel {
     @JoinColumn(name = "package_id")
     private TrainingPackage trainingPackage;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 }

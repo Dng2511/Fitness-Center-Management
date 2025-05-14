@@ -27,7 +27,7 @@ public class User extends BaseModel {
     @OneToOne(mappedBy = "user")
     private Trainer trainerInfo;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Member memberInfo;
 
     // Getters & Setters
