@@ -1,5 +1,6 @@
 package com.example.backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,7 +11,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationDTO {
     String username;
-    String password;
-    boolean authenticated;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    String password;
+    
+    boolean authenticated;
 }
