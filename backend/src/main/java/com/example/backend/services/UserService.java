@@ -10,6 +10,8 @@ public interface UserService {
 
     UserDTO getUserById(Long id);
 
+    UserDTO getMyInfo();
+
     UserDTO addUser(UserDTO userDTO);
 
     UserDTO updateUser(Long id, UserDTO userDTO);
