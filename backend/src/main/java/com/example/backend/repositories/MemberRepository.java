@@ -13,5 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Override
     Page<Member> findAll(Pageable pageable);
 
+    boolean existsByPhoneNumber(String phoneNumber);
+
     Member findByPhoneNumber(String phoneNumber);
 }
