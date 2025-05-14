@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.AuthenticationDTO;
 import com.example.backend.dtos.IntrospectDTO;
+import com.example.backend.models.User;
 import com.nimbusds.jose.JOSEException;
 
 import java.text.ParseException;

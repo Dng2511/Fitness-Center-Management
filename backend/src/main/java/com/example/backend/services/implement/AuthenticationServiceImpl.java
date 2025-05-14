@@ -44,6 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${jwt.expiration}")
     private long jwtExpiration;
 
+    @Override
     public AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO) {
         var user = userRepository.findByUsername(authenticationDTO.getUsername()).orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -62,6 +63,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 build();
     }
 
+    @Override
     public IntrospectDTO introspect(IntrospectDTO introspectDTO) throws JOSEException, ParseException {
         var token = introspectDTO.getToken();
 
