@@ -12,13 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationDTO {
-    String username;
+public class IntrospectDTO {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String password;
-
     String token;
 
-    boolean authenticated;
+    boolean valid;
 }
