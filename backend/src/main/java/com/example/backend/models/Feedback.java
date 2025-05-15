@@ -1,5 +1,6 @@
 package com.example.backend.models;
 
+import com.example.backend.models.enums.FeedbackType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -23,7 +24,11 @@ public class Feedback extends BaseModel {
     @Column(name = "rating") // đánh giá từ 1-5 sao
     Integer rating;
 
-    @Column(name = "type") // feedback về nhân viên, phòng tập, thiết bị
-    String type;
+    @Column(name="target_id")
+    Long targetId;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    FeedbackType type;
 }
 
