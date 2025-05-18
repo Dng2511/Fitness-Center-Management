@@ -5,10 +5,10 @@ services:
     image: "mcr.microsoft.com/mssql/server:2022-latest"
     container_name: sql_server2022
     ports:
-      - "1433:1433"
+      - "1434:1433"
     environment:
       - ACCEPT_EULA=y
-      - SA_PASSWORD=etronTR04
+      - SA_PASSWORD=YourStrong@Passw0rd
     networks:
       - backend-net
 
@@ -19,7 +19,7 @@ services:
     entrypoint: >
       bash -c "
       sleep 20 &&
-      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P 'etronTR04' -i /init/init.sql
+      /opt/mssql-tools/bin/sqlcmd -S sqlserver -U sa -P 'YourStrong@Passw0rd' -i /init/init.sql
       "
     volumes:
       - ./init:/init
@@ -34,7 +34,7 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=Gym;encrypt=true;trustServerCertificate=true
       - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=etronTR04
+      - SPRING_DATASOURCE_PASSWORD=YourStrong@Passw0rd
       - JWT_SECRET=Ot+WMUGdAJtk7Zqhkqc7IVHlhDGQE2a8qbbIbHlbzVJ6yngs3MMSn0pro7AR9rfl
       - JWT_EXPIRATION=3600000
     ports:
