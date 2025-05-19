@@ -39,7 +39,7 @@ public class UserDTO {
     String password;
 
     @JsonProperty("roles")
-    Set<String> roles;
+    String roles;
 
     MemberDTO memberInfo;
 

@@ -27,7 +27,7 @@ public class Trainer extends BaseModel {
     @OneToMany(mappedBy = "trainer")
     List<WorkoutHistory> workoutHistories;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     User user;
 }
