@@ -40,7 +40,7 @@ public class SecurityConfig {
     private String SIGNER_KEY;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, JwtDecoder jwtDecoder) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
                 request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                         //.requestMatchers(HttpMethod.GET, "/users").hasRole(UserRole.ADMIN.name())
@@ -57,6 +57,7 @@ public class SecurityConfig {
 
         return httpSecurity.build();
     }
+
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {

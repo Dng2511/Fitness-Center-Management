@@ -24,7 +24,7 @@ public class User extends BaseModel {
 
     //@Enumerated(EnumType.STRING)
     @Column(name = "roles")
-    Set<String> roles;
+    private String roles;
 
     @OneToOne(mappedBy = "user")
     private Staff staffInfo;
@@ -34,7 +34,5 @@ public class User extends BaseModel {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Member memberInfo;
-
-    // Getters & Setters
 }
 

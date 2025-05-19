@@ -12,7 +12,7 @@ public class Staff extends BaseModel{
     @Column(name = "name")
     String name;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     User user;
 }

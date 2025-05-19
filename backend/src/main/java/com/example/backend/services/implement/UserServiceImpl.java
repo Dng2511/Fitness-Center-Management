@@ -53,10 +53,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(name).orElseThrow(() -> new RuntimeException("User not found with username: " + name));
 
         user.setUsername(user.getUsername());
-
-        HashSet<String> roles = new HashSet<>();
-        roles.add(user.getRoles().iterator().next());
-        user.setRoles(roles);
+        user.setRoles(user.getRoles());
 
         return UserDTO.fromEntity(user);
     }
@@ -69,11 +66,7 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-
-        HashSet<String> roles = new HashSet<>();
-        roles.add(UserRole.MEMBER.name());
-
-        user.setRoles(roles);
+        user.setRoles(UserRole.MEMBER.name());
 
         //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -88,10 +81,7 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getUsername() != null && !userDTO.getUsername().equals(user.getUsername())) throw new RuntimeException("Username cannot be changed");
         if (userDTO.getPassword() != null) user.setPassword(userDTO.getPassword());
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(UserRole.MEMBER.name());
-
-        user.setRoles(roles);
+        user.setRoles(UserRole.MEMBER.name());
 
         return UserDTO.fromEntity(userRepository.save(user));
     }
