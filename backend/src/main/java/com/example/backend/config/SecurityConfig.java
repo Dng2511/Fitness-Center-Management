@@ -33,7 +33,7 @@ public class SecurityConfig {
     final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     final String[] PUBLIC_ENDPOINTS = {
-            "/users", "/auth/login", "auth/introspect"
+            "/users", "/auth/login", "auth/introspect", "/auth/refresh"
     };
 
     @Value("${jwt.secret}")

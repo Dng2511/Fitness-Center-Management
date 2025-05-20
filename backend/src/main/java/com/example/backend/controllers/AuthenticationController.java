@@ -2,6 +2,8 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.AuthenticationDTO;
 import com.example.backend.dtos.IntrospectDTO;
+import com.example.backend.dtos.RefreshDTO;
+import com.example.backend.models.User;
 import com.example.backend.services.AuthenticationService;
 import com.example.backend.services.implement.AuthenticationServiceImpl;
 import com.nimbusds.jose.JOSEException;
@@ -10,6 +12,7 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +46,15 @@ public class AuthenticationController {
         String token = authHeader.substring(7);
         authenticationService.logout(token);
         return ResponseEntity.ok("Logout successful");
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(@RequestBody RefreshDTO request) {
+        try {
+            AuthenticationDTO authenticationDTO = authenticationService.refreshToken(request.getRefreshToken());
+            return ResponseEntity.ok(authenticationDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is invalid or expired");
+        }
     }
 }
