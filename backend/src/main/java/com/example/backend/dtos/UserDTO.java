@@ -1,6 +1,7 @@
 package com.example.backend.dtos;
 
 import com.example.backend.models.User;
+import com.example.backend.models.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.Size;
@@ -39,7 +40,7 @@ public class UserDTO {
     String password;
 
     @JsonProperty("roles")
-    String roles;
+    UserRole roles;
 
     MemberDTO memberInfo;
 

@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-        user.setRoles(UserRole.MEMBER.name());
+        user.setRoles(UserRole.MEMBER);
 
         //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         if (userDTO.getUsername() != null && !userDTO.getUsername().equals(user.getUsername())) throw new RuntimeException("Username cannot be changed");
         if (userDTO.getPassword() != null) user.setPassword(userDTO.getPassword());
 
-        user.setRoles(UserRole.MEMBER.name());
+        user.setRoles(UserRole.MEMBER);
 
         return UserDTO.fromEntity(userRepository.save(user));
     }
