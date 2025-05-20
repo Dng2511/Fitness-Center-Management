@@ -86,7 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 issuer("chu nig").
                 issueTime(new Date()).
                 expirationTime(new Date(Instant.now().plusMillis(jwtExpiration).toEpochMilli())). // thoi diem hien tai + tgian het han
-                claim("scope", buildScope(user)).
+                claim("scope", user.getRoles()).
                 build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -102,12 +102,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private String buildScope(User user) {
-        StringJoiner stringJoiner = new StringJoiner(" ");
-        if (user.getRoles() != null) {
-            stringJoiner.add(user.getRoles());
-        }
-
-        return stringJoiner.toString();
-    }
+//    private String buildScope(User user) {
+//        StringJoiner stringJoiner = new StringJoiner(" ");
+//        if (user.getRoles() != null) {
+//            stringJoiner.add(user.getRoles());
+//        }
+//
+//        return stringJoiner.toString();
+//    }
 }

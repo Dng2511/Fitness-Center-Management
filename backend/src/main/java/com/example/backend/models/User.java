@@ -22,14 +22,14 @@ public class User extends BaseModel {
     @Column(name = "password")
     private String password;
 
-    //@Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)
     @Column(name = "roles")
-    private String roles;
+    private UserRole roles;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Staff staffInfo;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Trainer trainerInfo;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
