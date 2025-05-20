@@ -25,9 +25,8 @@ import org.springframework.util.CollectionUtils;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collection;
-import java.util.Date;
-import java.util.StringJoiner;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +42,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @NonFinal
     @Value("${jwt.expiration}")
     private long jwtExpiration;
+
+    Set<String> blacklist = ConcurrentHashMap.newKeySet();
+
+    // Hàm đưa token vào blacklist
+    public void blacklistToken(String token) {
+        blacklist.add(token);
+    }
+
+    // Hàm kiểm tra token có bị blacklist không
+    public boolean isTokenBlacklisted(String token) {
+        return blacklist.contains(token);
+    }
 
     @Override
     public AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO) {
@@ -67,6 +78,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public IntrospectDTO introspect(IntrospectDTO introspectDTO) throws JOSEException, ParseException {
         var token = introspectDTO.getToken();
 
+        // Kiểm tra token có trong blacklist không
+        if (isTokenBlacklisted(token)) {
+            return IntrospectDTO.builder().valid(false).build();
+        }
+
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
         SignedJWT signedJWT = SignedJWT.parse(token);
@@ -86,6 +102,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 issuer("chu nig").
                 issueTime(new Date()).
                 expirationTime(new Date(Instant.now().plusMillis(jwtExpiration).toEpochMilli())). // thoi diem hien tai + tgian het han
+                jwtID(UUID.randomUUID().toString()).
                 claim("scope", user.getRoles()).
                 build();
 
@@ -100,6 +117,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             log.error("Error generating token", e);
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void logout(String token) throws JOSEException, ParseException {
+        if (token == null || token.isBlank()) throw new RuntimeException("Token is missing");
+        if (isTokenBlacklisted(token)) throw new RuntimeException("Token is already blacklisted");
+
+        blacklistToken(token);
     }
 
 //    private String buildScope(User user) {

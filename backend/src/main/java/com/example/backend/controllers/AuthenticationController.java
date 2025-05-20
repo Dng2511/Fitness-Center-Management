@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 
@@ -39,5 +36,12 @@ public class AuthenticationController {
         var result = authenticationService.introspect(introspectDTO);
 
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/logout")
+    ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) throws JOSEException, ParseException {
+        String token = authHeader.substring(7);
+        authenticationService.logout(token);
+        return ResponseEntity.ok("Logout successful");
     }
 }
