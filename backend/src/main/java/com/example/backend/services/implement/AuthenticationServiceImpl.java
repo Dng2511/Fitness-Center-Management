@@ -66,10 +66,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!authenticated) throw new RuntimeException("Unauthenticated"); // Nhap sai mat khau
 
         var token = generateToken(user);
+        var refreshToken = generateRefreshToken(user);
+
 
         return AuthenticationDTO.builder().
                 username(authenticationDTO.getUsername()).
                 token(token).
+                refreshToken(refreshToken).
                 authenticated(true).
                 build();
     }
@@ -116,6 +119,70 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (JOSEException e) {
             log.error("Error generating token", e);
             throw new RuntimeException(e);
+        }
+    }
+
+    private String generateRefreshToken(User user) {
+        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
+        JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
+                .subject(user.getUsername())
+                .issuer("chu nig")
+                .issueTime(new Date())
+                .expirationTime(new Date(Instant.now().plusMillis(7 * 24 * 60 * 60 * 1000L).toEpochMilli())) // 7 days
+                .jwtID(UUID.randomUUID().toString())
+                .claim("scope", "REFRESH_TOKEN")
+                .build();
+
+        Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+        JWSObject jwsObject = new JWSObject(header, payload);
+
+        try {
+            jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
+            return jwsObject.serialize();
+        } catch (JOSEException e) {
+            log.error("Error generating refresh token", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public AuthenticationDTO refreshToken(String refreshToken) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(refreshToken);
+            JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
+            if (!signedJWT.verify(verifier)) {
+                throw new RuntimeException("Invalid refresh token");
+            }
+
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+            if (expirationTime.before(new Date())) {
+                throw new RuntimeException("Refresh token is expired");
+            }
+
+            // Kiểm tra thêm scope nếu sinh refresh token có claim riêng
+            String scope = (String) signedJWT.getJWTClaimsSet().getClaim("scope");
+            if (scope == null || !"REFRESH_TOKEN".equals(scope)) {
+                throw new RuntimeException("Invalid refresh token scope");
+            }
+
+            String username = signedJWT.getJWTClaimsSet().getSubject();
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            String newAccessToken = generateToken(user);
+
+            // Sinh refresh token mới
+            // String newRefreshToken = generateRefreshToken(user); // d can thiet lam bo di
+
+            return AuthenticationDTO.builder()
+                    .username(username)
+                    .token(newAccessToken)
+                    .authenticated(true)
+                    //.refreshToken(newRefreshToken)
+                    .build();
+
+        } catch (ParseException | JOSEException e) {
+            throw new RuntimeException("Invalid refresh token", e);
         }
     }
 

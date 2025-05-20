@@ -13,4 +13,6 @@ public interface AuthenticationService {
     IntrospectDTO introspect(IntrospectDTO introspectDTO) throws JOSEException, ParseException;
 
     void logout(String token) throws JOSEException, ParseException;
+
+    AuthenticationDTO refreshToken(String refreshToken);
 }
