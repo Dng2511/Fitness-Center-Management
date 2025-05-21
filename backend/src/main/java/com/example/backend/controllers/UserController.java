@@ -1,5 +1,9 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.CreateRequestDTO.CreateMemberRequestDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateStaffRequestDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateTrainerRequestDTO;
+import com.example.backend.dtos.TrainerDTO;
 import com.example.backend.dtos.UserDTO;
 import com.example.backend.services.UserService;
 import jakarta.validation.Valid;
@@ -51,9 +55,21 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<?> addUser(@RequestBody @Valid UserDTO userDTO) {
-        UserDTO createdUser = userService.addUser(userDTO);
+    @PostMapping("/register")
+    public ResponseEntity<?> addUser(@RequestBody @Valid CreateMemberRequestDTO request) {
+        UserDTO createdUser = userService.addUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
+    @PostMapping("/add-trainer")
+    public ResponseEntity<?> addTrainer(@RequestBody @Valid CreateTrainerRequestDTO request) {
+        TrainerDTO trainer = userService.addTrainer(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(trainer);
+    }
+
+    @PostMapping("/add-staff")
+    public ResponseEntity<?> addStaff(@RequestBody @Valid CreateStaffRequestDTO request) {
+        UserDTO createdUser = userService.addStaff(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

@@ -1,10 +1,7 @@
 package com.example.backend.dtos;
 
+import com.example.backend.models.Trainer;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.time.LocalDate;
-
-import com.example.backend.models.Member;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
@@ -21,13 +18,10 @@ import lombok.experimental.FieldDefaults;
         "id",
         "name",
         "phone_number",
-        "birthday",
-        "address",
-        "package_id",
+        "specialty",
         "user_id"
 })
-public class MemberDTO {
-
+public class TrainerDTO {
     Long id;
 
     String name;
@@ -36,25 +30,18 @@ public class MemberDTO {
     @Size(min = 10, message = "Phone number must be at least 10 characters long")
     String phoneNumber;
 
-    LocalDate birthday;
-    String address;
-
-    @JsonProperty("package_id")
-    Long trainingPackageId;
+    String specialty;
 
     @JsonProperty("user_id")
     Long userId;
 
-    public static MemberDTO fromEntity(Member member) {
-        return new MemberDTO(
-                member.getId(),
-                member.getName(),
-                member.getPhoneNumber(),
-                member.getBirthday(),
-                member.getAddress(),
-                member.getTrainingPackage() != null ? member.getTrainingPackage().getId() : null,
-                member.getUser() != null ? member.getUser().getId() : null
+    public static TrainerDTO fromEntity(Trainer trainer) {
+        return new TrainerDTO(
+                trainer.getId(),
+                trainer.getName(),
+                trainer.getPhoneNumber(),
+                trainer.getSpecialty(),
+                trainer.getUser() != null ? trainer.getUser().getId() : null
         );
     }
 }
-

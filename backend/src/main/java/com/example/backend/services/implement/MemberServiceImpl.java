@@ -6,6 +6,7 @@ import com.example.backend.models.TrainingPackage;
 import com.example.backend.models.User;
 import com.example.backend.repositories.MemberRepository;
 import com.example.backend.repositories.TrainingPackageRepository;
+import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.MemberService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class MemberServiceImpl implements MemberService {
 
     TrainingPackageRepository trainingPackageRepository;
     MemberRepository memberRepository;
-    //private final UserRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     public Page<MemberDTO> getAllMembers(Pageable pageable) {
@@ -53,11 +54,11 @@ public class MemberServiceImpl implements MemberService {
             member.setTrainingPackage(trainingPackage);
         }
 
-//        if (memberDTO.getUserId() != null) {
-//            User user = userRepository.findById(memberDTO.getUserId())
-//                    .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + memberDTO.getUserId()));
-//            member.setUser(user);
-//        }
+        if (memberDTO.getUserId() != null) {
+            User user = userRepository.findById(memberDTO.getUserId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + memberDTO.getUserId()));
+            member.setUser(user);
+        }
 
 
         return MemberDTO.fromEntity(memberRepository.save(member));
