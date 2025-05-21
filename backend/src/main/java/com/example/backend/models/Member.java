@@ -20,7 +20,7 @@ public class Member extends BaseModel {
     @Column(name = "name")
     String name;
 
-    @Column(name = "phone_number", unique = true)
+    @Column(name = "phone_number")
     String phoneNumber;
 
     @Column(name = "birthday")

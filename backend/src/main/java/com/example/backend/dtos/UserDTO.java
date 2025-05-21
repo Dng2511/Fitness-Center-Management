@@ -1,5 +1,6 @@
 package com.example.backend.dtos;
 
+import com.example.backend.models.Staff;
 import com.example.backend.models.User;
 import com.example.backend.models.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,7 +22,7 @@ import java.util.Set;
         "id",
         "username",
         "password",
-        "role",
+        "roles",
         "staffInfo",
         "trainerInfo",
         "memberInfo"
@@ -43,6 +44,8 @@ public class UserDTO {
     UserRole roles;
 
     MemberDTO memberInfo;
+    TrainerDTO trainerInfo;
+    StaffDTO staffInfo;
 
     public static UserDTO fromEntity(User user) {
         return new UserDTO(
@@ -50,7 +53,9 @@ public class UserDTO {
                 user.getUsername(),
                 user.getPassword(),
                 user.getRoles(),
-                user.getMemberInfo() != null ? MemberDTO.fromEntity(user.getMemberInfo()) : null
+                user.getMemberInfo() != null ? MemberDTO.fromEntity(user.getMemberInfo()) : null,
+                user.getTrainerInfo() != null ? TrainerDTO.fromEntity(user.getTrainerInfo()) : null,
+                user.getStaffInfo() != null ? StaffDTO.fromEntity(user.getStaffInfo()) : null
         );
     }
 }

@@ -2,8 +2,10 @@ package com.example.backend.models;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
+@Data
 @Entity
 @Table(name = "staffs")
 @FieldDefaults(level = AccessLevel.PRIVATE)

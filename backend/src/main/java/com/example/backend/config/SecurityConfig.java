@@ -4,6 +4,7 @@ import com.example.backend.exception.CustomAuthenticationEntryPoint;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,12 +34,10 @@ public class SecurityConfig {
     final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     final String[] PUBLIC_ENDPOINTS = {
-            "/users", "/auth/login", "auth/introspect", "/auth/refresh"
+            "/users/register", "/auth/login", "auth/introspect", "/auth/refresh"
     };
 
-    @Value("${jwt.secret}")
-    String SIGNER_KEY;
-
+    @Autowired
     CustomJwtDecoder customJwtDecoder;
 
     @Bean

@@ -1,6 +1,9 @@
 package com.example.backend.services;
 
-import com.example.backend.dtos.MemberDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateMemberRequestDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateStaffRequestDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateTrainerRequestDTO;
+import com.example.backend.dtos.TrainerDTO;
 import com.example.backend.dtos.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +15,11 @@ public interface UserService {
 
     UserDTO getMyInfo();
 
-    UserDTO addUser(UserDTO userDTO);
+    UserDTO addUser(CreateMemberRequestDTO request);
+
+    TrainerDTO addTrainer(CreateTrainerRequestDTO request);
+
+    UserDTO addStaff(CreateStaffRequestDTO request);
 
     UserDTO updateUser(Long id, UserDTO userDTO);
 

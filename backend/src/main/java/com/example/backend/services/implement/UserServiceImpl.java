@@ -1,10 +1,18 @@
 package com.example.backend.services.implement;
 
-import com.example.backend.dtos.MemberDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateMemberRequestDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateStaffRequestDTO;
+import com.example.backend.dtos.CreateRequestDTO.CreateTrainerRequestDTO;
+import com.example.backend.dtos.TrainerDTO;
 import com.example.backend.dtos.UserDTO;
 import com.example.backend.models.Member;
+import com.example.backend.models.Staff;
+import com.example.backend.models.Trainer;
 import com.example.backend.models.User;
 import com.example.backend.models.enums.UserRole;
+import com.example.backend.repositories.MemberRepository;
+import com.example.backend.repositories.StaffRepository;
+import com.example.backend.repositories.TrainerRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.UserService;
 import lombok.AccessLevel;
@@ -16,12 +24,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +37,10 @@ import java.util.HashSet;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+
+    TrainerRepository trainerRepository;
+    MemberRepository memberRepository;
+    StaffRepository staffRepository;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')") // kiem tra truoc khi vao method, du dieu kien moi vao dc method -> neu la admin thi moi vao dc
@@ -59,20 +70,93 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO addUser(UserDTO userDTO) {
+    @Transactional
+    public UserDTO addUser(CreateMemberRequestDTO request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        // Kiểm tra phone number tồn tại
+        if (memberRepository.existsByPhoneNumber(request.getPhoneNumber())) {
+            throw new RuntimeException("Phone number already exists");
+        }
+
+        // Tạo user mới
         User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(UserRole.MEMBER); // Mặc định là MEMBER khi đăng ký
 
-        if (userRepository.existsByUsername(userDTO.getUsername())) throw new RuntimeException("Username already exists");
+        User savedUser = userRepository.save(user);
 
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setRoles(UserRole.MEMBER);
+        // Tạo member mới
+        Member member = new Member();
+        member.setName(request.getName());
+        member.setPhoneNumber(request.getPhoneNumber());
+        member.setBirthday(request.getBirthday());
+        member.setAddress(request.getAddress());
+        member.setUser(savedUser);
+        member.setWorkoutHistories(new ArrayList<>());
 
-        //PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        memberRepository.save(member);
 
-        return UserDTO.fromEntity(userRepository.save(user));
+        return UserDTO.fromEntity(savedUser);
     }
+
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
+    public TrainerDTO addTrainer(CreateTrainerRequestDTO request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        // Tạo user mới
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(UserRole.TRAINER);
+
+        // Tạo trainer mới
+        Trainer trainer = new Trainer();
+        trainer.setName(request.getName());
+        trainer.setSpecialty(request.getSpecialty());
+        trainer.setPhoneNumber(request.getPhoneNumber());
+        trainer.setUser(user);
+
+        // Lưu trainer (cascade sẽ lưu cả user)
+        Trainer savedTrainer = trainerRepository.save(trainer);
+
+        return TrainerDTO.fromEntity(savedTrainer);
+    }
+
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional
+    public UserDTO addStaff(CreateStaffRequestDTO request) {
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new RuntimeException("Username already exists");
+        }
+
+        // Tạo user mới
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRoles(UserRole.STAFF);
+
+        User savedUser = userRepository.save(user);
+
+        // Tạo staff mới
+        Staff staff = new Staff();
+        staff.setName(request.getName());
+        staff.setUser(savedUser);
+
+        staffRepository.save(staff);
+
+        return UserDTO.fromEntity(savedUser);
+    }
+
 
     @Override
     public UserDTO updateUser(Long id, UserDTO userDTO) {
