@@ -30,8 +30,7 @@ public class RoomController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RoomDTO> getRoomById(@PathVariable Long id) {
-        RoomDTO room = roomService.getRoomById(id);
-        return room != null ? ResponseEntity.ok(room) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(roomService.getRoomById(id));
     }
 
     @GetMapping("/{id}/equipments")

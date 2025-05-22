@@ -29,7 +29,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public RoomDTO getRoomById(long id) {
-        return RoomDTO.fromEntity(Objects.requireNonNull(roomRepository.findById(id).orElse(null)));
+        return RoomDTO.fromEntity(Objects.requireNonNull(roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"))));
     }
 
     @Override
