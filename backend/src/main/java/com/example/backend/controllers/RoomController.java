@@ -40,8 +40,7 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<RoomDTO> createRoom(@RequestBody RoomDTO roomDTO) {
-        RoomDTO createdRoom = roomService.createRoom(roomDTO);
-        return createdRoom != null ? ResponseEntity.ok(createdRoom) : ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(roomService.createRoom(roomDTO));
     }
 
     @PutMapping("/{id}")
