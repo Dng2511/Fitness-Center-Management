@@ -13,5 +13,5 @@ public interface TrainerService {
 
     TrainerDTO updateTrainer(Long id, TrainerDTO trainerDTO);
 
-    TrainerDTO deleteTrainer(Long id);
+    void deleteTrainer(Long id);
 }

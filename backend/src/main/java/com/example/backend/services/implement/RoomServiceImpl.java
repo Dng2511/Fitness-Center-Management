@@ -46,19 +46,17 @@ public class RoomServiceImpl implements RoomService {
         room.setRoomName(roomDTO.getRoomName());
         room.setType(RoomType.valueOf(roomDTO.getType().toUpperCase()));
         room.setStatus(RoomStatus.valueOf(roomDTO.getStatus().toUpperCase()));
-        roomRepository.save(room);
-        return null;
+
+        return RoomDTO.fromEntity(roomRepository.save(room));
     }
 
     @Override
     public RoomDTO updateRoom(RoomDTO roomDTO, long id) {
-        roomRepository.findById(id).ifPresent(room -> {
-            room.setRoomName(roomDTO.getRoomName());
-            room.setType(RoomType.valueOf(roomDTO.getType().toUpperCase()));
-            room.setStatus(RoomStatus.valueOf(roomDTO.getStatus().toUpperCase()));
-            roomRepository.save(room);
-        });
-        return null;
+        Room room = roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setRoomName(roomDTO.getRoomName());
+        room.setType(RoomType.valueOf(roomDTO.getType().toUpperCase()));
+        room.setStatus(RoomStatus.valueOf(roomDTO.getStatus().toUpperCase()));
+        return RoomDTO.fromEntity(roomRepository.save(room));
     }
 
     @Override
