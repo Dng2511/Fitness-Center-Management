@@ -1,0 +1,89 @@
+.forum-section {
+    background: white;
+    border-radius: 8px;
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.forum-header {
+    margin-bottom: 24px;
+}
+
+.forum-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.forum-description {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.forum-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.post-card {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 16px;
+    border: 1px solid #e9ecef;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.author-avatar {
+    width: 32px;
+    height: 32px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.author-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.post-time {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.post-content {
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.post-stats {
+    display: flex;
+    gap: 16px;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.likes-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}

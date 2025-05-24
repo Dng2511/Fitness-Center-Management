@@ -1,0 +1,747 @@
+/* Room Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-top: 1rem;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.table th,
+.table td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid #e2e8f0;
+}
+
+.table th {
+    font-weight: 600;
+    color: #2d3748;
+    background-color: #f7fafc;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.table tbody tr:hover {
+    background-color: #f7fafc;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+/* Status Badge Styles */
+.statusBadge,
+.conditionBadge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.statusBadge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.active {
+    background-color: #c6f6d5;
+    color: #2f855a;
+}
+
+.active:hover {
+    background-color: #9ae6b4;
+}
+
+.maintenance {
+    background-color: #fed7d7;
+    color: #c53030;
+}
+
+.maintenance:hover {
+    background-color: #feb2b2;
+}
+
+/* Action Buttons */
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btnIcon {
+    width: 16px;
+    height: 16px;
+}
+
+.btnPrimary {
+    background-color: #3182ce;
+    color: white;
+}
+
+.btnPrimary:not(:disabled):hover {
+    background-color: #2c5282;
+}
+
+.btnSecondary {
+    background-color: white;
+    border: 2px solid #e2e8f0;
+    color: #4a5568;
+}
+
+.btnSecondary:not(:disabled):hover {
+    background-color: #f7fafc;
+    border-color: #cbd5e0;
+}
+
+.btnEdit {
+    background-color: #3182ce;
+    color: white;
+}
+
+.btnEdit:not(:disabled):hover {
+    background-color: #2c5282;
+}
+
+.btnDelete {
+    background-color: #e53e3e;
+    color: white;
+}
+
+.btnDelete:not(:disabled):hover {
+    background-color: #c53030;
+}
+
+.btnDetails {
+    background-color: #4299e1;
+    color: white;
+    width: 100px;
+    justify-content: center;
+}
+
+.btnDetails:hover {
+    background-color: #3182ce;
+}
+
+/* Form Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.modalContent {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+    z-index: 1001;
+}
+
+/* Add new styles for nested modal */
+.modalOverlay .modalOverlay {
+    z-index: 2000;
+}
+
+.modalOverlay .modalOverlay .modalContent {
+    z-index: 2001;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.modalHeader h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    color: #718096;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeBtn:hover {
+    background-color: #f7fafc;
+    color: #4a5568;
+}
+
+/* Form Styles */
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+.input,
+.select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.input:focus,
+.select:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+}
+
+.error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.formActions .btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    min-width: 80px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btnPrimary {
+    background-color: #3182ce;
+    color: white;
+}
+
+.btnPrimary:hover {
+    background-color: #2c5282;
+}
+
+.btnSecondary {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+    color: #4a5568;
+}
+
+.btnSecondary:hover {
+    background-color: #f7fafc;
+    border-color: #cbd5e0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+        margin: 0;
+    }
+
+    .actions {
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+
+    .btn {
+        padding: 0.5rem;
+    }
+
+    .btn span {
+        display: none;
+    }
+
+    .btnIcon {
+        margin: 0;
+    }
+
+    .modalContent {
+        width: 95%;
+        max-height: 80vh;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+
+    .formActions {
+        flex-direction: column-reverse;
+    }
+
+    .formActions .btn {
+        width: 100%;
+    }
+
+    .detailsContent {
+        max-height: calc(100vh - 250px);
+    }
+}
+
+/* Equipment Section Styles */
+.equipmentSection {
+    margin-top: 2rem;
+    border-top: 2px solid #f0f0f0;
+    padding-top: 1.5rem;
+    max-height: calc(100vh - 400px);
+    /* Limit maximum height */
+    display: flex;
+    flex-direction: column;
+}
+
+.equipmentSection h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.equipmentList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    /* Customize scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+/* Webkit scrollbar styles */
+.equipmentList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.equipmentList::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 3px;
+}
+
+.equipmentList::-webkit-scrollbar-thumb {
+    background-color: #cbd5e0;
+    border-radius: 3px;
+}
+
+.equipmentList::-webkit-scrollbar-thumb:hover {
+    background-color: #a0aec0;
+}
+
+.equipmentItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: #f7fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.equipmentInfo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.equipmentInfo span:first-child {
+    font-weight: 500;
+    min-width: 150px;
+}
+
+.conditionBadge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.excellent {
+    background-color: #c6f6d5;
+    color: #2f855a;
+}
+
+.good {
+    background-color: #e9f6ff;
+    color: #2b6cb0;
+}
+
+.fair {
+    background-color: #feebc8;
+    color: #c05621;
+}
+
+.maintenance {
+    background-color: #fed7d7;
+    color: #c53030;
+}
+
+.addEquipment {
+    margin-top: 1rem;
+}
+
+.equipmentForm {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 0.75rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .equipmentForm {
+        grid-template-columns: 1fr;
+    }
+
+    .equipmentInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .equipmentInfo span:first-child {
+        min-width: auto;
+    }
+}
+
+/* Room Details Styles */
+.detailsContent {
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    padding-right: 1rem;
+    margin-right: -1rem;
+    /* Customize scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e0 #f7fafc;
+}
+
+/* Add custom scrollbar styles for webkit browsers */
+.modalContent::-webkit-scrollbar,
+.detailsContent::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modalContent::-webkit-scrollbar-track,
+.detailsContent::-webkit-scrollbar-track {
+    background: #f7fafc;
+    border-radius: 3px;
+}
+
+.modalContent::-webkit-scrollbar-thumb,
+.detailsContent::-webkit-scrollbar-thumb {
+    background-color: #cbd5e0;
+    border-radius: 3px;
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover,
+.detailsContent::-webkit-scrollbar-thumb:hover {
+    background-color: #a0aec0;
+}
+
+.detailsSection {
+    margin-bottom: 2rem;
+}
+
+.detailsSection h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.detailItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.detailLabel {
+    font-size: 0.875rem;
+    color: #718096;
+    font-weight: 500;
+}
+
+.detailValue {
+    font-size: 1rem;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.equipmentDetailsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.equipmentDetailsItem {
+    background-color: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.equipmentDetailsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.equipmentDetailsHeader h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0;
+}
+
+.equipmentDetailsInfo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.noEquipment {
+    color: #718096;
+    text-align: center;
+    padding: 2rem;
+    background-color: #f7fafc;
+    border-radius: 8px;
+    border: 1px dashed #e2e8f0;
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #f0f0f0;
+}
+
+.modalFooter .btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+    min-width: 80px;
+}
+
+@media (max-width: 768px) {
+    .detailsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .equipmentDetailsInfo {
+        grid-template-columns: 1fr;
+    }
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.sectionHeader h3 {
+    margin: 0;
+}
+
+.sectionHeader .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.equipmentDetailsInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.equipmentHeaderLeft {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.equipmentId {
+    font-family: monospace;
+    font-size: 0.875rem;
+    color: #718096;
+    padding: 0.25rem 0.5rem;
+    background-color: #f1f5f9;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.equipmentHeaderLeft h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+    min-width: 150px;
+}
+
+.equipmentHeaderLeft .statusBadge {
+    margin-left: auto;
+}
+
+.equipmentActions {
+    display: flex;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.clickable {
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.clickable:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.clickable.active:hover {
+    background-color: #9ae6b4;
+}
+
+.clickable.maintenance:hover {
+    background-color: #feb2b2;
+}
+
+.blurred {
+    opacity: 0.5;
+    filter: blur(1px);
+    pointer-events: none;
+    cursor: default;
+}
+
+.btn.blurred:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.actions.blurred button {
+    opacity: 0.5;
+    filter: blur(1px);
+    pointer-events: none;
+    cursor: default;
+}
+
+.hint {
+    font-size: 0.75rem;
+    color: #718096;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
