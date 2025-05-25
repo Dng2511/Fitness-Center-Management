@@ -18,7 +18,10 @@ public class AuthenticationDTO {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
+    @JsonProperty("access_token")
     String token;
+
+    @JsonProperty("refresh_token")
     String refreshToken;
 
     boolean authenticated;

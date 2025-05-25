@@ -1,5 +1,6 @@
 package com.example.backend.dtos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
@@ -12,5 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RefreshDTO {
+    @JsonProperty("refresh_token")
     String refreshToken;
 }
