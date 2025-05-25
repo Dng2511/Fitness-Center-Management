@@ -63,11 +63,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         boolean authenticated = passwordEncoder.matches(authenticationDTO.getPassword(), user.getPassword());
 
-        if (!authenticated) throw new RuntimeException("Unauthenticated"); // Nhap sai mat khau
+        if (!authenticated) throw new RuntimeException("Wrong Password!"); // Nhap sai mat khau
 
         var token = generateToken(user);
         var refreshToken = generateRefreshToken(user);
-
 
         return AuthenticationDTO.builder().
                 username(authenticationDTO.getUsername()).
