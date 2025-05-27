@@ -1,0 +1,41 @@
+:root {
+    --primary-color: #4f46e5;
+    --primary-dark: #4338ca;
+    --secondary-color: #6b7280;
+    --secondary-dark: #4b5563;
+    --danger-color: #ef4444;
+    --danger-dark: #dc2626;
+    --success-color: #10b981;
+    --success-dark: #059669;
+    --warning-color: #f59e0b;
+    --warning-dark: #d97706;
+
+    --bg-color: #f9fafb;
+    --sidebar-bg: #1e293b;
+    --sidebar-hover: #334155;
+    --table-header: #f3f4f6;
+    --table-hover: #f9fafb;
+
+    --text-color: #111827;
+    --text-light: #6b7280;
+    --text-white: #ffffff;
+
+    --border-color: #e5e7eb;
+
+    --success-bg: #d1fae5;
+    --success-text: #065f46;
+    --danger-bg: #fee2e2;
+    --danger-text: #991b1b;
+
+    --sidebar-width: 250px;
+}
+
+:root {
+    /* ... các biến có sẵn ... */
+
+    /* Staff Role Colors */
+    --primary-bg: rgba(79, 70, 229, 0.1);
+    --primary-text: #4f46e5;
+    --secondary-bg: rgba(107, 114, 128, 0.1);
+    --secondary-text: #6b7280;
+}
