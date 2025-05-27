@@ -1,18 +1,17 @@
-import { useState, useRef } from 'react';
-import { useAuth } from '../components/auth/AuthContext';
+import React from 'react';
 import { FiCamera, FiSave, FiLoader } from 'react-icons/fi';
 import Alert from '../components/ui/Alert';
 import '../styles/Profile.css';
+import { getProfile } from '../services/Api/profile';
 
 export default function Profile() {
-    const { user, updateUser } = useAuth();
-    const [profileData, setProfileData] = useState({
-        fullName: user?.name || '',
-        email: user?.email || '',
-        address: user?.address || '',
-        phone: user?.phone || '',
-        imageUrl: user?.imageUrl || null
-    });
+
+    const [info, setInfo] = React.useState({})
+
+    React.useEffect(() => {
+        getProfile().then(({data}) => setInfo(data.memberInfo));
+    })
+
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [showAlert, setShowAlert] = useState(false);

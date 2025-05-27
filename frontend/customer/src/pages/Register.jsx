@@ -1,18 +1,21 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../components/auth/AuthContext';
+
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import Alert from '../components/ui/Alert';
 import '../styles/Register.css';
+import { AuthProvider } from '../components/auth/AuthContext';
 
 export default function Register() {
-    const [formData, setFormData] = useState({
-        fullName: '',
-        dateOfBirth: '',
-        isStudent: false,
-        email: '',
+
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [data, setFormData] = useState({
+        name: '',
+        birthday: '',
+        phone_number: '',
+        username: '',
         password: '',
-        confirmPassword: ''
+        address: ''
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -21,7 +24,6 @@ export default function Register() {
     const [alertMessage, setAlertMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const navigate = useNavigate();
-    const { register, login } = useAuth();
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -31,6 +33,10 @@ export default function Register() {
         }));
         if (error) setError('');
     };
+
+    const setConfirmPasswordHandle = (e) => {
+            setConfirmPassword(e.target.value);
+    }
 
     const togglePasswordVisibility = (field) => {
         if (field === 'password') {
@@ -78,19 +84,7 @@ export default function Register() {
         setIsLoading(true);
 
         try {
-            await register(formData);
-
-            setAlertMessage('Account created successfully! Redirecting to dashboard...');
-            setShowAlert(true);
-
-            await login({
-                email: formData.email,
-                password: formData.password
-            });
-
-            setTimeout(() => {
-                navigate('/dashboard');
-            }, 2000);
+            await AuthProvider.handleRegister(data);
         } catch (err) {
             setError(err.message || 'Registration failed');
             setIsLoading(false);
@@ -120,7 +114,7 @@ export default function Register() {
                         <input
                             type="text"
                             name="fullName"
-                            value={formData.fullName}
+                            value={data.name}
                             onChange={handleChange}
                             className="input"
                             required
@@ -133,24 +127,24 @@ export default function Register() {
                         <input
                             type="date"
                             name="dateOfBirth"
-                            value={formData.dateOfBirth}
+                            value={data.birthday}
                             onChange={handleChange}
                             className="input"
                             required
                         />
                     </div>
 
-                    <div className="form-group checkbox-group">
-                        <label className="checkbox-label">
-                            I am student
-                            <input
-                                type="checkbox"
-                                name="isStudent"
-                                checked={formData.isStudent}
-                                onChange={handleChange}
-                                className="checkbox-input"
-                            />
-                        </label>
+                    <div className="form-group">
+                        <label className="label">Phone Number</label>
+                        <input
+                            type="text"
+                            name="fullName"
+                            value={data.phone_number}
+                            onChange={handleChange}
+                            className="input"
+                            required
+                            placeholder="Enter your full name"
+                        />
                     </div>
 
                     <div className="form-group">
@@ -158,7 +152,7 @@ export default function Register() {
                         <input
                             type="email"
                             name="email"
-                            value={formData.email}
+                            value={data.username}
                             onChange={handleChange}
                             className="input"
                             required
@@ -196,8 +190,8 @@ export default function Register() {
                             <input
                                 type={showConfirmPassword ? "text" : "password"}
                                 name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
+                                value={confirmPassword}
+                                onChange={setConfirmPasswordHandle}
                                 className="input"
                                 required
                                 placeholder="Confirm your password"

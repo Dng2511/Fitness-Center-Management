@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './components/auth/AuthContext'
-import ProtectedRoute from './components/auth/ProtectedRoute'
 import Layout from './components/ui/Layout'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -15,6 +14,7 @@ import Room from './pages/Room'
 import Profile from './pages/Profile'
 import Trainer from './pages/Trainer'
 import { useState } from 'react'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function App() {
   const [equipmentList, setEquipmentList] = useState([]);
@@ -60,7 +60,7 @@ function App() {
             <Route path="/trainer" element={<ProtectedRoute><Trainer /></ProtectedRoute>} />
             <Route path="/rooms" element={<ProtectedRoute><Room equipmentList={equipmentList} onAddEquipment={handleAddEquipment} /></ProtectedRoute>} />
           </Route>
-
+          
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -70,3 +70,4 @@ function App() {
 }
 
 export default App
+//<ProtectedRoute>

@@ -5,10 +5,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0', // Cho phép truy cập từ các thiết bị trong mạng
-    port: 5173, // Có thể đổi sang port khác nếu cần
+    port: 3000, // Có thể đổi sang port khác nếu cần
     strictPort: true, // Bắt buộc dùng đúng port
     hmr: {
-      clientPort: 5173, // Thêm dòng này để fix WebSocket
+      clientPort: 3000, // Thêm dòng này để fix WebSocket
       protocol: 'ws', // Bắt buộc dùng WebSocket
     }
   }

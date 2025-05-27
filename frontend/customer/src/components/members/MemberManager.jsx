@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { memberAPI } from '../../api/members'
 import MemberForm from './MemberForm'
 import MemberPayments from './MemberPayments'
 import { FiUser, FiDollarSign } from 'react-icons/fi'
@@ -8,7 +7,7 @@ import styles from './Member.module.css'
 export default function MemberManager() {
     const [activeTab, setActiveTab] = useState('register')
 
-    const handleSubmit = async (formData) => {
+/*     const handleSubmit = async (formData) => {
         try {
             const response = await memberAPI.create({
                 ...formData,
@@ -19,7 +18,7 @@ export default function MemberManager() {
         } catch (err) {
             throw new Error('Failed to register member. Please check your information and try again.')
         }
-    }
+    } */
 
     const handleCancel = () => {
         if (window.confirm('Are you sure you want to cancel the registration?')) {

@@ -1,12 +1,12 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { FiMenu, FiX, FiHome, FiUsers, FiPackage, FiActivity, FiSettings, FiLogOut, FiUserPlus } from 'react-icons/fi'
-import { useAuth } from '../auth/AuthContext'
+import { AuthContext } from '../auth/AuthContext'
 import './Layout.css'
 
 const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const { user, logout } = useAuth()
+    const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate()
 
     const handleLogout = () => {
@@ -36,7 +36,7 @@ const Layout = () => {
                 </div>
 
                 <nav className="sidebar-nav">
-                    <Link to="/" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <Link to="/dashboard" className="nav-item" onClick={() => setSidebarOpen(false)}>
                         <FiHome className="nav-icon" />
                         <span>Dashboard</span>
                     </Link>
