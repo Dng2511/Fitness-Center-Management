@@ -35,7 +35,7 @@ public class SecurityConfig {
     final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     final String[] PUBLIC_ENDPOINTS = {
-            "/users/register", "/auth/login", "auth/introspect", "/auth/refresh"
+            "/users/register", "/auth/login", "auth/introspect", "/auth/refresh", "/payments/vn-pay-callback",
     };
 
     @Autowired
