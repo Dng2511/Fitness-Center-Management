@@ -49,12 +49,14 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody RefreshDTO request) {
+    public ResponseEntity<?> refresh(@RequestHeader("Authorization") String authHeader) {
         try {
-            AuthenticationDTO authenticationDTO = authenticationService.refreshToken(request.getRefreshToken());
+            String refreshToken = authHeader.substring(7);
+            AuthenticationDTO authenticationDTO = authenticationService.refreshToken(refreshToken);
             return ResponseEntity.ok(authenticationDTO);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is invalid or expired");
+            log.error("Error refreshing token: ", e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token is invalid or expired: " + e.getMessage());
         }
     }
 }
