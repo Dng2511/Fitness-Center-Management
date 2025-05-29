@@ -1,17 +1,24 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import RoomTable from '../components/room/RoomTable';
 import RoomForm from '../components/room/RoomForm';
 import RoomDetails from '../components/room/RoomDetails';
 import { FiPlus, FiSearch } from 'react-icons/fi';
-import styles from '../components/room/Room.module.css';
+import { getRooms, updateRoom } from '../services/Api/room';
 
-export default function Room({ equipmentList, onAddEquipment }) {
+export default function Room() {
     const [roomList, setRoomList] = useState([]);
     const [lastUsedId, setLastUsedId] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [showDetails, setShowDetails] = useState(false);
     const [selectedRoom, setSelectedRoom] = useState(null);
+
+    React.useEffect(() => {
+        getRooms().then(({data}) => {
+            setRoomList(data)
+            console.log(data)})
+    }, [showForm])
+
 
     const handleSearch = (event) => {
         setSearchQuery(event.target.value);
@@ -32,6 +39,22 @@ export default function Room({ equipmentList, onAddEquipment }) {
         setSelectedRoom(null);
     };
 
+
+    const handleStatusToggle = (room) => {
+            const statusCycle = ['AVAILABLE', 'FULL', 'MAINTENANCE', 'CLOSED'];
+            const currentIndex = statusCycle.indexOf(room.status);
+            const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
+    
+            updateRoom(room.id, {
+                ...room,
+                status: nextStatus
+            });
+    
+            setRoomList(prev =>
+                prev.map(r => r.id === room.id ? { ...r, status: nextStatus } : r)
+            );
+        };
+
     const handleSubmit = (formData) => {
         if (formData.id) {
             setRoomList(roomList.map(room =>
@@ -51,17 +74,9 @@ export default function Room({ equipmentList, onAddEquipment }) {
         setSelectedRoom(null);
     };
 
-    const handleUpdateRoom = (updatedRoom) => {
-        setRoomList(roomList.map(room =>
-            room.id === updatedRoom.id ? updatedRoom : room
-        ));
-        if (selectedRoom && selectedRoom.id === updatedRoom.id) {
-            setSelectedRoom(updatedRoom);
-        }
-    };
 
     const filteredRooms = roomList.filter(room =>
-        room.name.toLowerCase().includes(searchQuery.toLowerCase())
+        room.room_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
@@ -94,8 +109,8 @@ export default function Room({ equipmentList, onAddEquipment }) {
                     <RoomTable
                         data={filteredRooms}
                         onViewDetails={handleViewDetails}
-                        onUpdateRoom={handleUpdateRoom}
                         isBlurred={showForm || showDetails}
+                        onChangeStatus={handleStatusToggle}
                     />
                 )}
             </div>
@@ -115,9 +130,6 @@ export default function Room({ equipmentList, onAddEquipment }) {
                 <RoomDetails
                     room={selectedRoom}
                     onClose={handleCloseDetails}
-                    onUpdateRoom={handleUpdateRoom}
-                    equipmentList={equipmentList}
-                    onAddEquipment={onAddEquipment}
                 />
             )}
         </div>

@@ -1,18 +1,17 @@
-import { useState, useRef } from 'react';
-import { useAuth } from '../components/auth/AuthContext';
+import React from 'react';
 import { FiCamera, FiSave, FiLoader } from 'react-icons/fi';
 import Alert from '../components/ui/Alert';
 import '../styles/Profile.css';
+import { getProfile } from '../services/Api/profile';
 
 export default function Profile() {
-    const { user, updateUser } = useAuth();
-    const [profileData, setProfileData] = useState({
-        fullName: user?.name || '',
-        email: user?.email || '',
-        address: user?.address || '',
-        phone: user?.phone || '',
-        imageUrl: user?.imageUrl || null
-    });
+
+    const [info, setInfo] = React.useState({})
+
+    React.useEffect(() => {
+        getProfile().then(({data}) => setInfo(data.memberInfo));
+    })
+
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -28,11 +27,11 @@ export default function Profile() {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        // Clear error when user starts typing
+
         setErrors(prev => ({ ...prev, [name]: '' }));
 
         if (name === 'phone') {
-            // Only allow numbers and limit to 10 digits
+
             const numbersOnly = value.replace(/[^\d]/g, '').slice(0, 10);
             setProfileData(prev => ({
                 ...prev,
@@ -90,7 +89,7 @@ export default function Profile() {
 
         setIsSaving(true);
         try {
-            // Only send the fields that can be updated
+
             const updateData = {
                 address: profileData.address,
                 phone: profileData.phone,

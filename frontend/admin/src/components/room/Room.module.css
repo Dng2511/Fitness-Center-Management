@@ -49,23 +49,48 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.active {
-    background-color: #c6f6d5;
-    color: #2f855a;
+
+
+/* AVAILABLE */
+.available {
+    background-color: #c6f6d5; /* pastel green */
+    color: #2f855a;           /* darker green */
 }
 
-.active:hover {
+.available:hover {
     background-color: #9ae6b4;
 }
 
+/* FULL */
+.full {
+    background-color: #fefcbf; /* pastel yellow */
+    color: #b7791f;            /* darker yellow/brown */
+}
+
+.full:hover {
+    background-color: #faf089;
+}
+
+/* MAINTENANCE */
 .maintenance {
-    background-color: #fed7d7;
-    color: #c53030;
+    background-color: #fed7d7; /* pastel red */
+    color: #c53030;            /* darker red */
 }
 
 .maintenance:hover {
     background-color: #feb2b2;
 }
+
+/* CLOSED */
+.closed {
+    background-color: #e2e8f0; /* pastel gray/blue */
+    color: #4a5568;            /* dark gray/blue */
+}
+
+.closed:hover {
+    background-color: #cbd5e0;
+}
+
 
 /* Action Buttons */
 .actions {
