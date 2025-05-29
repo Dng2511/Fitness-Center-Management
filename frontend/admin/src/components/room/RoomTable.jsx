@@ -1,14 +1,10 @@
 import { FiInfo } from 'react-icons/fi';
 import styles from './Room.module.css';
+import { updateRoom } from '../../services/Api/room';
 
-export default function RoomTable({ data, onViewDetails, onUpdateRoom, isBlurred }) {
-    const handleStatusToggle = (room) => {
-        const newStatus = room.status === 'ACTIVE' ? 'MAINTENANCE' : 'ACTIVE';
-        onUpdateRoom({
-            ...room,
-            status: newStatus
-        });
-    };
+export default function RoomTable({ data, onViewDetails, isBlurred, onChangeStatus }) {
+    
+
 
     return (
         <table className={styles.table}>
@@ -16,7 +12,7 @@ export default function RoomTable({ data, onViewDetails, onUpdateRoom, isBlurred
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Capacity</th>
+                    <th>Type</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -25,13 +21,13 @@ export default function RoomTable({ data, onViewDetails, onUpdateRoom, isBlurred
                 {data.map(room => (
                     <tr key={room.id}>
                         <td>{room.id}</td>
-                        <td>{room.name}</td>
-                        <td>{room.quantity}</td>
+                        <td>{room.room_name}</td>
+                        <td>{room.type}</td>
                         <td>
                             <button
                                 className={`${styles.statusBadge} ${styles[room.status.toLowerCase()]}`}
-                                onClick={() => handleStatusToggle(room)}
-                                title={`Click to change status to ${room.status === 'ACTIVE' ? 'MAINTENANCE' : 'ACTIVE'}`}
+                                onClick={() => onChangeStatus(room)}
+                                title={`Click to change status`}
                             >
                                 {room.status}
                             </button>

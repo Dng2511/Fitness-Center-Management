@@ -6,11 +6,11 @@ import EquipmentChart from '../components/dashboard/EquipmentChart'
 import { FiUsers, FiDollarSign, FiActivity } from 'react-icons/fi'
 import styles from './Dashboard.module.css'
 
-const Dashboard = ({ equipmentList = [] }) => {
+const Dashboard = () => {
     const [stats] = useState({
         totalMembers: 0,
         monthlyRevenue: 0,
-        totalEquipment: equipmentList.length
+        totalEquipment: 0,
     })
 
     // Mock forum data - in a real app, this would come from an API
@@ -51,7 +51,7 @@ const Dashboard = ({ equipmentList = [] }) => {
                     <MemberChart />
                 </div>
                 <div className="chart-card">
-                    <EquipmentChart equipmentData={equipmentList} />
+                    <EquipmentChart equipmentData={[]} />
                 </div>
             </section>
 

@@ -1,41 +1,23 @@
 import { useState, useEffect } from 'react';
 import { FiX } from 'react-icons/fi';
 import styles from './Room.module.css';
+import { createRoom } from '../../services/Api/room';
 
-export default function RoomForm({ initialData, onSubmit, onClose }) {
+
+export default function RoomForm({ initialData, onClose }) {
     const [formData, setFormData] = useState({
-        name: '',
-        quantity: '',
-        status: 'ACTIVE'
+        room_name: '',
+        type: 'GYM',
+        status: 'AVAILABLE'
     });
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        if (initialData) {
-            setFormData({
-                name: initialData.name,
-                quantity: initialData.quantity,
-                status: initialData.status
-            });
-        }
-    }, [initialData]);
-
-    const validateForm = () => {
-        const newErrors = {};
-        if (!formData.name.trim()) newErrors.name = 'Name is required';
-        if (!formData.quantity) newErrors.quantity = 'Quantity is required';
-        if (formData.quantity < 0) newErrors.quantity = 'Quantity must be positive';
-        if (!formData.status) newErrors.status = 'Status is required';
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
             ...prev,
-            [name]: name === 'quantity' ? parseInt(value) || '' : value
+            [name]: value
         }));
         if (errors[name]) {
             setErrors(prev => ({
@@ -45,15 +27,12 @@ export default function RoomForm({ initialData, onSubmit, onClose }) {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (validateForm()) {
-            onSubmit({
-                ...formData,
-                id: initialData?.id,
-                equipment: initialData?.equipment || []
-            });
-        }
+        console.log(formData)
+        await createRoom(formData);
+        onClose();
+        
     };
 
     return (
@@ -69,31 +48,32 @@ export default function RoomForm({ initialData, onSubmit, onClose }) {
                 <form onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
                         <label className={styles.label} htmlFor="name">Room Name</label>
-                        <input
-                            className={styles.input}
+                        <input className={styles.input}
                             type="text"
-                            id="name"
-                            name="name"
+                            id="room_name"
+                            name="room_name"
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="Enter room name"
+                            required
                         />
                         {errors.name && <div className={styles.error}>{errors.name}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="quantity">Capacity</label>
-                        <input
-                            className={styles.input}
-                            type="number"
-                            id="quantity"
-                            name="quantity"
-                            value={formData.quantity}
+                        <label className={styles.label} htmlFor="type">Type</label>
+                        <select
+                            className={styles.select}
+                            id="type"
+                            name="type"
+                            value={formData.type}
                             onChange={handleChange}
-                            min="0"
-                            placeholder="Enter room capacity"
-                        />
-                        {errors.quantity && <div className={styles.error}>{errors.quantity}</div>}
+                        >
+                            <option value="GYM">Gym</option>
+                            <option value="YOGA">Yoga</option>
+                            <option value="CARDIO">Cardio</option>
+                            
+                        </select>
                     </div>
 
                     <div className={styles.formGroup}>
@@ -105,8 +85,10 @@ export default function RoomForm({ initialData, onSubmit, onClose }) {
                             value={formData.status}
                             onChange={handleChange}
                         >
-                            <option value="ACTIVE">Active</option>
+                            <option value="AVAILABLE">Available</option>
                             <option value="MAINTENANCE">Maintenance</option>
+                            <option value="CLOSED">CLOSED</option>
+                            <option value="FULL">FULL</option>
                         </select>
                         {errors.status && <div className={styles.error}>{errors.status}</div>}
                     </div>

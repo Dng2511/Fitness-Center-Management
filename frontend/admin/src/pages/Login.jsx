@@ -1,42 +1,34 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../components/auth/AuthContext';
+import { useState, useEffect, useContext } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import '../styles/Login.css';
+import { AuthContext } from '../components/auth/AuthContext';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const { login, user } = useAuth();
     const navigate = useNavigate();
-    const location = useLocation();
-
-    useEffect(() => {
-        if (user) {
-            navigate('/dashboard');
-        }
-    }, [user, navigate]);
+    const { handleLogin } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
 
-        if (!email || !password) {
+        if (!username || !password) {
             setError('Please fill in all fields');
             setIsLoading(false);
             return;
         }
 
         try {
-            const credentials = {
-                email,
+            const data = {
+                username,
                 password
             };
 
-            await login(credentials);
-            navigate('/dashboard');
+            await handleLogin(data, navigate);
         } catch (err) {
             setError(err.message || 'Invalid email or password');
             setIsLoading(false);
@@ -51,11 +43,10 @@ export default function Login() {
 
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="form-group">
-                        <label className="label">Email</label>
+                        <label className="label">Username</label>
                         <input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
                             className="input"
                             required
                         />

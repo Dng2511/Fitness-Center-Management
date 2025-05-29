@@ -1,19 +1,18 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import { FiMenu, FiX, FiHome, FiUsers, FiPackage, FiActivity, FiSettings, FiLogOut, FiUserPlus } from 'react-icons/fi'
-import { useAuth } from '../auth/AuthContext'
+import { AuthContext } from '../auth/AuthContext'
 import './Layout.css'
 
 const Layout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const { user, logout } = useAuth()
+    const { user, logout } = useContext(AuthContext);
     const navigate = useNavigate()
 
     const handleLogout = () => {
         logout()
         navigate('/login')
     }
-
 
     const getAvatarLetter = (name) => {
         if (!name) return '';
@@ -37,13 +36,13 @@ const Layout = () => {
                 </div>
 
                 <nav className="sidebar-nav">
-                    <Link to="/" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                    <Link to="/dashboard" className="nav-item" onClick={() => setSidebarOpen(false)}>
                         <FiHome className="nav-icon" />
                         <span>Dashboard</span>
                     </Link>
-                    <Link to="/members" className="nav-item" onClick={() => setSidebarOpen(false)}>
-                        <FiUsers className="nav-icon" />
-                        <span>Members</span>
+                    <Link to="/members/manage" className="nav-item">
+                        <FiUserPlus className="nav-icon" />
+                        <span>Membership</span>
                     </Link>
                     <Link to="/rooms" className="nav-item" onClick={() => setSidebarOpen(false)}>
                         <FiSettings className="nav-icon" />
