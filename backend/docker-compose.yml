@@ -26,17 +26,39 @@ services:
     networks:
       - backend-net
 
+  redis:
+    image: "redis:7-alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - backend-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   backend:
     build: .
     container_name: backend
     depends_on:
-      - sqlserver
+      redis:
+        condition: service_healthy
+      sqlserver:
+        condition: service_started
     environment:
       - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=Gym;encrypt=true;trustServerCertificate=true
       - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=YourStrong@Passw0rd
-      - JWT_SECRET=Ot+WMUGdAJtk7Zqhkqc7IVHlhDGQE2a8qbbIbHlbzVJ6yngs3MMSn0pro7AR9rfl
-      - JWT_EXPIRATION=3600000
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - VN_PAY_URL=${VN_PAY_URL}
+      - VN_PAY_TMN_CODE=${VN_PAY_TMN_CODE}
+      - VN_PAY_SECRET_KEY=${VN_PAY_SECRET_KEY}
+      - VN_PAY_RETURN_URL=${VN_PAY_RETURN_URL}
     ports:
       - "8000:8000"
     networks:
