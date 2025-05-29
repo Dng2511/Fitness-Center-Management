@@ -37,7 +37,7 @@ public class PaymentServiceImpl implements PaymentService {
 //        if (bankCode != null && !bankCode.isEmpty()) {
 //            vnpParamsMap.put("vnp_BankCode", bankCode);
 //        }
-        vnpParamsMap.put("vnp_BankCode", "NCB");
+        //vnpParamsMap.put("vnp_BankCode", "NCB");
 
         vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
         //build query url
