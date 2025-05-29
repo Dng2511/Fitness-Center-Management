@@ -5,6 +5,7 @@ import com.example.backend.dtos.IntrospectDTO;
 import com.example.backend.models.User;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.AuthenticationService;
+import com.example.backend.services.TokenService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class AuthenticationServiceImpl implements AuthenticationService {
     UserRepository userRepository;
+    TokenService tokenService;
 
     @NonFinal
     @Value("${jwt.secret}")
@@ -43,17 +47,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Value("${jwt.expiration}")
     private long jwtExpiration;
 
-    Set<String> blacklist = ConcurrentHashMap.newKeySet();
+    //Set<String> blacklist = ConcurrentHashMap.newKeySet();
 
     // Hàm đưa token vào blacklist
-    public void blacklistToken(String token) {
-        blacklist.add(token);
-    }
+//    public void blacklistToken(String token) {
+//        blacklist.add(token);
+//    }
 
     // Hàm kiểm tra token có bị blacklist không
-    public boolean isTokenBlacklisted(String token) {
-        return blacklist.contains(token);
-    }
+//    public boolean isTokenBlacklisted(String token) {
+//        return blacklist.contains(token);
+//    }
 
     @Override
     public AuthenticationDTO authenticate(AuthenticationDTO authenticationDTO) {
@@ -68,6 +72,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var token = generateToken(user);
         var refreshToken = generateRefreshToken(user);
 
+        try {
+            // lưu token và refreshToken vào redis để theo dõi
+            tokenService.saveAccessToken(token, user.getUsername());
+            tokenService.saveRefreshToken(refreshToken, user.getUsername());
+        } catch (Exception e) {
+            log.error("Error saving tokens to Redis", e);
+        }
+
         return AuthenticationDTO.builder().
                 username(authenticationDTO.getUsername()).
                 token(token).
@@ -81,9 +93,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var token = introspectDTO.getToken();
 
         // Kiểm tra token có trong blacklist không
-        if (isTokenBlacklisted(token)) {
-            return IntrospectDTO.builder().valid(false).build();
-        }
+        if (tokenService.isTokenBlacklisted(token)) return IntrospectDTO.builder().valid(false).build();
 
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
 
@@ -171,7 +181,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             String newAccessToken = generateToken(user);
 
             // Sinh refresh token mới
-            // String newRefreshToken = generateRefreshToken(user); // d can thiet lam bo di
+            //String newRefreshToken = generateRefreshToken(user); // d can thiet lam bo di
 
             return AuthenticationDTO.builder()
                     .username(username)
@@ -188,9 +198,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public void logout(String token) throws JOSEException, ParseException {
         if (token == null || token.isBlank()) throw new RuntimeException("Token is missing");
-        if (isTokenBlacklisted(token)) throw new RuntimeException("Token is already blacklisted");
+        if (tokenService.isTokenBlacklisted(token)) throw new RuntimeException("Token is already blacklisted");
 
-        blacklistToken(token);
+        tokenService.blacklistToken(token);
     }
 
 //    private String buildScope(User user) {
