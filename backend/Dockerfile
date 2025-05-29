@@ -1,17 +1,17 @@
 # Build
-FROM maven:3.9.9-amazoncorretto-21 AS build
+FROM maven:3.9.9-amazoncorretto-21-alpine AS build
 
 WORKDIR /app
 COPY pom.xml .
-COPY src ./src
+RUN mvn dependency:go-offline
 
+COPY src ./src
 RUN mvn clean package -DskipTests
 
-# Create image
-FROM amazoncorretto:21.0.7
+# final image
+FROM amazoncorretto:21.0.7-alpine
 
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
-# Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
