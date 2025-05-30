@@ -11,31 +11,6 @@ export default function EquipmentForm({ onSubmit, onClose }) {
         importDate: '',
         type: ''
     });
-    const [errors, setErrors] = useState({});
-
-    const validateForm = () => {
-        const newErrors = {};
-        if (!formData.name.trim()) {
-            newErrors.name = 'Equipment name is required';
-        }
-        if (!formData.toolId.trim()) {
-            newErrors.toolId = 'Tool ID is required';
-        }
-        if (!formData.warranty.trim()) {
-            newErrors.warranty = 'Warranty information is required';
-        }
-        if (!formData.origin.trim()) {
-            newErrors.origin = 'Origin information is required';
-        }
-        if (!formData.importDate) {
-            newErrors.importDate = 'Import date is required';
-        }
-        if (!formData.type) {
-            newErrors.type = 'Equipment type is required';
-        }
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,12 +18,6 @@ export default function EquipmentForm({ onSubmit, onClose }) {
             ...prev,
             [name]: value
         }));
-        if (errors[name]) {
-            setErrors(prev => ({
-                ...prev,
-                [name]: ''
-            }));
-        }
     };
 
     const handleSubmit = (e) => {
@@ -84,32 +53,14 @@ export default function EquipmentForm({ onSubmit, onClose }) {
                         <input
                             className={styles.input}
                             type="text"
-                            id="name"
-                            name="name"
+                            id="equipment_name"
+                            name="equipment_name"
                             value={formData.name}
                             onChange={handleChange}
                             placeholder="Enter equipment name"
+                            required
                         />
                         {errors.name && <div className={styles.error}>{errors.name}</div>}
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="type">Equipment Type</label>
-                        <select
-                            className={styles.input}
-                            id="type"
-                            name="type"
-                            value={formData.type}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select equipment type</option>
-                            <option value="Cardio">Cardio</option>
-                            <option value="Strength">Strength</option>
-                            <option value="Free Weights">Free Weights</option>
-                            <option value="Accessories">Accessories</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        {errors.type && <div className={styles.error}>{errors.type}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
