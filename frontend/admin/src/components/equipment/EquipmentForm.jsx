@@ -1,16 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiX } from 'react-icons/fi';
 import styles from './EquipmentForm.module.css';
+import { getRooms } from '../../services/Api/room';
+import { createEquipment } from '../../services/Api/equipment';
 
 export default function EquipmentForm({ onSubmit, onClose }) {
     const [formData, setFormData] = useState({
-        name: '',
-        toolId: '',
+        equipment_name: '',
         warranty: '',
         origin: '',
-        importDate: '',
-        type: ''
+        import_date: new Date().toISOString().slice(0, 10),
+        status: 'ACTIVE',
+        room_id: '',
     });
+
+    const [rooms, setRooms] = useState([]);
+
+    useEffect(() => {
+        getRooms().then(({ data }) => {
+            setRooms(data),
+            setFormData(prev => ({
+                ...prev,
+                room_id: data[0]?.id || ''
+            }));
+
+        })
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,21 +35,11 @@ export default function EquipmentForm({ onSubmit, onClose }) {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (validateForm()) {
-            onSubmit({
-                tools: [{
-                    toolId: formData.toolId,
-                    warranty: formData.warranty,
-                    origin: formData.origin,
-                    importDate: formData.importDate,
-                    type: formData.type
-                }],
-                name: formData.name
-            });
-            onClose();
-        }
+        console.log(formData)
+        await createEquipment(formData);
+        onClose();
     };
 
     return (
@@ -49,7 +54,7 @@ export default function EquipmentForm({ onSubmit, onClose }) {
 
                 <form onSubmit={handleSubmit}>
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="name">Equipment Name</label>
+                        <label className={styles.label} htmlFor="equipment_name">Equipment Name</label>
                         <input
                             className={styles.input}
                             type="text"
@@ -60,21 +65,6 @@ export default function EquipmentForm({ onSubmit, onClose }) {
                             placeholder="Enter equipment name"
                             required
                         />
-                        {errors.name && <div className={styles.error}>{errors.name}</div>}
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="toolId">Tool ID</label>
-                        <input
-                            className={styles.input}
-                            type="text"
-                            id="toolId"
-                            name="toolId"
-                            value={formData.toolId}
-                            onChange={handleChange}
-                            placeholder="Enter tool ID"
-                        />
-                        {errors.toolId && <div className={styles.error}>{errors.toolId}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
@@ -87,8 +77,8 @@ export default function EquipmentForm({ onSubmit, onClose }) {
                             value={formData.warranty}
                             onChange={handleChange}
                             placeholder="Enter warranty information"
+                            required
                         />
-                        {errors.warranty && <div className={styles.error}>{errors.warranty}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
@@ -101,21 +91,52 @@ export default function EquipmentForm({ onSubmit, onClose }) {
                             value={formData.origin}
                             onChange={handleChange}
                             placeholder="Enter origin information"
+                            required
                         />
-                        {errors.origin && <div className={styles.error}>{errors.origin}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="importDate">Import Date</label>
+                        <label className={styles.label} htmlFor="status">Status</label>
+                        <select
+                            className={styles.select}
+                            id="status"
+                            name="status"
+                            value={formData.status}
+                            onChange={handleChange}
+                        >
+                            <option value="ACTIVE">Active</option>
+                            <option value="MAINTENANCE">Maintenance</option>
+
+                        </select>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="room">Room</label>
+                        <select
+                            className={styles.select}
+                            id="room_id"
+                            name="room_id"
+                            value={formData.room_id}
+                            onChange={handleChange}
+                        >
+                            {rooms.map((item) => (
+                                <option value={item.id}>{item.room_name}</option>
+                            ))}
+
+                        </select>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="import_date">Import Date</label>
                         <input
                             className={styles.input}
                             type="date"
-                            id="importDate"
-                            name="importDate"
-                            value={formData.importDate}
+                            id="import_date"
+                            name="import_date"
+                            value={formData.import_date}
                             onChange={handleChange}
+                            required
                         />
-                        {errors.importDate && <div className={styles.error}>{errors.importDate}</div>}
                     </div>
 
                     <div className={styles.formActions}>

@@ -3,7 +3,7 @@ import styles from './Room.module.css';
 import { updateRoom } from '../../services/Api/room';
 import { Navigate, useNavigate } from 'react-router-dom';
 
-export default function RoomTable({ data, onViewDetails, isBlurred, onChangeStatus }) {
+export default function RoomTable({ data, onViewDetails, onChangeStatus }) {
     const navigate = useNavigate();
     
 
@@ -44,15 +44,6 @@ export default function RoomTable({ data, onViewDetails, isBlurred, onChangeStat
                                     <span>Details</span>
                                 </button>
                             </div>
-                            {/* <div>
-                                <button
-                                    className={`${styles.btn} ${styles.btnDetails}`}
-                                    onClick={() => onViewDetails(room)}
-                                >
-                                    <FiInfo className={styles.btnIcon} />
-                                    <span>Delete</span>
-                                </button>
-                            </div> */}
                         </td>
                     </tr>
                 ))}

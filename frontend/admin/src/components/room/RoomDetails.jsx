@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiX, FiPlus, FiTrash2 } from 'react-icons/fi';
 import styles from './Room.module.css';
 import EquipmentForm from './EquipmentForm';
+import { getEquipmentsByRoom } from '../../services/Api/room';
+import { deleteEquipment } from '../../services/Api/equipment';
 
-export default function RoomDetails({ room, onClose, onUpdateRoom, equipmentList, onAddEquipment }) {
+export default function RoomDetails({ room, onClose, onUpdateRoom}) {
     const [showEquipmentForm, setShowEquipmentForm] = useState(false);
+    const [equipments, setEquipments] = useState([]);
+
+    useEffect(() => {
+        getEquipmentsByRoom(room.id).then(({data}) => setEquipments(data))
+    }, [room])
+
 
     if (!room) return null;
 
@@ -19,35 +27,11 @@ export default function RoomDetails({ room, onClose, onUpdateRoom, equipmentList
         onUpdateRoom(updatedRoom);
     };
 
-    const handleAddEquipment = (newEquipment) => {
-        // Add the equipment to the room
-        const updatedRoom = {
-            ...room,
-            equipment: [
-                ...(room.equipment || []),
-                {
-                    id: Date.now(),
-                    toolId: newEquipment.toolId
-                }
-            ]
-        };
-        onUpdateRoom(updatedRoom);
-        setShowEquipmentForm(false);
-    };
+    const handleRemoveEquipment = async (equipmentId, e) => {
+        e.preventDefault();
+        deleteEquipment(equipmentId);
+        setEquipments(prev => prev.filter(item => item.id !== equipmentId))
 
-    const handleRemoveEquipment = (equipmentId, e) => {
-        if (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        if (!room.equipment) return;
-
-        const updatedRoom = {
-            ...room,
-            equipment: room.equipment.filter(item => item.id !== equipmentId)
-        };
-        onUpdateRoom(updatedRoom);
     };
 
     const openEquipmentForm = (e) => {
@@ -89,11 +73,11 @@ export default function RoomDetails({ room, onClose, onUpdateRoom, equipmentList
                         <div className={styles.detailsGrid}>
                             <div className={styles.detailItem}>
                                 <span className={styles.detailLabel}>Room Name</span>
-                                <span className={styles.detailValue}>{room.name}</span>
+                                <span className={styles.detailValue}>{room.room_name}</span>
                             </div>
                             <div className={styles.detailItem}>
-                                <span className={styles.detailLabel}>Capacity</span>
-                                <span className={styles.detailValue}>{room.quantity} people</span>
+                                <span className={styles.detailLabel}>Type</span>
+                                <span className={styles.detailValue}>{room.type}</span>
                             </div>
                             <div className={styles.detailItem}>
                                 <span className={styles.detailLabel}>Status</span>
@@ -111,21 +95,21 @@ export default function RoomDetails({ room, onClose, onUpdateRoom, equipmentList
                     <div className={styles.detailsSection}>
                         <div className={styles.sectionHeader}>
                             <h3>Equipment List</h3>
-                            <button
+                            {/* <button
                                 className={`${styles.btn} ${styles.btnPrimary}`}
                                 onClick={openEquipmentForm}
                             >
                                 <FiPlus /> Add Equipment
-                            </button>
+                            </button> */}
                         </div>
                         <div className={styles.equipmentDetailsList}>
-                            {room.equipment && room.equipment.length > 0 ? (
-                                room.equipment.map(item => (
+                            {equipments && equipments.length > 0 ? (
+                                equipments.map(item => (
                                     <div key={item.id} className={styles.equipmentDetailsItem}>
                                         <div className={styles.equipmentDetailsHeader}>
                                             <div className={styles.equipmentHeaderLeft}>
-                                                <span className={styles.equipmentId}>Tool ID: {item.toolId}</span>
-                                                <h4>Equipment {item.id}</h4>
+                                                <span className={styles.equipmentId}>ID: {item.id}</span>
+                                                <h4>{item.equipment_name}</h4>
                                             </div>
                                             <div className={styles.equipmentActions}>
                                                 <button
@@ -161,7 +145,6 @@ export default function RoomDetails({ room, onClose, onUpdateRoom, equipmentList
 
             {showEquipmentForm && (
                 <EquipmentForm
-                    onSubmit={handleAddEquipment}
                     onClose={closeEquipmentForm}
                 />
             )}
