@@ -7,25 +7,25 @@ export default function EquipmentTable({ data, onDelete }) {
                 <tr>
                     <th>Tool ID</th>
                     <th>Equipment Name</th>
-                    <th>Type</th>
                     <th>Warranty</th>
                     <th>Origin</th>
                     <th>Import Date</th>
+                    <th>Phòng</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {data.map(item => (
-                    <tr key={item.toolId}>
-                        <td>{item.toolId}</td>
-                        <td>{item.name}</td>
-                        <td>{item.type}</td>
+                    <tr key={item.id}>
+                        <td>{item.id}</td>
+                        <td>{item.equipment_name}</td>
                         <td>{item.warranty}</td>
                         <td>{item.origin}</td>
                         <td>{new Date(item.importDate).toLocaleDateString()}</td>
+                        <td>{item.room.room_name}</td>
                         <td>
                             <button
-                                onClick={() => onDelete(item.toolId)}
+                                onClick={() => onDelete(item.id)}
                                 className="delete-btn"
                                 title="Delete equipment"
                             >
