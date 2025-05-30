@@ -94,6 +94,33 @@
     margin-top: 0.5rem;
 }
 
+.input,
+.select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.input:focus,
+.select:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+}
+
+.select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+}
+
 .formActions {
     display: flex;
     justify-content: flex-end;
@@ -135,6 +162,46 @@
     background-color: #f7fafc;
     border-color: #cbd5e0;
 }
+
+
+.active {
+    background-color: #c6f6d5; /* pastel green */
+    color: #2f855a;           /* darker green */
+}
+
+.active:hover {
+    background-color: #9ae6b4;
+}
+
+
+/* MAINTENANCE */
+.maintenance {
+    background-color: #fed7d7; /* pastel red */
+    color: #c53030;            /* darker red */
+}
+
+.maintenance:hover {
+    background-color: #feb2b2;
+}
+
+
+.statusBadge,
+.conditionBadge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.statusBadge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 
 @keyframes fadeIn {
     from {

@@ -2,7 +2,7 @@ import { FiSearch, FiPlus } from 'react-icons/fi'
 import React from 'react'
 import EquipmentTable from '../components/equipment/EquipmentTable'
 import EquipmentForm from '../components/equipment/EquipmentForm'
-import { deleteEquipment, getEquipments } from '../services/Api/equipment'
+import { createEquipment, deleteEquipment, getEquipments } from '../services/Api/equipment'
 
 export default function Equipment() {
     const [searchQuery, setSearchQuery] = React.useState('')
@@ -15,7 +15,7 @@ export default function Equipment() {
             console.log(data.content);
 
             })
-    }, [])
+    }, [showForm])
 
     const handleSearch = (event) => {
         setSearchQuery(event.target.value)
@@ -36,7 +36,7 @@ export default function Equipment() {
 
     const onAddEquipment = (data) => {
         try {
-            
+            createEquipment(data);
         } catch (error) {
             console.log(error)
         }

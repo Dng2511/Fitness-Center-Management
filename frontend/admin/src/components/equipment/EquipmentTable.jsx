@@ -1,6 +1,7 @@
 import { FiTrash2 } from 'react-icons/fi';
+import styles from './EquipmentForm.module.css'
 
-export default function EquipmentTable({ data, onDelete }) {
+export default function EquipmentTable({ data, onDelete, onChangeStatus }) {
     return (
         <table className="table">
             <thead>
@@ -9,6 +10,7 @@ export default function EquipmentTable({ data, onDelete }) {
                     <th>Equipment Name</th>
                     <th>Warranty</th>
                     <th>Origin</th>
+                    <th>status</th>
                     <th>Import Date</th>
                     <th>Phòng</th>
                     <th>Actions</th>
@@ -21,6 +23,15 @@ export default function EquipmentTable({ data, onDelete }) {
                         <td>{item.equipment_name}</td>
                         <td>{item.warranty}</td>
                         <td>{item.origin}</td>
+                        <td>
+                            <button
+                                className={`${styles.statusBadge} ${styles[item.status.toLowerCase()]}`}
+                                onClick={() => onChangeStatus(item)}
+                                title={`Click to change status`}
+                            >
+                                {item.status}
+                            </button>
+                        </td>
                         <td>{new Date(item.importDate).toLocaleDateString()}</td>
                         <td>{item.room.room_name}</td>
                         <td>
