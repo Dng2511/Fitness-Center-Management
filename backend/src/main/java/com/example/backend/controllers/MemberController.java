@@ -1,7 +1,10 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.MemberDTO;
+import com.example.backend.models.Member;
+import com.example.backend.models.User;
 import com.example.backend.services.MemberService;
+import com.example.backend.services.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,12 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class MemberController {
     MemberService memberService;
+    UserService userService;
 
     @GetMapping
     public ResponseEntity<?> getAllMembers(
@@ -60,5 +66,11 @@ public class MemberController {
     public ResponseEntity<?> getMemberByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) {
             MemberDTO memberDTO = memberService.getMemberByPhoneNumber(phoneNumber);
             return ResponseEntity.ok(memberDTO);
+    }
+
+    @GetMapping("/is-membership")
+    public ResponseEntity<Boolean> isActiveMember() {
+        boolean isActive = memberService.isCurrentUserActiveMember();
+        return ResponseEntity.ok(isActive);
     }
 }

@@ -48,4 +48,10 @@ public class Member extends BaseModel {
 
     @OneToMany(mappedBy = "member")
     List<Payment> payments;
+
+    // Kiem tra xem thanh vien co dang ky goi tap hay khong (membership)
+    @Transient
+    public boolean isMembership() {
+        return this.packageEndDate != null && this.packageEndDate.isAfter(LocalDate.now());
+    }
 }

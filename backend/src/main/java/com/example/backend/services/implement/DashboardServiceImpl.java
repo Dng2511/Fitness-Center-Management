@@ -1,20 +1,25 @@
 package com.example.backend.services.implement;
 
+import com.example.backend.models.Member;
+import com.example.backend.repositories.MemberRepository;
 import com.example.backend.repositories.PaymentRepository;
 import com.example.backend.services.DashboardService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,8 +28,9 @@ import java.util.*;
 public class DashboardServiceImpl implements DashboardService {
 
     PaymentRepository paymentRepository;
+    MemberRepository memberRepository;
 
-    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
+    @Override
     public Map<String, Object> getDashboardStatistics() {
         Map<String, Object> statistics = new HashMap<>();
 
@@ -78,34 +84,78 @@ public class DashboardServiceImpl implements DashboardService {
         }
         statistics.put("packageStatistics", packageStatistics);
 
-        // 7. Doanh thu theo tháng trong năm hiện tại
-        List<Map<String, Object>> monthlyRevenue = new ArrayList<>();
-        List<Object[]> monthlyData = paymentRepository.getCurrentYearMonthlyRevenue();
-
-        // Tạo dữ liệu cho tất cả 12 tháng với giá trị mặc định là 0
-        Map<Integer, Double> monthlyRevenueMap = new HashMap<>();
-        for (int i = 1; i <= 12; i++) {
-            monthlyRevenueMap.put(i, 0.0);
-        }
-
-        // Cập nhật dữ liệu từ kết quả truy vấn
-        for (Object[] data : monthlyData) {
-            Integer month = ((Number) data[0]).intValue();
-            Double revenue = ((Number) data[1]).doubleValue();
-            monthlyRevenueMap.put(month, revenue);
-        }
-
-        // Chuyển sang định dạng final
-        for (int i = 1; i <= 12; i++) {
-            Map<String, Object> monthData = new HashMap<>();
-            monthData.put("month", i);
-            monthData.put("monthName", Month.of(i).getDisplayName(TextStyle.FULL, Locale.getDefault()));
-            monthData.put("revenue", monthlyRevenueMap.get(i));
-            monthlyRevenue.add(monthData);
-        }
-
-        statistics.put("monthlyRevenue", monthlyRevenue);
-
         return statistics;
     }
+
+    @Override
+    public Map<String, Object> getMonthlyRevenueStatistics() {
+        Map<String, Object> monthlyRevenue = new LinkedHashMap<>();
+
+        for (int i = 1; i <= 12; i++) {
+            String monthName = Month.of(i).getDisplayName(TextStyle.FULL, Locale.getDefault());
+            monthlyRevenue.put(monthName, 0.0);
+        }
+
+        List<Object[]> revenueData = paymentRepository.getCurrentYearMonthlyRevenue();
+
+        for (Object[] data : revenueData) {
+            int month = ((Number) data[0]).intValue();
+
+            Double revenue = data[1] == null ? 0.0 : ((Number) data[1]).doubleValue();
+
+            String monthName = Month.of(month).getDisplayName(TextStyle.FULL, Locale.getDefault());
+            monthlyRevenue.put(monthName, revenue);
+        }
+
+        return monthlyRevenue;
+    }
+
+    @Override
+    public Map<String, Object> getActiveMembers(int page, int size) {
+        Map<String, Object> result = new HashMap<>();
+
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "packageStartDate"));
+        Page<Member> membersPage = memberRepository.findActiveMembershipsPageable(pageRequest);
+
+        LocalDate today = LocalDate.now();
+        List<Map<String, Object>> membersList = membersPage.getContent().stream()
+                .map(member -> {
+                    Map<String, Object> memberMap = new HashMap<>();
+                    memberMap.put("MemberId", member.getId());
+                    memberMap.put("name", member.getName());
+                    memberMap.put("phoneNumber", member.getPhoneNumber());
+                    memberMap.put("packageName", member.getTrainingPackage().getPackageName());
+                    //memberMap.put("packagePrice", member.getTrainingPackage().getPrice());
+                    memberMap.put("packageStartDate", member.getPackageStartDate());
+                    memberMap.put("packageEndDate", member.getPackageEndDate());
+
+                    if (member.getPackageEndDate() != null) {
+                        long daysRemaining = ChronoUnit.DAYS.between(today, member.getPackageEndDate());
+                        memberMap.put("daysRemaining", daysRemaining);
+                    }
+
+                    return memberMap;
+                })
+                .collect(Collectors.toList());
+
+        result.put("members", membersList);
+
+        Map<String, Object> pageInfo = new HashMap<>();
+        pageInfo.put("totalElements", membersPage.getTotalElements());
+        pageInfo.put("totalPages", membersPage.getTotalPages());
+        pageInfo.put("currentPage", membersPage.getNumber());
+        pageInfo.put("size", membersPage.getSize());
+        pageInfo.put("hasNext", membersPage.hasNext());
+        pageInfo.put("hasPrevious", membersPage.hasPrevious());
+
+        result.put("pageInfo", pageInfo);
+
+        return result;
+    }
+
+    @Override
+    public Long getActiveMemberCount() {
+        return memberRepository.countActiveMemberships();
+    }
+
 }
