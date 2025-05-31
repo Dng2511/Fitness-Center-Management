@@ -29,5 +29,8 @@ public class TrainingPackage extends BaseModel {
 
     @OneToMany(mappedBy = "trainingPackage")
     List<Member> members;
+
+    @OneToMany(mappedBy = "trainingPackage")
+    List<Payment> payments;
 }
 
