@@ -36,7 +36,16 @@ public class Member extends BaseModel {
     @JoinColumn(name = "package_id")
     TrainingPackage trainingPackage;
 
+    @Column(name = "package_start_date")
+    LocalDate packageStartDate;
+
+    @Column(name = "package_end_date")
+    LocalDate packageEndDate;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     User user;
+
+    @OneToMany(mappedBy = "member")
+    List<Payment> payments;
 }

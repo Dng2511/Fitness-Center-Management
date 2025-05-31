@@ -11,8 +11,12 @@ import com.example.backend.services.MemberService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +25,7 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     TrainingPackageRepository trainingPackageRepository;
@@ -98,5 +103,38 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDTO getMemberByPhoneNumber(String phoneNumber) {
         return MemberDTO.fromEntity(Objects.requireNonNull(memberRepository.findByPhoneNumber(phoneNumber)));
+    }
+
+    @Override
+    public Member getCurrentLoggedInMember() throws RuntimeException {
+        try {
+            // Lấy thông tin Authentication hiện tại từ SecurityContextHolder
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            // Kiểm tra xem người dùng đã được xác thực chưa
+            if (authentication == null || !authentication.isAuthenticated() ||
+                    authentication instanceof AnonymousAuthenticationToken) {
+                throw new RuntimeException("User not authenticated");
+            }
+
+            // Lấy username từ principal
+            String username = authentication.getName();
+
+            // Tìm User trong database
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+
+            // Lấy thông tin Member từ User
+            Member member = user.getMemberInfo();
+
+            if (member == null) {
+                throw new RuntimeException("Member information not found for user: " + username);
+            }
+
+            return member;
+        } catch (Exception e) {
+            log.error("Error getting current logged in member: {}", e.getMessage());
+            throw new RuntimeException("Unable to get current user: " + e.getMessage());
+        }
     }
 }
