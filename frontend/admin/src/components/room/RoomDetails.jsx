@@ -5,7 +5,7 @@ import EquipmentForm from './EquipmentForm';
 import { getEquipmentsByRoom } from '../../services/Api/room';
 import { deleteEquipment } from '../../services/Api/equipment';
 
-export default function RoomDetails({ room, onClose, onUpdateRoom}) {
+export default function RoomDetails({ room, onClose, onChangeStatus}) {
     const [showEquipmentForm, setShowEquipmentForm] = useState(false);
     const [equipments, setEquipments] = useState([]);
 
@@ -16,16 +16,6 @@ export default function RoomDetails({ room, onClose, onUpdateRoom}) {
 
     if (!room) return null;
 
-    const handleStatusToggle = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const newStatus = room.status === 'ACTIVE' ? 'MAINTENANCE' : 'ACTIVE';
-        const updatedRoom = {
-            ...room,
-            status: newStatus
-        };
-        onUpdateRoom(updatedRoom);
-    };
 
     const handleRemoveEquipment = async (equipmentId, e) => {
         e.preventDefault();
@@ -82,9 +72,9 @@ export default function RoomDetails({ room, onClose, onUpdateRoom}) {
                             <div className={styles.detailItem}>
                                 <span className={styles.detailLabel}>Status</span>
                                 <button
-                                    className={`${styles.statusBadge} ${styles[room.status.toLowerCase()]} ${styles.clickable}`}
-                                    onClick={handleStatusToggle}
-                                    title={`Click to change status to ${room.status === 'ACTIVE' ? 'MAINTENANCE' : 'ACTIVE'}`}
+                                    className={`${styles.statusBadge} ${styles[room.status.toLowerCase()]}`}
+                                    //onClick={onChangeStatus(room)}
+                                    title={`Click to change status`}
                                 >
                                     {room.status}
                                 </button>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import PackageTable from '../components/packages/PackageTable'
 import PackageForm from '../components/packages/PackageForm'
 import Alert from '../components/ui/Alert'
+import { createPackage, delelePackage, editPackage, getPackages } from '../services/Api/package'
 
 export default function Packages() {
     const [packages, setPackages] = useState([])
@@ -12,24 +13,14 @@ export default function Packages() {
     const [alert, setAlert] = useState({ show: false, type: '', message: '' })
 
     useEffect(() => {
-        fetchPackages()
-    }, [])
+        getPackages().then(({data}) => setPackages(data.content))
+    }, [showForm])
 
-    const fetchPackages = () => {
-        // In a real application, this would be an API call
-        // fetch('/api/packages')
-        //     .then(res => res.json())
-        //     .then(data => setPackages(data))
-    }
 
     const handleSearch = (e) => {
         setSearchQuery(e.target.value)
     }
 
-    const filteredPackages = packages.filter(pkg =>
-        pkg.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        pkg.type.toLowerCase().includes(searchQuery.toLowerCase())
-    )
 
     const handleAddPackage = () => {
         setSelectedPackage(null)
@@ -41,40 +32,18 @@ export default function Packages() {
         setShowForm(true)
     }
 
-    const handleSubmit = (formData) => {
+    const handleSubmit = async (formData) => {
         if (formData.id) {
-            const updatedPackages = packages.map(pkg =>
-                pkg.id === formData.id ? { ...pkg, ...formData } : pkg
-            )
-            setPackages(updatedPackages)
-            setAlert({
-                show: true,
-                type: 'success',
-                message: 'Package updated successfully'
-            })
+            await editPackage(formData.id, formData)
         } else {
-            const newPackage = {
-                ...formData,
-                id: Date.now()
-            }
-            setPackages([...packages, newPackage])
-            setAlert({
-                show: true,
-                type: 'success',
-                message: 'Package added successfully'
-            })
+            await createPackage(formData);
         }
         setShowForm(false)
     }
 
-    const handleDeletePackage = (id) => {
-        const updatedPackages = packages.filter(pkg => pkg.id !== id)
-        setPackages(updatedPackages)
-        setAlert({
-            show: true,
-            type: 'success',
-            message: 'Package deleted successfully'
-        })
+    const handleDeletePackage = async (id) => {
+        await delelePackage(id);
+        setPackages(prev => prev.filter(pkg => pkg.id !== id));
     }
 
     return (
@@ -87,7 +56,7 @@ export default function Packages() {
             />
 
             <div className="page-header">
-                <h1 className="page-title">Gym Packages</h1>
+                <h1 className="page-title">Fitness Packages</h1>
                 <button className="btn btn-primary" onClick={handleAddPackage}>
                     <FiPlus /> Add Package
                 </button>
@@ -115,7 +84,7 @@ export default function Packages() {
 
             <div className="card">
                 <PackageTable
-                    data={filteredPackages}
+                    data={packages}
                     onEdit={handleEditPackage}
                     onDelete={handleDeletePackage}
                 />
