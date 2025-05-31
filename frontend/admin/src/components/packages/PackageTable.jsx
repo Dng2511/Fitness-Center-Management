@@ -7,7 +7,6 @@ export default function PackageTable({ data, onEdit, onDelete }) {
                     <th>Package Name</th>
                     <th>Type</th>
                     <th>Price (VNĐ)</th>
-                    <th>Description</th>
                     <th>Duration Days</th>
                     <th>Actions</th>
                 </tr>
@@ -16,15 +15,14 @@ export default function PackageTable({ data, onEdit, onDelete }) {
                 {data.map(pkg => (
                     <tr key={pkg.id}>
                         <td>{pkg.id}</td>
-                        <td>{pkg.name}</td>
+                        <td>{pkg.package_name}</td>
                         <td>
                             <span className="badge">
                                 {pkg.type}
                             </span>
                         </td>
                         <td>{pkg.price.toLocaleString()}</td>
-                        <td>{pkg.description}</td>
-                        <td>{pkg.durationDays} days</td>
+                        <td>{pkg.duration} days</td>
                         <td>
                             <div className="btn-group">
                                 <button
@@ -36,9 +34,7 @@ export default function PackageTable({ data, onEdit, onDelete }) {
                                 <button
                                     className="btn btn-sm btn-danger"
                                     onClick={() => {
-                                        if (window.confirm('Are you sure you want to delete this package?')) {
                                             onDelete(pkg.id)
-                                        }
                                     }}
                                 >
                                     Delete

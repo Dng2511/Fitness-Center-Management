@@ -3,11 +3,10 @@ import { FiCheck, FiX } from 'react-icons/fi'
 
 export default function PackageForm({ initialData, onSubmit, onCancel }) {
     const [formData, setFormData] = useState({
-        name: '',
-        type: '',
-        price: '',
-        description: '',
-        durationDays: ''
+        package_name: '',
+        type: 'Access Package',
+        price: 0,
+        duration: 1
     })
 
     useEffect(() => {
@@ -41,25 +40,28 @@ export default function PackageForm({ initialData, onSubmit, onCancel }) {
                         <div className="form-group">
                             <label>Package Name</label>
                             <input
-                                name="name"
-                                value={formData.name}
+                                name="package_name"
+                                value={formData.package_name}
                                 onChange={handleChange}
                                 required
                                 className="form-control"
                             />
-                            <small className="form-hint">Choose a clear and descriptive name for the package</small>
                         </div>
 
                         <div className="form-group">
                             <label>Type</label>
-                            <input
+                            <select
                                 name="type"
                                 value={formData.type}
                                 onChange={handleChange}
                                 required
                                 className="form-control"
-                            />
-                            <small className="form-hint">Categorize your package for easy identification</small>
+                            >
+                                <option value="Access Package">Access Package</option>
+                                <option value="Personal Training">Personal Training</option>
+                                <option value="Group Class Package">Group Class Package</option>
+
+                            </select>
                         </div>
                     </div>
 
@@ -87,8 +89,8 @@ export default function PackageForm({ initialData, onSubmit, onCancel }) {
                                 <div className="duration-input">
                                     <input
                                         type="number"
-                                        name="durationDays"
-                                        value={formData.durationDays}
+                                        name="duration"
+                                        value={formData.duration}
                                         onChange={handleChange}
                                         required
                                         min="1"
@@ -100,21 +102,6 @@ export default function PackageForm({ initialData, onSubmit, onCancel }) {
                         </div>
                     </div>
 
-                    {/* Package Details */}
-                    <div className="form-section">
-                        <h3 className="form-section-title">Package Details</h3>
-                        <div className="form-group">
-                            <label>Description</label>
-                            <textarea
-                                name="description"
-                                value={formData.description}
-                                onChange={handleChange}
-                                rows="3"
-                                className="form-control"
-                            />
-                            <small className="form-hint">Include key features and any special perks</small>
-                        </div>
-                    </div>
                 </div>
 
                 <div className="form-actions">

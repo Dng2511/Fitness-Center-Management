@@ -40,7 +40,7 @@ const Layout = () => {
                         <FiHome className="nav-icon" />
                         <span>Dashboard</span>
                     </Link>
-                    <Link to="/members/manage" className="nav-item">
+                    <Link to="/members" className="nav-item">
                         <FiUserPlus className="nav-icon" />
                         <span>Membership</span>
                     </Link>
