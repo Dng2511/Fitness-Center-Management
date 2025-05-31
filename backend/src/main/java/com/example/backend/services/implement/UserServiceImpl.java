@@ -23,6 +23,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -177,5 +179,29 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user);
         return UserDTO.fromEntity(user);
+    }
+
+    @Override
+    public User getCurrentUser() {
+        try {
+            // Lấy Authentication object từ SecurityContext
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+            // Kiểm tra authenticate
+            if (authentication == null || !authentication.isAuthenticated() ||
+                    authentication instanceof AnonymousAuthenticationToken) {
+                log.debug("No authenticated user found");
+                return null;
+            }
+
+            String username = authentication.getName();
+
+            // Tìm và trả về user từ database
+            return userRepository.findByUsername(username)
+                    .orElse(null);
+        } catch (Exception e) {
+            log.error("Error getting current user: {}", e.getMessage());
+            return null;
+        }
     }
 }

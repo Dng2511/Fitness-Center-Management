@@ -7,4 +7,9 @@ import java.util.Map;
 public interface DashboardService {
     Map<String, Object> getDashboardStatistics();
 
+    Map<String, Object> getMonthlyRevenueStatistics();
+
+    Map<String, Object> getActiveMembers(int page, int size);
+
+    Long getActiveMemberCount();
 }

@@ -8,6 +8,7 @@ import com.example.backend.repositories.MemberRepository;
 import com.example.backend.repositories.TrainingPackageRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.MemberService;
+import com.example.backend.services.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
     TrainingPackageRepository trainingPackageRepository;
     MemberRepository memberRepository;
     UserRepository userRepository;
+    UserService userService;
 
     @Override
     public Page<MemberDTO> getAllMembers(Pageable pageable) {
@@ -136,5 +139,18 @@ public class MemberServiceImpl implements MemberService {
             log.error("Error getting current logged in member: {}", e.getMessage());
             throw new RuntimeException("Unable to get current user: " + e.getMessage());
         }
+    }
+
+    @Override
+    public boolean isCurrentUserActiveMember() {
+        // Lấy user hiện tại
+        User currentUser = userService.getCurrentUser();
+
+        if (currentUser == null) return false;
+
+        // Tìm member dựa trên user ID
+        Optional<Member> memberOpt = memberRepository.findByUserId(currentUser.getId());
+
+        return memberOpt.map(Member::isMembership).orElse(false);
     }
 }

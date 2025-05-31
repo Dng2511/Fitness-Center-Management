@@ -79,7 +79,7 @@ public class PaymentServiceImpl implements PaymentService {
                         deletedCount++;
                     }
                 }
-                log.info("Deleted {} old payment keys for member {}", deletedCount, currentMember.getId());
+                //log.info("Deleted {} old payment keys for member {}", deletedCount, currentMember.getId());
             }
         } catch (Exception e) {
             log.warn("Error while cleaning up old payment keys: {}", e.getMessage());
@@ -256,7 +256,7 @@ public class PaymentServiceImpl implements PaymentService {
                 LocalDate today = LocalDate.now();
                 member.setTrainingPackage(trainingPackage);
                 member.setPackageStartDate(today);
-                member.setPackageEndDate(today.plusDays(trainingPackage.getDurationMonths()));
+                member.setPackageEndDate(today.plusMonths(trainingPackage.getDurationMonths()));
                 memberRepository.save(member);
 
                 // c. Tạo bản ghi thanh toán

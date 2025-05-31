@@ -16,4 +16,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     boolean existsByPhoneNumber(String phoneNumber);
 
     Member findByPhoneNumber(String phoneNumber);
+
+    // Tìm tất cả member có gói tập còn hiệu lực
+    @Query("SELECT m FROM Member m WHERE m.packageEndDate >= CURRENT_DATE")
+    Page<Member> findActiveMembershipsPageable(Pageable pageable);
+
+    // Đếm số lượng membership đang hoạt động
+    @Query("SELECT COUNT(m) FROM Member m WHERE m.packageEndDate >= CURRENT_DATE")
+    Long countActiveMemberships();
+
+    Optional<Member> findByUserId(Long userId);
 }

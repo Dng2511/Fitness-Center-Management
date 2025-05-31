@@ -21,4 +21,6 @@ public interface MemberService {
     MemberDTO getMemberByPhoneNumber(String phoneNumber);
 
     Member getCurrentLoggedInMember() throws RuntimeException;
+
+    boolean isCurrentUserActiveMember();
 }
