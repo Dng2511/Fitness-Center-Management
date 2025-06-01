@@ -1,27 +1,17 @@
 import { FiSearch } from 'react-icons/fi'
-import { useState, useEffect } from 'react'
+import React from 'react'
 import MemberTable from '../components/members/MemberTable'
 
 export default function Members() {
-    const [members, setMembers] = useState([])
-    const [searchQuery, setSearchQuery] = useState('')
-    const [filteredMembers, setFilteredMembers] = useState([])
+    const [members, setMembers] = React.useState([])
+    const [searchQuery, setSearchQuery] = React.useState('')
+    const [filteredMembers, setFilteredMembers] = React.useState([])
 
-    // Load members from localStorage on component mount
-    useEffect(() => {
-        const savedMembers = localStorage.getItem('gym_members')
-        if (savedMembers) {
-            setMembers(JSON.parse(savedMembers))
-        }
-    }, [])
+    React.useEffect(() => {
+        getMembers().then(({ data }) => setMembers(data.content))
+    }, [showForm])
 
-
-    useEffect(() => {
-        localStorage.setItem('gym_members', JSON.stringify(members))
-    }, [members])
-
-
-    useEffect(() => {
+    React.useEffect(() => {
         const filtered = members.filter(member =>
             member.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
             member.phone_number?.includes(searchQuery) ||
