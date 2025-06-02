@@ -27,19 +27,17 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    CustomJwtDecoder customJwtDecoder;
 
-    final String[] PUBLIC_ENDPOINTS = {
+    String[] PUBLIC_ENDPOINTS = {
             "/users/register", "/auth/login", "auth/introspect", "/auth/refresh"
     };
-
-    @Autowired
-    CustomJwtDecoder customJwtDecoder;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
