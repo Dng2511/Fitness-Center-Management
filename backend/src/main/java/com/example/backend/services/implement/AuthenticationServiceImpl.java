@@ -82,6 +82,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         return AuthenticationDTO.builder().
                 username(authenticationDTO.getUsername()).
+                role(user.getRoles().name()).
                 token(token).
                 refreshToken(refreshToken).
                 authenticated(true).

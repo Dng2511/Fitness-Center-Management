@@ -8,6 +8,7 @@ export default function MemberTable({ data, onUpdateNote }) {
                     <th>Date of birth</th>
                     <th>Phone</th>
                     <th>Address</th>
+
                     <th>Package ID</th>
 
                 </tr>
@@ -27,9 +28,7 @@ export default function MemberTable({ data, onUpdateNote }) {
                             <td>{new Date(member.birthday).toLocaleDateString()}</td>
                             <td>{member.phone_number}</td>
                             <td>{member.address}</td>
-
-                            <td>{member.package_id}</td>
-
+                            <td>{member.package_id || 'None'}</td>
                         </tr>
                     ))
                 )}

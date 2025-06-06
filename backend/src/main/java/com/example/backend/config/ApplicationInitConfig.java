@@ -1,7 +1,9 @@
 package com.example.backend.config;
 
+import com.example.backend.models.Room;
 import com.example.backend.models.User;
 import com.example.backend.models.enums.UserRole;
+import com.example.backend.repositories.RoomRepository;
 import com.example.backend.repositories.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class ApplicationInitConfig {
     PasswordEncoder passwordEncoder;
 
     @Bean
-    ApplicationRunner applicationRunner(UserRepository userRepository) {
+    ApplicationRunner applicationRunner(UserRepository userRepository, RoomRepository roomRepository) {
         return args -> {
             if (userRepository.findByUsername("admin").isEmpty()) {
                 UserRole role = UserRole.ADMIN;
@@ -37,6 +39,13 @@ public class ApplicationInitConfig {
 
                 userRepository.save(user);
                 log.info("Admin user created with username: admin, password: admin");
+            }
+
+            if(roomRepository.findRoomByRoomName("Phòng kho").isEmpty()){
+                Room room = new Room();
+                room.setRoomName("Phòng kho");
+                roomRepository.save(room);
+                log.info("Create Room");
             }
         };
     }

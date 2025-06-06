@@ -44,8 +44,8 @@ public class RoomDTO {
         return new RoomDTO(
                 room.getId(),
                 room.getRoomName(),
-                room.getType().name(), // enum to string
-                room.getStatus().name(),
+                room.getType() != null ? room.getType().name() : "", // enum to string
+                room.getStatus() != null ? room.getStatus().name() : "",
                 room.getCreatedAt(),
                 room.getUpdatedAt()
         );

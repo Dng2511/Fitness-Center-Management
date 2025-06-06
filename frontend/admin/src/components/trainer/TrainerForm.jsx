@@ -2,25 +2,12 @@ import { useState, useEffect } from 'react';
 import { FiX, FiCheck } from 'react-icons/fi';
 import styles from './TrainerForm.module.css';
 
-const SPECIALIZATIONS = [
-    "Strength Training",
-    "Yoga",
-    "Cardio",
-    "CrossFit",
-    "Pilates",
-    "Nutrition",
-    "HIIT",
-    "Boxing",
-    "Swimming"
-];
 
 export default function TrainerForm({ initialData, onSubmit, onClose }) {
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
+        username: '',
+        password: '',
         phone: '',
-        specializations: [],
-        experience: '',
     });
     const [errors, setErrors] = useState({});
 
@@ -37,22 +24,6 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
         }
     }, [initialData]);
 
-    const validateForm = () => {
-        const newErrors = {};
-        if (!formData.name.trim()) newErrors.name = 'Name is required';
-        if (!formData.email.trim()) newErrors.email = 'Email is required';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = 'Please enter a valid email';
-        }
-        if (!formData.phone.trim()) newErrors.phone = 'Phone is required';
-        if (formData.specializations.length === 0) {
-            newErrors.specializations = 'Please select at least one specialization';
-        }
-        if (!formData.experience) newErrors.experience = 'Experience is required';
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -92,11 +63,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (validateForm()) {
-            onSubmit({
-                ...formData,
-                // Keep backward compatibility
-                specialization: formData.specializations.join(', ')
-            });
+            onSubmit({formData});
         }
     };
 
@@ -143,6 +110,18 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                         <label className={styles.label} htmlFor="phone">Phone</label>
                         <input
                             className={styles.input}
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="password"
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.label} htmlFor="phone">Phone</label>
+                        <input
+                            className={styles.input}
                             type="tel"
                             id="phone"
                             name="phone"
@@ -150,7 +129,6 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             onChange={handleChange}
                             placeholder="Enter trainer's phone number"
                         />
-                        {errors.phone && <div className={styles.error}>{errors.phone}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
@@ -172,9 +150,6 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                                 </div>
                             ))}
                         </div>
-                        {errors.specializations && (
-                            <div className={styles.error}>{errors.specializations}</div>
-                        )}
                     </div>
 
                     <div className={styles.formGroup}>
@@ -189,7 +164,6 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             min="0"
                             placeholder="Enter years of experience"
                         />
-                        {errors.experience && <div className={styles.error}>{errors.experience}</div>}
                     </div>
 
                     <div className={styles.formActions}>
