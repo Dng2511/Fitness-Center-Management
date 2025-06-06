@@ -13,7 +13,6 @@ import NotFound from './pages/NotFound'
 import Room from './pages/Room'
 import Profile from './pages/Profile'
 import Trainer from './pages/Trainer'
-import { useState } from 'react'
 
 function App() {
 
@@ -31,11 +30,11 @@ function App() {
           {/* Protected routes */}
           <Route element={<Layout />}>
             <Route path="/register" element={<ProtectedRoute><Register /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/members" element={<ProtectedRoute><Members /></ProtectedRoute>} />
             <Route path="/packages" element={<ProtectedRoute><Packages /></ProtectedRoute>} />
-            <Route path="/equipment" element={<ProtectedRoute><Equipment/></ProtectedRoute>} />
+            <Route path="/equipment" element={<ProtectedRoute><Equipment /></ProtectedRoute>} />
             <Route path="/staff" element={<ProtectedRoute><Staff /></ProtectedRoute>} />
             <Route path="/trainer" element={<ProtectedRoute><Trainer /></ProtectedRoute>} />
             <Route path="/rooms" element={<ProtectedRoute><Room /></ProtectedRoute>} />

@@ -42,7 +42,7 @@ const Layout = () => {
                     </Link>
                     <Link to="/members" className="nav-item">
                         <FiUserPlus className="nav-icon" />
-                        <span>Membership</span>
+                        <span>Member</span>
                     </Link>
                     <Link to="/rooms" className="nav-item" onClick={() => setSidebarOpen(false)}>
                         <FiSettings className="nav-icon" />

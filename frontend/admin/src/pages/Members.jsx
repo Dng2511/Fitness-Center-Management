@@ -1,25 +1,17 @@
 import { FiSearch } from 'react-icons/fi'
 import React from 'react'
 import MemberTable from '../components/members/MemberTable'
-import {getMembers} from '../services/Api/member'
+import { getMembers } from '../services/Api/member'
 
 export default function Members() {
     const [members, setMembers] = React.useState([])
     const [searchQuery, setSearchQuery] = React.useState('')
-    const [filteredMembers, setFilteredMembers] = React.useState([])
+
 
     React.useEffect(() => {
         getMembers().then(({ data }) => setMembers(data.content))
     }, [])
 
-    React.useEffect(() => {
-        const filtered = members.filter(member =>
-            member.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            member.phone_number?.includes(searchQuery) ||
-            member.notes?.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-        setFilteredMembers(filtered)
-    }, [members, searchQuery])
 
     const handleUpdateNote = (memberId, newNote) => {
         setMembers(prevMembers =>
@@ -53,7 +45,7 @@ export default function Members() {
 
             <div className="card">
                 <MemberTable
-                    data={filteredMembers}
+                    data={members}
                     onUpdateNote={handleUpdateNote}
                 />
             </div>
