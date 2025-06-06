@@ -16,7 +16,7 @@ public interface MemberService {
 
     MemberDTO deleteMember(Long id);
 
-    //Page<MemberDTO> searchMembers(String keyword, Pageable pageable);
+    Page<MemberDTO> searchMembers(String search, Pageable pageable);
 
     MemberDTO getMemberByPhoneNumber(String phoneNumber);
 

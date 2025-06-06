@@ -6,13 +6,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface EquipmentService {
-    public Page<EquipmentDTO> getAllEquipment(Pageable pageable);
+    Page<EquipmentDTO> getAllEquipment(Pageable pageable);
 
-    public EquipmentDTO getEquipmentById(Long id);
+    EquipmentDTO getEquipmentById(Long id);
 
-    public String addEquipment(JsonNode equipmentData);
+    Page<EquipmentDTO> searchEquipments(String search, Pageable pageable);
 
-    public String updateEquipment(JsonNode equipmentData, Long id);
+    String addEquipment(JsonNode equipmentData);
 
-    public String deleteEquipment(Long id);
+    String updateEquipment(JsonNode equipmentData, Long id);
+
+    String deleteEquipment(Long id);
 }
