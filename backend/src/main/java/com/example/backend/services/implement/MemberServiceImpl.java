@@ -104,6 +104,14 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Page<MemberDTO> searchMembers(String search, Pageable pageable) {
+        if (search == null || search.isEmpty()) {
+            return memberRepository.findAll(pageable).map(MemberDTO::fromEntity);
+        }
+        return memberRepository.searchMembers(search.toLowerCase(), pageable).map(MemberDTO::fromEntity);
+    }
+
+    @Override
     public MemberDTO getMemberByPhoneNumber(String phoneNumber) {
         return MemberDTO.fromEntity(Objects.requireNonNull(memberRepository.findByPhoneNumber(phoneNumber)));
     }
@@ -140,6 +148,7 @@ public class MemberServiceImpl implements MemberService {
             throw new RuntimeException("Unable to get current user: " + e.getMessage());
         }
     }
+
 
     @Override
     public boolean isCurrentUserActiveMember() {

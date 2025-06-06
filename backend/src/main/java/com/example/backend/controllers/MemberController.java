@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,16 @@ public class MemberController {
             MemberDTO memberDTO = memberService.getMemberById(id);
             return ResponseEntity.ok(memberDTO);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchUsers(@RequestParam(required = false) String value,
+                                         @RequestParam(defaultValue = "1") int page,
+                                         @RequestParam(defaultValue = "10") int limit) {
+        Pageable pageable = PageRequest.of(page - 1, limit);
+        Page<MemberDTO> members = memberService.searchMembers(value, pageable);
+        return ResponseEntity.ok(members);
+    }
+
 
     @PostMapping
     public ResponseEntity<?> addMember(@RequestBody MemberDTO memberDTO) {

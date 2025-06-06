@@ -36,9 +36,15 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
+    public Page<EquipmentDTO> searchEquipments(String search, Pageable pageable) {
+        if (search == null || search.isEmpty()) {
+            return equipmentRepository.findAll(pageable).map(EquipmentDTO::fromEntity);
+        }
+        return equipmentRepository.searchEquipments(search.toLowerCase(), pageable).map(EquipmentDTO::fromEntity);
+    }
+
+    @Override
     public String addEquipment(JsonNode equipmentData) {
-
-
         Equipment equipment = new Equipment();
         equipment.setEquipmentName(equipmentData.get("equipment_name").asText());
         equipment.setOrigin(equipmentData.get("origin").asText());

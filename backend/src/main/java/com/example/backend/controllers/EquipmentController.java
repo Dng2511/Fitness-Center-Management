@@ -31,6 +31,14 @@ public class EquipmentController {
         return ResponseEntity.ok(equipmentService.getEquipmentById(id));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<EquipmentDTO>> searchEquipments(@RequestParam(value = "value", required = false) String search,
+                                                               @RequestParam(value = "page", defaultValue = "1") int page,
+                                                               @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        Pageable pageable = PageRequest.of(page - 1, limit);
+        return ResponseEntity.ok(equipmentService.searchEquipments(search, pageable));
+    }
+
     @PostMapping
     public ResponseEntity<String> addEquipment(@RequestBody JsonNode data) {
         return ResponseEntity.ok(equipmentService.addEquipment(data));
