@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
         try {
             console.log(data);
             const response = await login(data);
+            console.log(response);
 
             const { access_token, refresh_token, username } = response.data;
 

@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthenticationDTO {
     String username;
 
+    String role;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 

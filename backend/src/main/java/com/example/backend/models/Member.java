@@ -26,7 +26,7 @@ public class Member extends BaseModel {
     @Column(name = "birthday")
     LocalDate birthday;
 
-    @Column(name = "address")
+    @Column(name = "address", columnDefinition = "NVARCHAR(255)")
     String address;
 
     @OneToMany(mappedBy = "member")

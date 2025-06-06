@@ -1,6 +1,7 @@
 import { FiSearch } from 'react-icons/fi'
 import React from 'react'
 import MemberTable from '../components/members/MemberTable'
+import {getMembers} from '../services/Api/member'
 
 export default function Members() {
     const [members, setMembers] = React.useState([])
@@ -9,7 +10,7 @@ export default function Members() {
 
     React.useEffect(() => {
         getMembers().then(({ data }) => setMembers(data.content))
-    }, [showForm])
+    }, [])
 
     React.useEffect(() => {
         const filtered = members.filter(member =>

@@ -70,10 +70,6 @@ export default function Login() {
                     >
                         {isLoading ? 'Logging in...' : 'Login'}
                     </button>
-
-                    <div className="register-option">
-                        Don't have an account? <Link to="/register" className="register-link">Register here</Link>
-                    </div>
                 </form>
             </div>
         </div>
