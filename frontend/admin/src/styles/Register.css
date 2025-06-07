@@ -228,29 +228,3 @@
     color: #333;
 }
 
-.delete-btn {
-    background-color: #fee2e2;
-    border: 1px solid #fecaca;
-    color: #dc2626;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    margin: 0 auto;
-}
-
-.delete-btn:hover {
-    background-color: #fecaca;
-    color: #b91c1c;
-    border-color: #f87171;
-}
-
-.delete-btn svg {
-    width: 16px;
-    height: 16px;
-}

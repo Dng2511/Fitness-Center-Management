@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound'
 import Room from './pages/Room'
 import Profile from './pages/Profile'
 import Trainer from './pages/Trainer'
+import "./App.css"
 
 function App() {
 

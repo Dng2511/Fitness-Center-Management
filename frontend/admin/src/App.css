@@ -50,3 +50,63 @@
 .read-the-docs {
   color: #888;
 }
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-start; /* căn trái */
+    gap: 8px;                    /* khoảng cách giữa các nút */
+}
+
+.delete-btn {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+}
+
+.delete-btn:hover {
+    background-color: #fecaca;
+    color: #b91c1c;
+    border-color: #f87171;
+}
+
+.delete-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.edit-btn {
+    background-color: #dbeafe;              /* light blue background */
+    border: 1px solid #bfdbfe;              /* light blue border */
+    color: #2563eb;                         /* blue-600 */
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+}
+
+.edit-btn:hover {
+    background-color: #bfdbfe;              /* darker on hover */
+    color: #1d4ed8;                         /* blue-700 */
+    border-color: #93c5fd;
+}
+
+.edit-btn svg {
+    width: 16px;
+    height: 16px;
+}
