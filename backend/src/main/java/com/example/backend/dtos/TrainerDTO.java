@@ -32,8 +32,8 @@ public class TrainerDTO {
 
     String specialty;
 
-    @JsonProperty("user_id")
-    Long userId;
+    @JsonProperty("username")
+    String username;
 
     public static TrainerDTO fromEntity(Trainer trainer) {
         return new TrainerDTO(
@@ -41,7 +41,7 @@ public class TrainerDTO {
                 trainer.getName(),
                 trainer.getPhoneNumber(),
                 trainer.getSpecialty(),
-                trainer.getUser() != null ? trainer.getUser().getId() : null
+                trainer.getUser() != null ? trainer.getUser().getUsername() : null
         );
     }
 }

@@ -12,14 +12,19 @@ export default function Members() {
 
 
     React.useEffect(() => {
-        getMembers({params:{value: searchQuery}}).then(({ data }) => {
+        getMembers({ params: { value: searchQuery } }).then(({ data }) => {
             setMembers(data.content);
             setTotalPages(data.totalPages);
         })
     }, [page])
 
     React.useEffect(() => {
-        getMembers({params:{value: searchQuery}}).then(({ data }) => {
+        getMembers({
+            params: {
+                value: searchQuery,
+                page: page
+            }
+        }).then(({ data }) => {
             setMembers(data.content);
             setPage(1);
             setTotalPages(data.totalPages);
@@ -44,11 +49,11 @@ export default function Members() {
     }
 
     const handlePrevPage = () => {
-        setPage(prev => prev-1);
+        setPage(prev => prev - 1);
     }
 
     const handleNextPage = () => {
-        setPage(prev => prev+1);
+        setPage(prev => prev + 1);
     }
 
 
@@ -77,9 +82,9 @@ export default function Members() {
             </div>
 
 
-            <Pagination handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} totalPages={totalPages} page={page}/>
+            <Pagination handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} totalPages={totalPages} page={page} />
         </div>
 
-        
+
     )
 }

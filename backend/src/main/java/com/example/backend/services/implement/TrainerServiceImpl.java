@@ -41,11 +41,11 @@ public class TrainerServiceImpl implements TrainerService {
         trainer.setPhoneNumber(trainerDTO.getPhoneNumber());
         trainer.setSpecialty(trainerDTO.getSpecialty());
 
-        if (trainerDTO.getUserId() != null) {
+        /*if (trainerDTO.getUserId() != null) {
             User user = userRepository.findById(trainerDTO.getUserId()).orElseThrow(() ->
                     new RuntimeException("User not found with id: " + trainerDTO.getUserId()));
             trainer.setUser(user);
-        }
+        }*/
 
         return TrainerDTO.fromEntity(trainerRepository.save(trainer));
     }
