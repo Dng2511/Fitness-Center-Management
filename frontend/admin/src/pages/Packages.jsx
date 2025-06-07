@@ -3,24 +3,28 @@ import { useState, useEffect } from 'react'
 import PackageTable from '../components/packages/PackageTable'
 import PackageForm from '../components/packages/PackageForm'
 import Alert from '../components/ui/Alert'
-import { createPackage, delelePackage, editPackage, getPackages } from '../services/Api/package'
+import { createPackage, deletePackage, editPackage, getPackages } from '../services/Api/package'
+import Pagination from '../components/ui/Pagination'
 
 export default function Packages() {
     const [packages, setPackages] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [showForm, setShowForm] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
     const [selectedPackage, setSelectedPackage] = useState(null)
     const [alert, setAlert] = useState({ show: false, type: '', message: '' })
 
     useEffect(() => {
-        getPackages().then(({data}) => setPackages(data.content))
-    }, [showForm])
-
+        getPackages(currentPage).then(({ data }) => {
+            setPackages(data.content)
+            setTotalPages(data.totalPages)
+        })
+    }, [currentPage, showForm])
 
     const handleSearch = (e) => {
         setSearchQuery(e.target.value)
     }
-
 
     const handleAddPackage = () => {
         setSelectedPackage(null)
@@ -36,15 +40,26 @@ export default function Packages() {
         if (formData.id) {
             await editPackage(formData.id, formData)
         } else {
-            await createPackage(formData);
+            await createPackage(formData)
         }
         setShowForm(false)
     }
 
     const handleDeletePackage = async (id) => {
-        await delelePackage(id);
-        setPackages(prev => prev.filter(pkg => pkg.id !== id));
+        await deletePackage(id)
+        setPackages(prev => prev.filter(pkg => pkg.id !== id))
     }
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page)
+    }
+
+    const filteredPackages = packages.filter(pkg => {
+        const name = pkg.package_name?.toLowerCase() || ''
+        const type = pkg.type?.toLowerCase() || ''
+        const query = searchQuery.toLowerCase()
+        return name.includes(query) || type.includes(query)
+    })
 
     return (
         <div className="page-container">
@@ -83,12 +98,22 @@ export default function Packages() {
             )}
 
             <div className="card">
-                <PackageTable
-                    data={packages}
-                    onEdit={handleEditPackage}
-                    onDelete={handleDeletePackage}
-                />
+                {filteredPackages.length === 0 ? (
+                    <p className="text-center text-gray-500">No packages found</p>
+                ) : (
+                    <PackageTable
+                        data={filteredPackages}
+                        onEdit={handleEditPackage}
+                        onDelete={handleDeletePackage}
+                    />
+                )}
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
         </div>
     )
 }

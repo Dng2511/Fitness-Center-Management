@@ -19,10 +19,10 @@ export default function EquipmentForm({ onSubmit, onClose }) {
     useEffect(() => {
         getRooms().then(({ data }) => {
             setRooms(data),
-            setFormData(prev => ({
-                ...prev,
-                room_id: data[0]?.id || ''
-            }));
+                setFormData(prev => ({
+                    ...prev,
+                    room_id: data[0]?.id || ''
+                }));
 
         })
     }, []);
@@ -37,9 +37,14 @@ export default function EquipmentForm({ onSubmit, onClose }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formData)
-        await createEquipment(formData);
-        onClose();
+        try {
+            await createEquipment(formData);
+            onSubmit(formData);
+            onClose();
+        } catch (error) {
+            console.error('Error creating equipment:', error);
+            alert('Failed to create equipment. Please try again.');
+        }
     };
 
     return (
@@ -60,7 +65,7 @@ export default function EquipmentForm({ onSubmit, onClose }) {
                             type="text"
                             id="equipment_name"
                             name="equipment_name"
-                            value={formData.name}
+                            value={formData.equipment_name}
                             onChange={handleChange}
                             placeholder="Enter equipment name"
                             required

@@ -23,10 +23,16 @@ export default function PackageForm({ initialData, onSubmit, onCancel }) {
         })
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        onSubmit(formData)
-    }
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await onSubmit(formData);
+            onCancel();
+        } catch (error) {
+            console.error('Error submitting package:', error);
+            alert('Failed to save package. Please try again.');
+        }
+    };
 
     return (
         <div className="form-modal">

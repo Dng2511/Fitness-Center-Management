@@ -2,30 +2,23 @@ import { FiPlus, FiSearch } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import TrainerTable from '../components/trainer/TrainerTable';
 import TrainerForm from '../components/trainer/TrainerForm';
+import { getTrainer, createTrainer, editTrainer, deleteTrainer } from '../services/Api/trainer';
+import Pagination from '../components/ui/Pagination';
 
 export default function Trainer() {
     const [trainers, setTrainers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [editingTrainer, setEditingTrainer] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
 
     useEffect(() => {
-        fetchTrainers();
-    }, []);
-
-    const fetchTrainers = async () => {
-        try {
-            const mockTrainers = [];
-            setTrainers(mockTrainers);
-        } catch (err) {
-            setError('Failed to fetch trainers');
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+        getTrainer(currentPage).then(({ data }) => {
+            setTrainers(data.content);
+            setTotalPages(data.totalPages);
+        });
+    }, [currentPage, showForm]);
 
     const handleSearch = (event) => {
         setSearchQuery(event.target.value);
@@ -43,35 +36,47 @@ export default function Trainer() {
 
     const handleDelete = async (trainerId) => {
         try {
+            await deleteTrainer(trainerId);
             setTrainers(trainers.filter(t => t.id !== trainerId));
         } catch (err) {
-            setError('Failed to delete trainer');
             console.error(err);
         }
     };
 
-    const handleSubmit = (formData) => {
-        if (formData.id) {
-            setTrainers(trainers.map(trainer =>
-                trainer.id === formData.id ? { ...trainer, ...formData } : trainer
-            ));
-        } else {
-            const newTrainer = {
-                ...formData,
-                id: Date.now()
-            };
-            setTrainers([...trainers, newTrainer]);
+    const handleSubmit = async (formData) => {
+        try {
+            if (formData.id) {
+                const { data } = await editTrainer(formData.id, formData);
+                setTrainers(trainers.map(trainer =>
+                    trainer.id === formData.id ? data : trainer
+                ));
+            } else {
+                const { data } = await createTrainer(formData);
+                setTrainers([...trainers, data]);
+            }
+            setShowForm(false);
+        } catch (err) {
+            console.error(err);
         }
-        setShowForm(false);
     };
 
-    const filteredTrainers = trainers.filter(trainer =>
-        trainer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        trainer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        trainer.specialization.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
-    if (isLoading) return <div className="loading">Loading...</div>;
+    const filteredTrainers = trainers.filter(trainer => {
+        const name = trainer.name?.toLowerCase() || "";
+        const email = trainer.email?.toLowerCase() || "";
+        const specialization = Array.isArray(trainer.specializations)
+            ? trainer.specializations.join(", ").toLowerCase()
+            : (trainer.specialization?.toLowerCase() || "");
+        const query = searchQuery.toLowerCase();
+        return (
+            name.includes(query) ||
+            email.includes(query) ||
+            specialization.includes(query)
+        );
+    });
 
     return (
         <div className="page-container">
@@ -92,8 +97,6 @@ export default function Trainer() {
                 />
             </div>
 
-            {error && <div className="error-message">{error}</div>}
-
             <div className="card">
                 {filteredTrainers.length === 0 ? (
                     <p className="text-center text-gray-500">No trainers found</p>
@@ -105,6 +108,12 @@ export default function Trainer() {
                     />
                 )}
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
 
             {showForm && (
                 <TrainerForm

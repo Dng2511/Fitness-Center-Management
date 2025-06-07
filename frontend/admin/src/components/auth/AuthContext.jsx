@@ -20,13 +20,13 @@ export const AuthProvider = ({ children }) => {
 
             const { access_token, refresh_token, username } = response.data;
 
-            // Lưu token vào localStorage
+
             localStorage.setItem('access_token', access_token);
             localStorage.setItem('refresh_token', refresh_token);
             localStorage.setItem('username', username);
             setUser(username);
 
-            // Chuyển sang trang dashboard hoặc cập nhật trạng thái đăng nhập
+
             navigate('/dashboard');
         } catch (error) {
             console.error('Login failed:', error);
@@ -38,10 +38,10 @@ export const AuthProvider = ({ children }) => {
         try {
             const response = await register(data);
             if (response.status === 201) {
-                alert('Tạo tài khoản thành công!');  // hoặc dùng thông báo đẹp hơn
+                alert('Tạo tài khoản thành công!');
                 setTimeout(() => {
                     navigate('/login');
-                }, 5000); // delay 5 giây trước khi chuyển trang
+                }, 5000);
             }
         } catch (error) {
             console.error(error);

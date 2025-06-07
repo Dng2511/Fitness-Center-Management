@@ -3,19 +3,21 @@ import React from 'react'
 import EquipmentTable from '../components/equipment/EquipmentTable'
 import EquipmentForm from '../components/equipment/EquipmentForm'
 import { createEquipment, deleteEquipment, getEquipments } from '../services/Api/equipment'
+import Pagination from '../components/ui/Pagination'
 
 export default function Equipment() {
     const [searchQuery, setSearchQuery] = React.useState('')
     const [showForm, setShowForm] = React.useState(false)
     const [equipments, setEquipments] = React.useState([]);
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const [totalPages, setTotalPages] = React.useState(1);
 
     React.useEffect(() => {
-        getEquipments().then(({data}) => {
+        getEquipments(currentPage).then(({ data }) => {
             setEquipments(data.content);
-            console.log(data.content);
-
-            })
-    }, [showForm])
+            setTotalPages(data.totalPages);
+        })
+    }, [currentPage, showForm])
 
     const handleSearch = (event) => {
         setSearchQuery(event.target.value)
@@ -24,14 +26,12 @@ export default function Equipment() {
     const handleDelete = (id) => {
         try {
             deleteEquipment(id);
-            setEquipments(prev => 
+            setEquipments(prev =>
                 prev.filter(equipment => equipment.id !== id)
             )
         } catch (err) {
             console.log(err)
         }
-        
-
     }
 
     const onAddEquipment = (data) => {
@@ -42,6 +42,9 @@ export default function Equipment() {
         }
     }
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     return (
         <div className="page-container">
@@ -75,6 +78,12 @@ export default function Equipment() {
                     />
                 )}
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+            />
 
             {showForm && (
                 <EquipmentForm
