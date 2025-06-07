@@ -25,7 +25,7 @@ export default function RoomTable({ data, onViewDetails, onChangeStatus }) {
                         <td>{room.id}</td>
                         <td>{room.room_name}</td>
                         <td>{room.type}</td>
-                        <td>
+                        <td> {room.id == 1? <></> : 
                             <button
                                 className={`${styles.statusBadge} ${styles[room.status.toLowerCase()]}`}
                                 onClick={() => onChangeStatus(room)}
@@ -33,6 +33,8 @@ export default function RoomTable({ data, onViewDetails, onChangeStatus }) {
                             >
                                 {room.status}
                             </button>
+                        }
+                            
                         </td>
                         <td>
                             <div>
