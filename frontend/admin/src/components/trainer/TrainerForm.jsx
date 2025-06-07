@@ -9,11 +9,15 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
         username: '',
         password: '',
         phone_number: '',
-        specialty: 'yoga'
+        specialty: ''
     });
     const [errors, setErrors] = useState({});
 
-
+    useEffect(() => {
+        if (initialData) {
+            setFormData(initialData);
+        }
+    }, [initialData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,7 +33,6 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
             }));
         }
     };
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -56,7 +59,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             name="name"
                             value={formData.name}
                             onChange={handleChange}
-                            placeholder="Enter trainer's name"
+                            placeholder="Name"
                         />
                         {errors.name && <div className={styles.error}>{errors.name}</div>}
                     </div>
@@ -70,13 +73,13 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            placeholder="Enter trainer's email"
+                            placeholder="Email"
                         />
                         {errors.email && <div className={styles.error}>{errors.email}</div>}
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="phone">password</label>
+                        <label className={styles.label} htmlFor="phone">Password</label>
                         <input
                             className={styles.input}
                             type="password"
@@ -84,7 +87,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            placeholder="password"
+                            placeholder="Password"
                         />
                     </div>
                     <div className={styles.formGroup}>
@@ -96,22 +99,21 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             name="phone_number"
                             value={formData.phone_number}
                             onChange={handleChange}
-                            placeholder="Enter trainer's phone number"
+                            placeholder="Phone number"
                         />
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="specialty">specialty</label>
-                        <select
-                            className={styles.select}
+                        <label className={styles.label} htmlFor="specialty">Specialty</label>
+                        <input
+                            className={styles.input}
+                            type="text"
                             id="specialty"
                             name="specialty"
                             value={formData.specialty}
                             onChange={handleChange}
-                        >
-                            <option value="Yoga">Yoga</option>
-
-                        </select>
+                            placeholder="Specialty"
+                        />
                     </div>
 
                     <div className={styles.formActions}>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { FiUser, FiLock, FiMail } from 'react-icons/fi';
 import '../styles/Login.css';
 import { AuthContext } from '../components/auth/AuthContext';
 
@@ -44,23 +45,35 @@ export default function Login() {
                 <form onSubmit={handleSubmit} className="login-form">
                     <div className="form-group">
                         <label className="label">Username</label>
-                        <input
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="input"
-                            required
-                        />
+                        <div className="input-with-icon">
+                            <FiUser className="input-icon" />
+                            <input
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className="input"
+                                required
+                            />
+                        </div>
                     </div>
 
                     <div className="form-group">
                         <label className="label">Password</label>
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="input"
-                            required
-                        />
+                        <div className="input-with-icon">
+                            <FiLock className="input-icon" />
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="input"
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <div className="forgot-password">
+                        <Link to="/forgot-password" className="forgot-password-link">
+                            Forgot Password?
+                        </Link>
                     </div>
 
                     <button
@@ -70,7 +83,6 @@ export default function Login() {
                     >
                         {isLoading ? 'Logging in...' : 'Login'}
                     </button>
-
                 </form>
             </div>
         </div>

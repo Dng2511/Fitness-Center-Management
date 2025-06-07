@@ -2,7 +2,6 @@ import { useState } from 'react'
 import StatCard from '../components/dashboard/StatCard'
 import ProfitChart from '../components/dashboard/ProfitChart'
 import MemberChart from '../components/dashboard/MemberChart'
-import EquipmentChart from '../components/dashboard/EquipmentChart'
 import { FiUsers, FiDollarSign, FiActivity } from 'react-icons/fi'
 import styles from './Dashboard.module.css'
 
@@ -15,7 +14,6 @@ const Dashboard = () => {
 
     // Mock forum data - in a real app, this would come from an API
     const forumPosts = []
-
 
     return (
         <div className="dashboard">
@@ -50,16 +48,12 @@ const Dashboard = () => {
                 <div className="chart-card">
                     <MemberChart />
                 </div>
-                <div className="chart-card">
-                    <EquipmentChart equipmentData={[]} />
-                </div>
             </section>
 
             {/* Read-only Forum Section */}
             <section className={styles['forum-section']}>
                 <div className={styles['forum-header']}>
                     <h2>Member comments</h2>
-
                 </div>
 
                 {/* Forum Posts List */}

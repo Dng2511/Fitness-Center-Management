@@ -32,7 +32,7 @@ export default function RoomForm({ initialData, onClose }) {
         console.log(formData)
         await createRoom(formData);
         onClose();
-        
+
     };
 
     return (
@@ -72,7 +72,11 @@ export default function RoomForm({ initialData, onClose }) {
                             <option value="GYM">Gym</option>
                             <option value="YOGA">Yoga</option>
                             <option value="CARDIO">Cardio</option>
-                            
+                            <option value="SWIMMING">Swimming Pool</option>
+                            <option value="BOXING">Boxing</option>
+                            <option value="DANCE">Dance Studio</option>
+                            <option value="SAUNA">Sauna</option>
+
                         </select>
                     </div>
 
