@@ -17,7 +17,6 @@ export default function TrainerTable({ data, onEdit, onDelete }) {
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Specialization</th>
-                    <th>Experience</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -26,29 +25,22 @@ export default function TrainerTable({ data, onEdit, onDelete }) {
                     <tr key={trainer.id}>
                         <td>{trainer.id}</td>
                         <td>{trainer.name}</td>
-                        <td>{trainer.email || '—'}</td>
-                        <td>{trainer.phone || '—'}</td>
+                        <td>{trainer.username || '—'}</td>
+                        <td>{trainer.phone_number || '—'}</td>
+                        <td>{trainer.specialization}</td>
                         <td>
-                            <span className="badge badge-specialization">
-                                {trainer.specialization}
-                            </span>
-                        </td>
-                        <td>{trainer.experience} years</td>
-                        <td>
-                            <div className="actions">
+                            <div className="action-buttons">
                                 <button
-                                    className="btn btn-edit"
+                                    className="edit-btn"
                                     onClick={() => onEdit(trainer)}
                                 >
-                                    <FiEdit2 className="btn-icon" />
-                                    <span>Edit</span>
+                                    <FiEdit2 />
                                 </button>
                                 <button
-                                    className="btn btn-delete"
+                                    className="delete-btn"
                                     onClick={() => handleDelete(trainer)}
                                 >
-                                    <FiTrash2 className="btn-icon" />
-                                    <span>Delete</span>
+                                    <FiTrash2 />
                                 </button>
                             </div>
                         </td>

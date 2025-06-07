@@ -2,30 +2,25 @@ import { FiPlus, FiSearch } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import TrainerTable from '../components/trainer/TrainerTable';
 import TrainerForm from '../components/trainer/TrainerForm';
+import { createTrainer, getTrainers } from '../services/Api/trainer';
 
 export default function Trainer() {
     const [trainers, setTrainers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const [page, setPage] = useState(1);
     const [editingTrainer, setEditingTrainer] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetchTrainers();
-    }, []);
-
-    const fetchTrainers = async () => {
-        try {
-            const mockTrainers = [];
-            setTrainers(mockTrainers);
-        } catch (err) {
-            setError('Failed to fetch trainers');
-            console.error(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+        getTrainers({
+            params: {
+                page: page
+            }
+        }).then(({data}) => {
+            setTrainers(data.content);
+        })
+    }, [page])
 
     const handleSearch = (event) => {
         setSearchQuery(event.target.value);
@@ -50,28 +45,14 @@ export default function Trainer() {
         }
     };
 
-    const handleSubmit = (formData) => {
-        if (formData.id) {
-            setTrainers(trainers.map(trainer =>
-                trainer.id === formData.id ? { ...trainer, ...formData } : trainer
-            ));
-        } else {
-            const newTrainer = {
-                ...formData,
-                id: Date.now()
-            };
-            setTrainers([...trainers, newTrainer]);
-        }
+    const handleSubmit = async ({formData}) => {
+        console.log(formData)
+        await createTrainer(formData);
+
         setShowForm(false);
     };
 
-    const filteredTrainers = trainers.filter(trainer =>
-        trainer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        trainer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        trainer.specialization.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
-    if (isLoading) return <div className="loading">Loading...</div>;
 
     return (
         <div className="page-container">
@@ -95,11 +76,11 @@ export default function Trainer() {
             {error && <div className="error-message">{error}</div>}
 
             <div className="card">
-                {filteredTrainers.length === 0 ? (
+                {trainers.length === 0 ? (
                     <p className="text-center text-gray-500">No trainers found</p>
                 ) : (
                     <TrainerTable
-                        data={filteredTrainers}
+                        data={trainers}
                         onEdit={handleEdit}
                         onDelete={handleDelete}
                     />

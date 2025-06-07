@@ -5,24 +5,14 @@ import styles from './TrainerForm.module.css';
 
 export default function TrainerForm({ initialData, onSubmit, onClose }) {
     const [formData, setFormData] = useState({
+        name: '',
         username: '',
         password: '',
-        phone: '',
+        phone_number: '',
+        specialty: 'yoga'
     });
     const [errors, setErrors] = useState({});
 
-    useEffect(() => {
-        if (initialData) {
-            // Convert single specialization to array if needed
-            const specializations = initialData.specialization
-                ? [initialData.specialization]
-                : initialData.specializations || [];
-            setFormData({
-                ...initialData,
-                specializations
-            });
-        }
-    }, [initialData]);
 
 
     const handleChange = (e) => {
@@ -40,31 +30,10 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
         }
     };
 
-    const handleSpecializationToggle = (specialization) => {
-        setFormData(prev => {
-            const specializations = prev.specializations.includes(specialization)
-                ? prev.specializations.filter(s => s !== specialization)
-                : [...prev.specializations, specialization];
-
-            return {
-                ...prev,
-                specializations
-            };
-        });
-
-        if (errors.specializations) {
-            setErrors(prev => ({
-                ...prev,
-                specializations: ''
-            }));
-        }
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (validateForm()) {
-            onSubmit({formData});
-        }
+        onSubmit({ formData });
     };
 
     return (
@@ -97,9 +66,9 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                         <input
                             className={styles.input}
                             type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
+                            id="username"
+                            name="username"
+                            value={formData.username}
                             onChange={handleChange}
                             placeholder="Enter trainer's email"
                         />
@@ -107,7 +76,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="phone">Phone</label>
+                        <label className={styles.label} htmlFor="phone">password</label>
                         <input
                             className={styles.input}
                             type="password"
@@ -123,47 +92,26 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                         <input
                             className={styles.input}
                             type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
+                            id="phone_number"
+                            name="phone_number"
+                            value={formData.phone_number}
                             onChange={handleChange}
                             placeholder="Enter trainer's phone number"
                         />
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label}>Specializations</label>
-                        <div className={styles.specializationGrid}>
-                            {SPECIALIZATIONS.map(specialization => (
-                                <div
-                                    key={specialization}
-                                    className={`${styles.specializationItem} ${formData.specializations.includes(specialization) ? styles.selected : ''
-                                        }`}
-                                    onClick={() => handleSpecializationToggle(specialization)}
-                                >
-                                    <div className={styles.checkbox}>
-                                        {formData.specializations.includes(specialization) && (
-                                            <FiCheck size={16} />
-                                        )}
-                                    </div>
-                                    <span>{specialization}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="experience">Experience (years)</label>
-                        <input
-                            className={styles.input}
-                            type="number"
-                            id="experience"
-                            name="experience"
-                            value={formData.experience}
+                        <label className={styles.label} htmlFor="specialty">specialty</label>
+                        <select
+                            className={styles.select}
+                            id="specialty"
+                            name="specialty"
+                            value={formData.specialty}
                             onChange={handleChange}
-                            min="0"
-                            placeholder="Enter years of experience"
-                        />
+                        >
+                            <option value="Yoga">Yoga</option>
+
+                        </select>
                     </div>
 
                     <div className={styles.formActions}>
