@@ -63,7 +63,7 @@ const Layout = () => {
                 </nav>
 
                 <div className="sidebar-footer">
-                    <Link to="/profile" className="user-info" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <div className="user-info">
                         <div className="avatar">
                             {getAvatarLetter(user?.name)}
                         </div>
@@ -71,7 +71,7 @@ const Layout = () => {
                             <span className="user-name">{user?.name}</span>
                             <span className="user-role">{user?.role}</span>
                         </div>
-                    </Link>
+                    </div>
                     <button className="logout-btn" onClick={handleLogout}>
                         <FiLogOut className="logout-icon" />
                         Logout

@@ -14,9 +14,10 @@ export default function Room() {
     const [selectedRoom, setSelectedRoom] = useState(null);
 
     React.useEffect(() => {
-        getRooms().then(({data}) => {
+        getRooms().then(({ data }) => {
             setRoomList(data)
-            console.log(data)})
+            console.log(data)
+        })
     }, [showForm])
 
 
@@ -41,19 +42,19 @@ export default function Room() {
 
 
     const handleStatusToggle = (room) => {
-            const statusCycle = ['AVAILABLE', 'FULL', 'MAINTENANCE', 'CLOSED'];
-            const currentIndex = statusCycle.indexOf(room.status);
-            const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
-    
-            updateRoom(room.id, {
-                ...room,
-                status: nextStatus
-            });
-    
-            setRoomList(prev =>
-                prev.map(r => r.id === room.id ? { ...r, status: nextStatus } : r)
-            );
-        };
+        const statusCycle = ['AVAILABLE', 'FULL', 'MAINTENANCE', 'CLOSED'];
+        const currentIndex = statusCycle.indexOf(room.status);
+        const nextStatus = statusCycle[(currentIndex + 1) % statusCycle.length];
+
+        updateRoom(room.id, {
+            ...room,
+            status: nextStatus
+        });
+
+        setRoomList(prev =>
+            prev.map(r => r.id === room.id ? { ...r, status: nextStatus } : r)
+        );
+    };
 
     const handleSubmit = (formData) => {
         if (formData.id) {

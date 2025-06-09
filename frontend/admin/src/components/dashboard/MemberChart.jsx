@@ -19,7 +19,7 @@ ChartJS.register(
     Legend
 )
 
-export default function MemberChart() {
+export default function MemberChart({ data }) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -45,7 +45,7 @@ export default function MemberChart() {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    stepSize: 20,
+                    stepSize: 1,
                     callback: function (value) {
                         return value + ' members'
                     }
@@ -54,15 +54,12 @@ export default function MemberChart() {
         }
     }
 
-    const data = {
-        labels: [
-            'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-        ],
+    const chartData = {
+        labels: Object.keys(data?.monthlyMembers || {}),
         datasets: [
             {
                 label: 'Active Members',
-                data: Array(12).fill(0),
+                data: Object.values(data?.monthlyMembers || {}),
                 backgroundColor: 'rgba(34, 197, 94, 0.6)',
                 borderColor: 'rgba(34, 197, 94, 1)',
                 borderWidth: 1,
@@ -71,7 +68,7 @@ export default function MemberChart() {
             },
             {
                 label: 'New Registrations',
-                data: Array(12).fill(0),
+                data: Object.values(data?.monthlyNewMembers || {}),
                 backgroundColor: 'rgba(79, 70, 229, 0.6)',
                 borderColor: 'rgba(79, 70, 229, 1)',
                 borderWidth: 1,
@@ -83,7 +80,7 @@ export default function MemberChart() {
 
     return (
         <div className="member-chart-container">
-            <Bar options={options} data={data} height={300} />
+            <Bar options={options} data={chartData} height={300} />
         </div>
     )
 } 

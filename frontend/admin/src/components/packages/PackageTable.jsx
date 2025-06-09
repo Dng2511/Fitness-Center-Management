@@ -1,3 +1,5 @@
+import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+
 export default function PackageTable({ data, onEdit, onDelete }) {
     return (
         <table className="table">
@@ -26,18 +28,18 @@ export default function PackageTable({ data, onEdit, onDelete }) {
                         <td>
                             <div className="btn-group">
                                 <button
-                                    className="btn btn-sm btn-primary"
+                                    className="edit-btn"
                                     onClick={() => onEdit(pkg)}
+                                    title="Edit package"
                                 >
-                                    Edit
+                                    <FiEdit2 />
                                 </button>
                                 <button
-                                    className="btn btn-sm btn-danger"
-                                    onClick={() => {
-                                            onDelete(pkg.id)
-                                    }}
+                                    className="delete-btn"
+                                    onClick={() => onDelete(pkg.id)}
+                                    title="Delete package"
                                 >
-                                    Delete
+                                    <FiTrash2 />
                                 </button>
                             </div>
                         </td>

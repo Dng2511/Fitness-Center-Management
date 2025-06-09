@@ -19,7 +19,7 @@ ChartJS.register(
     Legend
 )
 
-export default function ProfitChart() {
+export default function ProfitChart({ data }) {
     const options = {
         responsive: true,
         maintainAspectRatio: false,
@@ -34,7 +34,7 @@ export default function ProfitChart() {
             },
             title: {
                 display: true,
-                text: 'Monthly Profit Trends',
+                text: 'Monthly Revenue Trends',
                 font: {
                     size: 16,
                     weight: 'bold'
@@ -53,21 +53,22 @@ export default function ProfitChart() {
         }
     }
 
-    const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], datasets: [{
-            label: 'Monthly Profit', data: Array(12).fill(0), // Create array of 12 zeros
+    const chartData = {
+        labels: Object.keys(data || {}),
+        datasets: [{
+            label: 'Monthly Revenue',
+            data: Object.values(data || {}),
             backgroundColor: 'rgba(79, 70, 229, 0.6)',
             borderColor: 'rgba(79, 70, 229, 1)',
             borderWidth: 1,
             borderRadius: 4,
             hoverBackgroundColor: 'rgba(79, 70, 229, 0.8)'
-        }
-        ]
+        }]
     }
 
     return (
         <div className="profit-chart-container">
-            <Bar options={options} data={data} height={300} />
+            <Bar options={options} data={chartData} height={300} />
         </div>
     )
 } 

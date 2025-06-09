@@ -4,6 +4,7 @@ import PackageTable from '../components/packages/PackageTable'
 import PackageForm from '../components/packages/PackageForm'
 import Alert from '../components/ui/Alert'
 import { createPackage, delelePackage, editPackage, getPackages } from '../services/Api/package'
+import Pagination from '../components/pagination'
 
 export default function Packages() {
     const [packages, setPackages] = useState([])
@@ -11,16 +12,40 @@ export default function Packages() {
     const [showForm, setShowForm] = useState(false)
     const [selectedPackage, setSelectedPackage] = useState(null)
     const [alert, setAlert] = useState({ show: false, type: '', message: '' })
+    const [totalPages, setTotalPages] = useState(1)
+    const [page, setPage] = useState(1)
 
     useEffect(() => {
-        getPackages().then(({data}) => setPackages(data.content))
-    }, [showForm])
+        getPackages({ params: { page } }).then(({ data }) => {
+            setPackages(data.content)
+            setTotalPages(data.totalPages)
+        })
+    }, [page])
 
+    useEffect(() => {
+        getPackages({
+            params: {
+                value: searchQuery,
+                page: 1
+            }
+        }).then(({ data }) => {
+            setPackages(data.content)
+            setPage(1)
+            setTotalPages(data.totalPages)
+        })
+    }, [searchQuery])
 
     const handleSearch = (e) => {
         setSearchQuery(e.target.value)
     }
 
+    const handlePrevPage = () => {
+        setPage(prev => prev - 1)
+    }
+
+    const handleNextPage = () => {
+        setPage(prev => prev + 1)
+    }
 
     const handleAddPackage = () => {
         setSelectedPackage(null)
@@ -89,6 +114,13 @@ export default function Packages() {
                     onDelete={handleDeletePackage}
                 />
             </div>
+
+            <Pagination
+                handlePrevPage={handlePrevPage}
+                handleNextPage={handleNextPage}
+                totalPages={totalPages}
+                page={page}
+            />
         </div>
     )
 }

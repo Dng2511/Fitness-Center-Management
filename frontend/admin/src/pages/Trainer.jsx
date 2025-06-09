@@ -3,12 +3,14 @@ import { useState, useEffect } from 'react';
 import TrainerTable from '../components/trainer/TrainerTable';
 import TrainerForm from '../components/trainer/TrainerForm';
 import { createTrainer, getTrainers } from '../services/Api/trainer';
+import Pagination from '../components/pagination';
 
 export default function Trainer() {
     const [trainers, setTrainers] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [showForm, setShowForm] = useState(false);
     const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [editingTrainer, setEditingTrainer] = useState(null);
     const [error, setError] = useState(null);
 
@@ -17,14 +19,36 @@ export default function Trainer() {
             params: {
                 page: page
             }
-        }).then(({data}) => {
+        }).then(({ data }) => {
             setTrainers(data.content);
+            setTotalPages(data.totalPages);
         })
     }, [page])
+
+    useEffect(() => {
+        getTrainers({
+            params: {
+                value: searchQuery,
+                page: 1
+            }
+        }).then(({ data }) => {
+            setTrainers(data.content);
+            setPage(1);
+            setTotalPages(data.totalPages);
+        })
+    }, [searchQuery])
 
     const handleSearch = (event) => {
         setSearchQuery(event.target.value);
     };
+
+    const handlePrevPage = () => {
+        setPage(prev => prev - 1);
+    }
+
+    const handleNextPage = () => {
+        setPage(prev => prev + 1);
+    }
 
     const handleAddTrainer = () => {
         setEditingTrainer(null);
@@ -45,14 +69,11 @@ export default function Trainer() {
         }
     };
 
-    const handleSubmit = async ({formData}) => {
+    const handleSubmit = async ({ formData }) => {
         console.log(formData)
         await createTrainer(formData);
-
         setShowForm(false);
     };
-
-
 
     return (
         <div className="page-container">
@@ -94,6 +115,13 @@ export default function Trainer() {
                     onClose={() => setShowForm(false)}
                 />
             )}
+
+            <Pagination
+                handlePrevPage={handlePrevPage}
+                handleNextPage={handleNextPage}
+                totalPages={totalPages}
+                page={page}
+            />
         </div>
     );
 }
