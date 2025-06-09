@@ -65,10 +65,10 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="email">Email</label>
+                        <label className={styles.label} htmlFor="username">Username</label>
                         <input
                             className={styles.input}
-                            type="email"
+                            type="username"
                             id="username"
                             name="username"
                             value={formData.username}

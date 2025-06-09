@@ -23,7 +23,7 @@ export default function Trainer() {
             setTrainers(data.content);
             setTotalPages(data.totalPages);
         })
-    }, [page])
+    }, [page, showForm])
 
     useEffect(() => {
         getTrainers({
@@ -70,9 +70,14 @@ export default function Trainer() {
     };
 
     const handleSubmit = async ({ formData }) => {
-        console.log(formData)
-        await createTrainer(formData);
-        setShowForm(false);
+        try {
+            console.log(formData)
+            await createTrainer(formData);
+            setShowForm(false);
+        } catch (error) {
+           alert(error?.response?.data || "Something went wrong!");
+        }
+        
     };
 
     return (

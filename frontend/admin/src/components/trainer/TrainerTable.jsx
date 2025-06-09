@@ -14,7 +14,7 @@ export default function TrainerTable({ data, onEdit, onDelete }) {
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th>Username</th>
                     <th>Phone</th>
                     <th>Specialization</th>
                     <th>Actions</th>
