@@ -15,6 +15,7 @@ import {
     getTopPackages,
     getPackageStatistics
 } from '../services/Api/dashboard'
+import { da } from 'date-fns/locale'
 
 const Dashboard = () => {
     const [dashboardStats, setDashboardStats] = useState({
@@ -26,206 +27,21 @@ const Dashboard = () => {
         uniquePackageCount: 0
     })
 
-    const [monthlyRevenue, setMonthlyRevenue] = useState({
-        labels: [],
-        data: []
-    })
-
-    const [members, setMembers] = useState({
-        list: [],
-        total: 0
-    })
-
-    const [packages, setPackages] = useState({
-        total: 0,
-        top: [],
-        statistics: []
-    })
-
-    const [loadingStates, setLoadingStates] = useState({
-        stats: true,
-        revenue: true,
-        members: true,
-        packages: true
-    })
-
-    const [errors, setErrors] = useState({
-        stats: null,
-        revenue: null,
-        members: null,
-        packages: null
-    })
+    const [monthlyRevenue, setMonthlyRevenue] = useState({})
 
     useEffect(() => {
-        let isMounted = true;
-
-        const fetchStats = () => {
-            setLoadingStates(prev => ({ ...prev, stats: true }));
-            getDashboardStatistics()
-                .then(response => {
-                    if (isMounted) {
-                        console.log('Dashboard Stats:', response.data);
-                        setDashboardStats(response.data);
-                        setErrors(prev => ({ ...prev, stats: null }));
-                    }
-                })
-                .catch(error => {
-                    if (isMounted) {
-                        console.error('Error fetching dashboard statistics:', error);
-                        setErrors(prev => ({
-                            ...prev,
-                            stats: 'Failed to fetch dashboard statistics'
-                        }));
-                    }
-                })
-                .finally(() => {
-                    if (isMounted) {
-                        setLoadingStates(prev => ({ ...prev, stats: false }));
-                    }
-                });
-        };
-
-        fetchStats();
-        return () => { isMounted = false; };
-    }, []);
+        getDashboardStatistics().then(({data}) => setDashboardStats(data))
+    },[]);
 
     useEffect(() => {
-        let isMounted = true;
+        getMonthlyRevenue().then(({data}) => setMonthlyRevenue(data))
+    })
 
-        const fetchRevenue = () => {
-            setLoadingStates(prev => ({ ...prev, revenue: true }));
-            getMonthlyRevenue()
-                .then(response => {
-                    if (isMounted) {
-                        const data = response.data;
-                        const labels = Object.keys(data);
-                        const values = Object.values(data);
-                        setMonthlyRevenue({
-                            labels,
-                            data: values
-                        });
-                        setErrors(prev => ({ ...prev, revenue: null }));
-                    }
-                })
-                .catch(error => {
-                    if (isMounted) {
-                        console.error('Error fetching monthly revenue:', error);
-                        setErrors(prev => ({
-                            ...prev,
-                            revenue: 'Failed to fetch monthly revenue'
-                        }));
-                    }
-                })
-                .finally(() => {
-                    if (isMounted) {
-                        setLoadingStates(prev => ({ ...prev, revenue: false }));
-                    }
-                });
-        };
+    
 
-        fetchRevenue();
-        return () => { isMounted = false; };
-    }, []);
 
-    useEffect(() => {
-        let isMounted = true;
 
-        const fetchMemberData = () => {
-            setLoadingStates(prev => ({ ...prev, members: true }));
-            Promise.all([
-                getActiveMembers(0, 10),
-                getActiveMemberCount()
-            ])
-                .then(([membersResponse, countResponse]) => {
-                    if (isMounted) {
-                        setMembers({
-                            list: membersResponse.data.members || [],
-                            total: countResponse.data
-                        });
-                        setErrors(prev => ({ ...prev, members: null }));
-                    }
-                })
-                .catch(error => {
-                    if (isMounted) {
-                        console.error('Error fetching member data:', error);
-                        setErrors(prev => ({
-                            ...prev,
-                            members: 'Failed to fetch member data'
-                        }));
-                    }
-                })
-                .finally(() => {
-                    if (isMounted) {
-                        setLoadingStates(prev => ({ ...prev, members: false }));
-                    }
-                });
-        };
 
-        fetchMemberData();
-        return () => { isMounted = false; };
-    }, []);
-
-    useEffect(() => {
-        let isMounted = true;
-
-        const fetchPackageData = () => {
-            setLoadingStates(prev => ({ ...prev, packages: true }));
-            Promise.all([
-                getTotalPackages(),
-                getTopPackages(),
-                getPackageStatistics()
-            ])
-                .then(([totalResponse, topResponse, statsResponse]) => {
-                    if (isMounted) {
-                        console.log('Package Data:', {
-                            total: totalResponse.data,
-                            top: topResponse.data,
-                            stats: statsResponse.data
-                        });
-                        setPackages({
-                            total: totalResponse.data,
-                            top: topResponse.data,
-                            statistics: statsResponse.data
-                        });
-                        setErrors(prev => ({ ...prev, packages: null }));
-                    }
-                })
-                .catch(error => {
-                    if (isMounted) {
-                        console.error('Error fetching package data:', error);
-                        setErrors(prev => ({
-                            ...prev,
-                            packages: 'Failed to fetch package data'
-                        }));
-                    }
-                })
-                .finally(() => {
-                    if (isMounted) {
-                        setLoadingStates(prev => ({ ...prev, packages: false }));
-                    }
-                });
-        };
-
-        fetchPackageData();
-        return () => { isMounted = false; };
-    }, []);
-
-    const isLoading = Object.values(loadingStates).some(state => state);
-    const hasError = Object.values(errors).some(error => error !== null);
-
-    if (isLoading) {
-        return <div className="loading">Loading dashboard data...</div>
-    }
-
-    if (hasError) {
-        return (
-            <div className="error">
-                {Object.entries(errors).map(([section, error]) =>
-                    error && <div key={section}>{error}</div>
-                )}
-            </div>
-        )
-    }
 
     return (
         <div className="dashboard">
@@ -265,7 +81,7 @@ const Dashboard = () => {
                 <div className="stats-grid">
                     <StatCard
                         title="Total Packages"
-                        value={packages.total || 0}
+                        value={ 0}
                         icon={<FiPackage size={24} />}
                     />
                     <StatCard
@@ -277,11 +93,11 @@ const Dashboard = () => {
                 <div className="charts-section">
                     <div className="chart-card">
                         <h3>Package Statistics</h3>
-                        <PackageChart data={packages.statistics} />
+                        <PackageChart data={dashboardStats.packageStatistics} />
                     </div>
                     <div className="chart-card">
                         <h3>Top Packages Distribution</h3>
-                        <TopPackagesChart data={packages.top} />
+                        <TopPackagesChart data={dashboardStats.topPackages} />
                     </div>
                 </div>
             </section>

@@ -27,7 +27,7 @@ export default function TrainerTable({ data, onEdit, onDelete }) {
                         <td>{trainer.name}</td>
                         <td>{trainer.username || '—'}</td>
                         <td>{trainer.phone_number || '—'}</td>
-                        <td>{trainer.specialization}</td>
+                        <td>{trainer.specialty}</td>
                         <td>
                             <div className="action-buttons">
                                 <button

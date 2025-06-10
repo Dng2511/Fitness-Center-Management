@@ -14,8 +14,7 @@ export default function StaffTable({ data, onEdit, onDelete }) {
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
+                    {/* <th>Username</th> */}
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -24,8 +23,7 @@ export default function StaffTable({ data, onEdit, onDelete }) {
                     <tr key={staff.id}>
                         <td>{staff.id}</td>
                         <td>{staff.name}</td>
-                        <td>{staff.username || '—'}</td>
-                        <td>{staff.phone_number || '—'}</td>
+                        {/* <td>{staff.username || '—'}</td> */}
                         <td>
                             <div className="action-buttons">
                                 <button

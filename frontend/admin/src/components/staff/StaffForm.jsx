@@ -64,15 +64,14 @@ export default function StaffForm({ initialData, onSubmit, onClose }) {
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="email">Email</label>
+                        <label className={styles.label} htmlFor="username">Username</label>
                         <input
                             className={styles.input}
-                            type="email"
                             id="username"
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            placeholder="Email"
+                            placeholder="Username"
                         />
                         {errors.email && <div className={styles.error}>{errors.email}</div>}
                     </div>
@@ -87,18 +86,6 @@ export default function StaffForm({ initialData, onSubmit, onClose }) {
                             value={formData.password}
                             onChange={handleChange}
                             placeholder="Password"
-                        />
-                    </div>
-                    <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="phone">Phone</label>
-                        <input
-                            className={styles.input}
-                            type="tel"
-                            id="phone_number"
-                            name="phone_number"
-                            value={formData.phone_number}
-                            onChange={handleChange}
-                            placeholder="Phone number"
                         />
                     </div>
                     <div className={styles.formActions}>

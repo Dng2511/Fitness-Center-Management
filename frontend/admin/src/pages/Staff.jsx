@@ -23,7 +23,7 @@ export default function Staff() {
             setStaff(data.content);
             setTotalPages(data.totalPages);
         })
-    }, [page])
+    }, [page, showForm])
 
     useEffect(() => {
         getStaffs({

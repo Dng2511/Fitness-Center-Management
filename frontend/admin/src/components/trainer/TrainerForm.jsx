@@ -73,7 +73,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             name="username"
                             value={formData.username}
                             onChange={handleChange}
-                            placeholder="Email"
+                            placeholder="Username"
                         />
                         {errors.email && <div className={styles.error}>{errors.email}</div>}
                     </div>
