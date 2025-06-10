@@ -6,64 +6,225 @@ import TopPackagesChart from '../components/dashboard/TopPackagesChart'
 import MemberChart from '../components/dashboard/MemberChart'
 import { FiUsers, FiDollarSign, FiPackage, FiShoppingCart } from 'react-icons/fi'
 import styles from '../components/dashboard/Dashboard.module.css'
-import { getDashboardStatistics, getMonthlyRevenue, getActiveMembers, getActiveMemberCount } from '../services/Api/dashboard'
+import {
+    getDashboardStatistics,
+    getMonthlyRevenue,
+    getActiveMembers,
+    getActiveMemberCount,
+    getTotalPackages,
+    getTopPackages,
+    getPackageStatistics
+} from '../services/Api/dashboard'
 
 const Dashboard = () => {
-    const [stats, setStats] = useState({
+    const [dashboardStats, setDashboardStats] = useState({
         totalRevenue: 0,
         recentRevenue: 0,
         transactionCount: 0,
         totalMembers: 0,
         newMembers: 0,
-        uniquePackageCount: 0,
-        topPackages: [],
-        packageStatistics: []
+        uniquePackageCount: 0
     })
 
-    const [monthlyRevenue, setMonthlyRevenue] = useState({})
-    const [activeMembers, setActiveMembers] = useState([])
-    const [activeMemberCount, setActiveMemberCount] = useState(0)
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [monthlyRevenue, setMonthlyRevenue] = useState({
+        labels: [],
+        data: []
+    })
 
-    const fetchDashboardData = async () => {
-        try {
-            setLoading(true)
-            const [statsResponse, revenueResponse, membersResponse, countResponse] = await Promise.all([
-                getDashboardStatistics(),
-                getMonthlyRevenue(),
+    const [members, setMembers] = useState({
+        list: [],
+        total: 0
+    })
+
+    const [packages, setPackages] = useState({
+        total: 0,
+        top: [],
+        statistics: []
+    })
+
+    const [loadingStates, setLoadingStates] = useState({
+        stats: true,
+        revenue: true,
+        members: true,
+        packages: true
+    })
+
+    const [errors, setErrors] = useState({
+        stats: null,
+        revenue: null,
+        members: null,
+        packages: null
+    })
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchStats = () => {
+            setLoadingStates(prev => ({ ...prev, stats: true }));
+            getDashboardStatistics()
+                .then(response => {
+                    if (isMounted) {
+                        console.log('Dashboard Stats:', response.data);
+                        setDashboardStats(response.data);
+                        setErrors(prev => ({ ...prev, stats: null }));
+                    }
+                })
+                .catch(error => {
+                    if (isMounted) {
+                        console.error('Error fetching dashboard statistics:', error);
+                        setErrors(prev => ({
+                            ...prev,
+                            stats: 'Failed to fetch dashboard statistics'
+                        }));
+                    }
+                })
+                .finally(() => {
+                    if (isMounted) {
+                        setLoadingStates(prev => ({ ...prev, stats: false }));
+                    }
+                });
+        };
+
+        fetchStats();
+        return () => { isMounted = false; };
+    }, []);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchRevenue = () => {
+            setLoadingStates(prev => ({ ...prev, revenue: true }));
+            getMonthlyRevenue()
+                .then(response => {
+                    if (isMounted) {
+                        const data = response.data;
+                        const labels = Object.keys(data);
+                        const values = Object.values(data);
+                        setMonthlyRevenue({
+                            labels,
+                            data: values
+                        });
+                        setErrors(prev => ({ ...prev, revenue: null }));
+                    }
+                })
+                .catch(error => {
+                    if (isMounted) {
+                        console.error('Error fetching monthly revenue:', error);
+                        setErrors(prev => ({
+                            ...prev,
+                            revenue: 'Failed to fetch monthly revenue'
+                        }));
+                    }
+                })
+                .finally(() => {
+                    if (isMounted) {
+                        setLoadingStates(prev => ({ ...prev, revenue: false }));
+                    }
+                });
+        };
+
+        fetchRevenue();
+        return () => { isMounted = false; };
+    }, []);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const fetchMemberData = () => {
+            setLoadingStates(prev => ({ ...prev, members: true }));
+            Promise.all([
                 getActiveMembers(0, 10),
                 getActiveMemberCount()
             ])
+                .then(([membersResponse, countResponse]) => {
+                    if (isMounted) {
+                        setMembers({
+                            list: membersResponse.data.members || [],
+                            total: countResponse.data
+                        });
+                        setErrors(prev => ({ ...prev, members: null }));
+                    }
+                })
+                .catch(error => {
+                    if (isMounted) {
+                        console.error('Error fetching member data:', error);
+                        setErrors(prev => ({
+                            ...prev,
+                            members: 'Failed to fetch member data'
+                        }));
+                    }
+                })
+                .finally(() => {
+                    if (isMounted) {
+                        setLoadingStates(prev => ({ ...prev, members: false }));
+                    }
+                });
+        };
 
-            setStats(statsResponse.data)
-            setMonthlyRevenue(revenueResponse.data)
-            setActiveMembers(membersResponse.data.members)
-            setActiveMemberCount(countResponse.data)
-            setError(null)
-        } catch (error) {
-            console.error('Error fetching dashboard data:', error)
-            setError('Failed to fetch dashboard data. Please try again later.')
-        } finally {
-            setLoading(false)
-        }
-    }
+        fetchMemberData();
+        return () => { isMounted = false; };
+    }, []);
 
     useEffect(() => {
-        fetchDashboardData()
+        let isMounted = true;
 
-        // Set up auto-refresh every 5 minutes
-        const refreshInterval = setInterval(fetchDashboardData, 5 * 60 * 1000)
+        const fetchPackageData = () => {
+            setLoadingStates(prev => ({ ...prev, packages: true }));
+            Promise.all([
+                getTotalPackages(),
+                getTopPackages(),
+                getPackageStatistics()
+            ])
+                .then(([totalResponse, topResponse, statsResponse]) => {
+                    if (isMounted) {
+                        console.log('Package Data:', {
+                            total: totalResponse.data,
+                            top: topResponse.data,
+                            stats: statsResponse.data
+                        });
+                        setPackages({
+                            total: totalResponse.data,
+                            top: topResponse.data,
+                            statistics: statsResponse.data
+                        });
+                        setErrors(prev => ({ ...prev, packages: null }));
+                    }
+                })
+                .catch(error => {
+                    if (isMounted) {
+                        console.error('Error fetching package data:', error);
+                        setErrors(prev => ({
+                            ...prev,
+                            packages: 'Failed to fetch package data'
+                        }));
+                    }
+                })
+                .finally(() => {
+                    if (isMounted) {
+                        setLoadingStates(prev => ({ ...prev, packages: false }));
+                    }
+                });
+        };
 
-        return () => clearInterval(refreshInterval)
-    }, [])
+        fetchPackageData();
+        return () => { isMounted = false; };
+    }, []);
 
-    if (loading) {
+    const isLoading = Object.values(loadingStates).some(state => state);
+    const hasError = Object.values(errors).some(error => error !== null);
+
+    if (isLoading) {
         return <div className="loading">Loading dashboard data...</div>
     }
 
-    if (error) {
-        return <div className="error">{error}</div>
+    if (hasError) {
+        return (
+            <div className="error">
+                {Object.entries(errors).map(([section, error]) =>
+                    error && <div key={section}>{error}</div>
+                )}
+            </div>
+        )
     }
 
     return (
@@ -76,17 +237,17 @@ const Dashboard = () => {
                 <div className="stats-grid">
                     <StatCard
                         title="Total Revenue"
-                        value={`${stats.totalRevenue?.toLocaleString()}₫`}
+                        value={`${dashboardStats.totalRevenue?.toLocaleString()}₫`}
                         icon={<FiDollarSign size={24} />}
                     />
                     <StatCard
                         title="Recent Revenue (30 days)"
-                        value={`${stats.recentRevenue?.toLocaleString()}₫`}
+                        value={`${dashboardStats.recentRevenue?.toLocaleString()}₫`}
                         icon={<FiDollarSign size={24} />}
                     />
                     <StatCard
                         title="Total Transactions"
-                        value={stats.transactionCount}
+                        value={dashboardStats.transactionCount}
                         icon={<FiShoppingCart size={24} />}
                     />
                 </div>
@@ -103,19 +264,24 @@ const Dashboard = () => {
                 <h2 className={styles['section-title']}>Package Statistics</h2>
                 <div className="stats-grid">
                     <StatCard
+                        title="Total Packages"
+                        value={packages.total || 0}
+                        icon={<FiPackage size={24} />}
+                    />
+                    <StatCard
                         title="Active Packages"
-                        value={stats.uniquePackageCount}
+                        value={dashboardStats.uniquePackageCount || 0}
                         icon={<FiPackage size={24} />}
                     />
                 </div>
                 <div className="charts-section">
                     <div className="chart-card">
                         <h3>Package Statistics</h3>
-                        <PackageChart data={stats.packageStatistics} />
+                        <PackageChart data={packages.statistics} />
                     </div>
                     <div className="chart-card">
                         <h3>Top Packages Distribution</h3>
-                        <TopPackagesChart data={stats.topPackages} />
+                        <TopPackagesChart data={packages.top} />
                     </div>
                 </div>
             </section>
@@ -126,12 +292,12 @@ const Dashboard = () => {
                 <div className="stats-grid">
                     <StatCard
                         title="Total Members"
-                        value={stats.totalMembers}
+                        value={dashboardStats.totalMembers}
                         icon={<FiUsers size={24} />}
                     />
                     <StatCard
                         title="New Members (30 days)"
-                        value={stats.newMembers}
+                        value={dashboardStats.newMembers}
                         icon={<FiUsers size={24} />}
                     />
                 </div>
@@ -139,8 +305,8 @@ const Dashboard = () => {
                     <div className="chart-card">
                         <h3>Member Growth</h3>
                         <MemberChart data={{
-                            monthlyMembers: stats.monthlyMembers,
-                            monthlyNewMembers: stats.monthlyNewMembers
+                            monthlyMembers: dashboardStats.monthlyMembers,
+                            monthlyNewMembers: dashboardStats.monthlyNewMembers
                         }} />
                     </div>
                 </div>

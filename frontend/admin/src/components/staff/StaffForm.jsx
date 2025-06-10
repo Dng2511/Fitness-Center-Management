@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { FiX } from 'react-icons/fi';
-import styles from './TrainerForm.module.css';
+import styles from './StaffForm.module.css';
 
 
-export default function TrainerForm({ initialData, onSubmit, onClose }) {
+export default function StaffForm({ initialData, onSubmit, onClose }) {
     const [formData, setFormData] = useState({
         name: '',
         username: '',
         password: '',
         phone_number: '',
-        specialty: ''
     });
     const [errors, setErrors] = useState({});
 
@@ -25,7 +24,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
             ...prev,
             [name]: value
         }));
-        // Clear error when user starts typing
+
         if (errors[name]) {
             setErrors(prev => ({
                 ...prev,
@@ -43,7 +42,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
         <div className={styles.modalOverlay}>
             <div className={styles.modalContent}>
                 <div className={styles.modalHeader}>
-                    <h2>{initialData?.id ? 'Edit' : 'Add'} Trainer</h2>
+                    <h2>{initialData?.id ? 'Edit' : 'Add'} Staff</h2>
                     <button className={styles.closeBtn} onClick={onClose}>
                         <FiX size={24} />
                     </button>
@@ -65,10 +64,10 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="username">Username</label>
+                        <label className={styles.label} htmlFor="email">Email</label>
                         <input
                             className={styles.input}
-                            type="username"
+                            type="email"
                             id="username"
                             name="username"
                             value={formData.username}
@@ -102,20 +101,6 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             placeholder="Phone number"
                         />
                     </div>
-
-                    <div className={styles.formGroup}>
-                        <label className={styles.label} htmlFor="specialty">Specialty</label>
-                        <input
-                            className={styles.input}
-                            type="text"
-                            id="specialty"
-                            name="specialty"
-                            value={formData.specialty}
-                            onChange={handleChange}
-                            placeholder="Specialty"
-                        />
-                    </div>
-
                     <div className={styles.formActions}>
                         <button
                             type="button"
@@ -128,7 +113,7 @@ export default function TrainerForm({ initialData, onSubmit, onClose }) {
                             type="submit"
                             className={`${styles.button} ${styles.buttonPrimary}`}
                         >
-                            {initialData?.id ? 'Update' : 'Add'} Trainer
+                            {initialData?.id ? 'Update' : 'Add'} Staff
                         </button>
                     </div>
                 </form>
