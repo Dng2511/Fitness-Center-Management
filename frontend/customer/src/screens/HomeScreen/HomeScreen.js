@@ -10,6 +10,7 @@ import AccessLogScreen from "../AccessLogScreen";
 import DoorManagerScreen from "../DoorManagerScreen";
 import ChangeCardIdScreen from "../ChangeCardIdScreen";
 import QRCodeScreen from "../QRCodeScreen";
+import ProfileScreen from "../ProfileScreen";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -40,7 +41,6 @@ const HomeScreen = () => {
         return (
           <View
             style={{
-              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
             }}
@@ -53,7 +53,6 @@ const HomeScreen = () => {
         return (
           <View
             style={{
-              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -67,7 +66,6 @@ const HomeScreen = () => {
         return (
           <View
             style={{
-              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -77,17 +75,16 @@ const HomeScreen = () => {
           </View>
         );
 
-      case "CardID Change Page":
+      case "Profile Page":
         return (
           <View
             style={{
-              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
             }}
           >
-            <ChangeCardIdScreen></ChangeCardIdScreen>
+            <ProfileScreen></ProfileScreen>
           </View>
         );
 
@@ -95,7 +92,6 @@ const HomeScreen = () => {
         return (
           <View
             style={{
-              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -121,7 +117,6 @@ const HomeScreen = () => {
         tintColor="#33A3F4"
         barTintColor="#f5f5f5"
         tabBarPosition="bottom"
-        style={{ height: 200 }}
       >
         <TabBar.Item
           title="Home"
@@ -155,14 +150,18 @@ const HomeScreen = () => {
         <TabBar.Item
           icon={
             <TabBarIcon
-              iconName="logout"
-              onFocus={selectedTab === "Logout" ? true : false}
+              iconName="profile" // ← đổi từ "video-camera" sang "qrcode"
+              onFocus={selectedTab === "Profile" ? true : false}
             />
           }
-          title="Logout"
-          selected={selectedTab === "Logout"}
-          onPress={() => onLogout()}
-        ></TabBar.Item>
+          title="Tôi"
+          selected={selectedTab === "Profile"}
+          onPress={() => onChangeTab("Profile")}
+        >
+          {renderContent("Profile Page")}
+        </TabBar.Item>
+
+        
       </TabBar>
     </View>
   );

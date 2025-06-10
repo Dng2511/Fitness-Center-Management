@@ -35,7 +35,7 @@ const QRCodeScreen = () => {
         {token ? (
           <QRCode value={token} size={250} />
         ) : (
-          <Text>Không có token</Text>
+          <Text>Loading</Text>
         )}
       </View>
     </View>
