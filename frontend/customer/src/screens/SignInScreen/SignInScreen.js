@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import Logo from "../../../assets/images/key.png";
+import Logo from "../../../assets/images/uzamaid-tsubames-muscles.jpg";
 import CustomInput from "../../components/CustomInput";
 import CustomButton from "../../components/CustomButton";
 import { login } from "../../../utils/Api/authService";
@@ -51,12 +51,12 @@ const SignInScreen = () => {
       ></CustomInput>
 
       <CustomButton
-        text="Sign In"
+        text="Đăng Nhập"
         onPress={onSignInPressed}
         type="PRIMARY"
       ></CustomButton>
       <CustomButton
-        text="Don't have one yet? Create one here!"
+        text="Chưa có tài khoản? Tạo ngay!"
         onPress={onSignUpPressed}
         type="TERTIARY"
       ></CustomButton>

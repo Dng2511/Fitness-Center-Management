@@ -134,6 +134,7 @@ const AccessLogScreen = () => {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    height: '90%'
   },
   card: {
     backgroundColor: "#fff",

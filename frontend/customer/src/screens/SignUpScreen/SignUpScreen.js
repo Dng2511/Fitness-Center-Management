@@ -101,12 +101,12 @@ const SignUpScreen = () => {
         ></CustomInput>
 
         <CustomButton
-          text="Sign Up"
+          text="Đăng kí"
           onPress={onRegisterPressed}
           type="PRIMARY"
         ></CustomButton>
         <CustomButton
-          text="Already has a account? Login here!"
+          text="Đã có tài khoản? Đăng nhập ngay!"
           onPress={onSignInPressed}
           type="TERTIARY"
         ></CustomButton>
