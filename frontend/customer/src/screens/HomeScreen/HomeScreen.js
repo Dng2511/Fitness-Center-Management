@@ -41,6 +41,7 @@ const HomeScreen = () => {
         return (
           <View
             style={{
+              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
             }}
@@ -53,6 +54,7 @@ const HomeScreen = () => {
         return (
           <View
             style={{
+              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -66,6 +68,7 @@ const HomeScreen = () => {
         return (
           <View
             style={{
+              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -79,6 +82,7 @@ const HomeScreen = () => {
         return (
           <View
             style={{
+              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -92,6 +96,7 @@ const HomeScreen = () => {
         return (
           <View
             style={{
+              marginTop: 50,
               alignItems: "center",
               backgroundColor: "white",
               paddingBottom: 60
@@ -117,6 +122,7 @@ const HomeScreen = () => {
         tintColor="#33A3F4"
         barTintColor="#f5f5f5"
         tabBarPosition="bottom"
+        style={{ height: 90 }}
       >
         <TabBar.Item
           title="Home"
