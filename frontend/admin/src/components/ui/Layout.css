@@ -36,8 +36,10 @@
 }
 
 .sidebar-header {
+    padding: 20px;
+    padding-top: 10px;
+    border-bottom: 1px solid #e0e0e0;
     margin-bottom: 1rem;
-    padding: 0.5rem 0;
 }
 
 .logo {
@@ -123,31 +125,21 @@
 .user-info {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    gap: 0.5rem;
     margin-bottom: 0.5rem;
-    cursor: default;
-    transition: all 0.3s ease;
-}
-
-.user-info:hover {
-    background: rgba(255, 255, 255, 0.15);
 }
 
 .avatar {
     width: 32px;
     height: 32px;
+    background-color: #4a90e2;
+    color: white;
     border-radius: 50%;
-    background: linear-gradient(45deg, #64b5f6, #2196f3);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    color: #fff;
-    margin-right: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .user-details {
@@ -156,44 +148,40 @@
 }
 
 .user-name {
-    font-weight: 600;
-    color: #fff;
-    font-size: 0.8rem;
-    line-height: 1;
-    margin-bottom: 2px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #333;
 }
 
 .user-role {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1;
+    font-size: 0.75rem;
+    color: #666;
 }
 
 /* Logout Button */
 .logout-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
     border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: 500;
+    color: #e74c3c;
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 4px;
+    transition: all 0.2s;
 }
 
 .logout-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+    background-color: #fee2e2;
+    color: #dc2626;
 }
 
 .logout-icon {
-    margin-right: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
 /* Mobile Styles */
@@ -333,4 +321,10 @@ button[type="submit"]:disabled {
     to {
         transform: translateX(-100%);
     }
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
 }

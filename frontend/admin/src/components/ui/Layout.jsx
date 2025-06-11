@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
-import { FiMenu, FiX, FiHome, FiUsers, FiPackage, FiActivity, FiSettings, FiLogOut, FiUserPlus, FiUser } from 'react-icons/fi'
+import { FiMenu, FiX, FiHome, FiUsers, FiPackage, FiActivity, FiSettings, FiLogOut, FiUserPlus, FiUser, FiMessageSquare } from 'react-icons/fi'
 import { AuthContext } from '../auth/AuthContext'
 import './Layout.css'
 
@@ -63,6 +63,10 @@ const Layout = () => {
                     <Link to="/staff" className="nav-item" onClick={() => setSidebarOpen(false)}>
                         <FiUser className="nav-icon" />
                         <span>Staff</span>
+                    </Link>
+                    <Link to="/feedback" className="nav-item" onClick={() => setSidebarOpen(false)}>
+                        <FiMessageSquare className="nav-icon" />
+                        <span>Feedback</span>
                     </Link>
                 </nav>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import StatCard from '../components/dashboard/StatCard'
 import ProfitChart from '../components/dashboard/ProfitChart'
-import PackageChart from '../components/dashboard/PackageChart'
+import PackageTable from '../components/dashboard/PackageTable'
 import TopPackagesChart from '../components/dashboard/TopPackagesChart'
 import MemberChart from '../components/dashboard/MemberChart'
 import { FiUsers, FiDollarSign, FiPackage, FiShoppingCart } from 'react-icons/fi'
@@ -10,12 +10,8 @@ import {
     getDashboardStatistics,
     getMonthlyRevenue,
     getActiveMembers,
-    getActiveMemberCount,
-    getTotalPackages,
-    getTopPackages,
-    getPackageStatistics
+    getActiveMemberCount
 } from '../services/Api/dashboard'
-import { da } from 'date-fns/locale'
 
 const Dashboard = () => {
     const [dashboardStats, setDashboardStats] = useState({
@@ -24,24 +20,34 @@ const Dashboard = () => {
         transactionCount: 0,
         totalMembers: 0,
         newMembers: 0,
-        uniquePackageCount: 0
+        uniquePackageCount: 0,
+        packageStatistics: [],
+        topPackages: []
     })
 
     const [monthlyRevenue, setMonthlyRevenue] = useState({})
+    const [activeMemberCount, setActiveMemberCount] = useState(0)
+    const [activeMembers, setActiveMembers] = useState([])
 
+    // Lấy thống kê tổng quan
     useEffect(() => {
-        getDashboardStatistics().then(({data}) => setDashboardStats(data))
-    },[]);
+        getDashboardStatistics().then(({ data }) => setDashboardStats(data))
+    }, []);
 
+    // Lấy doanh thu theo tháng
     useEffect(() => {
-        getMonthlyRevenue().then(({data}) => setMonthlyRevenue(data))
-    })
+        getMonthlyRevenue().then(({ data }) => setMonthlyRevenue(data))
+    }, [])
 
-    
+    // Lấy danh sách thành viên đang hoạt động
+    useEffect(() => {
+        getActiveMembers().then(({ data }) => setActiveMembers(data.members))
+    }, [])
 
-
-
-
+    // Lấy số lượng thành viên đang hoạt động
+    useEffect(() => {
+        getActiveMemberCount().then(({ data }) => setActiveMemberCount(data))
+    }, [])
 
     return (
         <div className="dashboard">
@@ -80,11 +86,6 @@ const Dashboard = () => {
                 <h2 className={styles['section-title']}>Package Statistics</h2>
                 <div className="stats-grid">
                     <StatCard
-                        title="Total Packages"
-                        value={ 0}
-                        icon={<FiPackage size={24} />}
-                    />
-                    <StatCard
                         title="Active Packages"
                         value={dashboardStats.uniquePackageCount || 0}
                         icon={<FiPackage size={24} />}
@@ -93,7 +94,7 @@ const Dashboard = () => {
                 <div className="charts-section">
                     <div className="chart-card">
                         <h3>Package Statistics</h3>
-                        <PackageChart data={dashboardStats.packageStatistics} />
+                        <PackageTable data={dashboardStats.packageStatistics} />
                     </div>
                     <div className="chart-card">
                         <h3>Top Packages Distribution</h3>
@@ -114,6 +115,11 @@ const Dashboard = () => {
                     <StatCard
                         title="New Members (30 days)"
                         value={dashboardStats.newMembers}
+                        icon={<FiUsers size={24} />}
+                    />
+                    <StatCard
+                        title="Active Members"
+                        value={activeMemberCount}
                         icon={<FiUsers size={24} />}
                     />
                 </div>
