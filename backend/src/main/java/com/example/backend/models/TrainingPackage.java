@@ -15,7 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TrainingPackage extends BaseModel {
 
-    @Column(name = "package_name")
+    @Column(name = "package_name", columnDefinition = "NVARCHAR(255)")
     String packageName;
 
     @Column(name = "duration_months") // ví dụ: 3, 6, 12 tháng

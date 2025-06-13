@@ -2,7 +2,7 @@ import { FiSearch, FiPlus } from 'react-icons/fi'
 import React from 'react'
 import EquipmentTable from '../components/equipment/EquipmentTable'
 import EquipmentForm from '../components/equipment/EquipmentForm'
-import { createEquipment, deleteEquipment, getEquipments } from '../services/Api/equipment'
+import { createEquipment, deleteEquipment, getEquipments, updateEquipment } from '../services/Api/equipment'
 import Pagination from '../components/pagination'
 
 export default function Equipment() {
@@ -17,7 +17,7 @@ export default function Equipment() {
             setEquipments(data.content)
             setTotalPages(data.totalPages)
         })
-    }, [page])
+    }, [page, showForm])
 
     React.useEffect(() => {
         getEquipments({
@@ -55,13 +55,32 @@ export default function Equipment() {
         }
     }
 
-    const onAddEquipment = (data) => {
+    const onAddEquipment = async (data) => {
         try {
-            createEquipment(data)
+            await createEquipment(data);
+            setShowForm(false);
         } catch (error) {
             console.log(error)
         }
     }
+
+    const onChangeStatus = (item) => {
+        const newStatus = item.status === 'ACTIVE' ? 'MAINTENANCE' : 'ACTIVE';
+
+        updateEquipment(item.id, { ...item, status: newStatus });
+        setEquipments((prev) =>
+            prev.map((equipment) =>
+                equipment.id === item.id
+                    ? {
+                        ...equipment,
+                        status: equipment.status === 'ACTIVE' ? 'MAINTENANCE' : 'ACTIVE',
+                    }
+                    : equipment
+            )
+        );
+        setShowForm(false);
+    };
+
 
     return (
         <div className="page-container">
@@ -92,6 +111,7 @@ export default function Equipment() {
                     <EquipmentTable
                         data={equipments}
                         onDelete={handleDelete}
+                        onChangeStatus={onChangeStatus}
                     />
                 )}
             </div>

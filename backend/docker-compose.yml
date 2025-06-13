@@ -11,6 +11,9 @@ services:
       - SA_PASSWORD=YourStrong@Passw0rd
     networks:
       - backend-net
+    volumes:
+      - ./init:/init
+      - ./sql_backup:/var/opt/mssql/backup
 
   sql-init:
     image: mcr.microsoft.com/mssql-tools
@@ -23,6 +26,7 @@ services:
       "
     volumes:
       - ./init:/init
+      - ./sql_backup:/var/opt/mssql/backup
     networks:
       - backend-net
 

@@ -9,7 +9,7 @@ export default function PackageTable({ data, onEdit, onDelete }) {
                     <th>Package Name</th>
                     <th>Type</th>
                     <th>Price (VNĐ)</th>
-                    <th>Duration Days</th>
+                    <th>Duration Months</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -24,7 +24,7 @@ export default function PackageTable({ data, onEdit, onDelete }) {
                             </span>
                         </td>
                         <td>{pkg.price.toLocaleString()}</td>
-                        <td>{pkg.duration} days</td>
+                        <td>{pkg.duration} Months</td>
                         <td>
                             <div className="btn-group">
                                 <button

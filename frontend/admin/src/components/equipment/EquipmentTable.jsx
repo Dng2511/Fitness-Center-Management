@@ -6,7 +6,7 @@ export default function EquipmentTable({ data, onDelete, onChangeStatus }) {
         <table className="table">
             <thead>
                 <tr>
-                    <th>Tool ID</th>
+                    <th>ID</th>
                     <th>Equipment Name</th>
                     <th>Warranty</th>
                     <th>Origin</th>
