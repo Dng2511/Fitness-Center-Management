@@ -9,7 +9,7 @@ export default function Profile() {
     const [info, setInfo] = React.useState({})
 
     React.useEffect(() => {
-        getProfile().then(({data}) => setInfo(data.memberInfo));
+        getProfile().then(({ data }) => setInfo(data.memberInfo));
     })
 
     const [isEditing, setIsEditing] = useState(false);
