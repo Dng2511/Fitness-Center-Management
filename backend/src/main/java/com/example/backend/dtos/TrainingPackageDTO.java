@@ -3,10 +3,7 @@ package com.example.backend.dtos;
 import com.example.backend.models.TrainingPackage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -22,6 +19,7 @@ import lombok.experimental.FieldDefaults;
         "createdAt",
         "updatedAt"
 })
+@NoArgsConstructor
 public class TrainingPackageDTO {
     @JsonProperty("id")
     Long id;

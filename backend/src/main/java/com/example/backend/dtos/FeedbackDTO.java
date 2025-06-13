@@ -7,10 +7,7 @@ import com.example.backend.models.Member;
 import com.example.backend.models.Room;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
@@ -27,6 +24,7 @@ import java.time.LocalDateTime;
         "rating",
         "content",
 })
+@NoArgsConstructor
 public class FeedbackDTO {
 
     Long id;
