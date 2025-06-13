@@ -1,6 +1,6 @@
 import {Http} from "../Http"
 
-export const getPackages = () => Http.get("/packages");
+export const getPackages = (config) => Http.get("/packages", config);
 
 export const createPackage = (data) => Http.post("/packages", data);
 

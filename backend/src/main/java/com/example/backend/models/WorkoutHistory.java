@@ -26,6 +26,6 @@ public class WorkoutHistory extends BaseModel {
     @Column(name = "workout_date")
     LocalDate workoutDate;
 
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "NVARCHAR(255)")
     String note;
 }

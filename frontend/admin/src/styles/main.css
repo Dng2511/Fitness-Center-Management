@@ -1013,7 +1013,7 @@ button[type="submit"] {
 }
 
 .price-duration-section .duration-input::before {
-    content: 'Days';
+    content: 'M';
     position: absolute;
     right: 1rem;
     top: 50%;

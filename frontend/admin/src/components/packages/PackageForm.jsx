@@ -4,7 +4,7 @@ import { FiCheck, FiX } from 'react-icons/fi'
 export default function PackageForm({ initialData, onSubmit, onCancel }) {
     const [formData, setFormData] = useState({
         package_name: '',
-        type: 'Access Package',
+        type: 'FREEDOM',
         price: 0,
         duration: 1
     })
@@ -57,6 +57,8 @@ export default function PackageForm({ initialData, onSubmit, onCancel }) {
                                 required
                                 className="form-control"
                             >
+                                <option value="FREEDOM">FREEDOM</option>
+                                <option value="COACH">COACH</option>
                                 <option value="Access Package">Access Package</option>
                                 <option value="Personal Training">Personal Training</option>
                                 <option value="Group Class Package">Group Class Package</option>
@@ -85,7 +87,7 @@ export default function PackageForm({ initialData, onSubmit, onCancel }) {
                             </div>
 
                             <div className="form-group">
-                                <label>Duration</label>
+                                <label>Duration Months</label>
                                 <div className="duration-input">
                                     <input
                                         type="number"
