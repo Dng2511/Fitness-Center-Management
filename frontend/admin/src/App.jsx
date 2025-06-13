@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound'
 import Room from './pages/Room'
 import Profile from './pages/Profile'
 import Trainer from './pages/Trainer'
+import Feedback from './pages/Feedback'
 import "./App.css"
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/staff" element={<ProtectedRoute><Staff /></ProtectedRoute>} />
             <Route path="/trainer" element={<ProtectedRoute><Trainer /></ProtectedRoute>} />
             <Route path="/rooms" element={<ProtectedRoute><Room /></ProtectedRoute>} />
+            <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
           </Route>
 
           {/* 404 route */}
