@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,12 +40,14 @@ public class TrainingPackageController {
     }
 
     @PostMapping("")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> addTrainingPackage(@RequestBody TrainingPackageDTO trainingPackageDTO) {
             TrainingPackageDTO createdTrainingPackage = trainingPackageService.addTrainingPackage(trainingPackageDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdTrainingPackage);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> updateTrainingPackage(
             @PathVariable("id") Long id,
             @RequestBody TrainingPackageDTO trainingPackageDTO
@@ -54,6 +57,7 @@ public class TrainingPackageController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> deleteTrainingPackage(@PathVariable("id") Long id) {
             TrainingPackageDTO deletedTrainingPackage = trainingPackageService.deleteTrainingPackage(id);
             return ResponseEntity.ok(deletedTrainingPackage);

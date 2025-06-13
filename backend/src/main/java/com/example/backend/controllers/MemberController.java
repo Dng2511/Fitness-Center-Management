@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -27,6 +28,7 @@ public class MemberController {
     UserService userService;
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> getAllMembers(
             @RequestParam(value = "page", defaultValue = "1") int page,
             @RequestParam(value = "limit", defaultValue = "10") int limit
@@ -37,6 +39,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> getMemberById(@PathVariable("id") Long id) {
             MemberDTO memberDTO = memberService.getMemberById(id);
             return ResponseEntity.ok(memberDTO);
@@ -53,6 +56,7 @@ public class MemberController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> addMember(@RequestBody MemberDTO memberDTO) {
             MemberDTO createdMember = memberService.addMember(memberDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdMember);
@@ -68,18 +72,21 @@ public class MemberController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> deleteMember(@PathVariable("id") Long id) {
             MemberDTO deletedMember = memberService.deleteMember(id);
             return ResponseEntity.ok(deletedMember);
     }
 
     @GetMapping("/phone/{phoneNumber}")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<?> getMemberByPhoneNumber(@PathVariable("phoneNumber") String phoneNumber) {
             MemberDTO memberDTO = memberService.getMemberByPhoneNumber(phoneNumber);
             return ResponseEntity.ok(memberDTO);
     }
 
     @GetMapping("/is-membership")
+    @PreAuthorize("hasRole('ADMIN')" + " or hasRole('STAFF')")
     public ResponseEntity<Boolean> isActiveMember() {
         boolean isActive = memberService.isCurrentUserActiveMember();
         return ResponseEntity.ok(isActive);
