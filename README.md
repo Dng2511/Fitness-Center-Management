@@ -222,7 +222,9 @@ docker compose up
 #### Cổng Quản Trị (Admin)
 
 * Trên Git không cho push file .env vì vấn đề bảo mật nên có thể xin chủ hoặc những thành viên trong dự án để được sở hữu
-
+* Chủ dự án: https://www.facebook.com/dng2511 
+* Các thành viên: * https://www.facebook.com/truongahduc
+                  * https://www.facebook.com/plong1911
 ```bash
 cd frontend/admin
 npm i
