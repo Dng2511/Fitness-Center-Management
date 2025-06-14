@@ -30,35 +30,30 @@ const Dashboard = () => {
     const [monthlyRevenue, setMonthlyRevenue] = useState({})
 
     useEffect(() => {
-        getDashboardStatistics().then(({data}) => setDashboardStats(data))
-    },[]);
+        getDashboardStatistics().then(({ data }) => setDashboardStats(data))
+    }, []);
 
     useEffect(() => {
-        getMonthlyRevenue().then(({data}) => setMonthlyRevenue(data))
+        getMonthlyRevenue().then(({ data }) => setMonthlyRevenue(data))
     })
 
-    
-
-
-
-
-
     return (
-        <div className="dashboard">
-            <h1 className="page-title">Dashboard</h1>
+        <div className="container">
+            <div className="page-header">
+                <h1 className="page-title">Dashboard</h1>
+            </div>
 
-            {/* Revenue Statistics Section */}
+            {/* Stats Section */}
             <section className={styles['dashboard-section']}>
-                <h2 className={styles['section-title']}>Revenue Statistics</h2>
                 <div className="stats-grid">
                     <StatCard
                         title="Total Revenue"
-                        value={`${dashboardStats.totalRevenue?.toLocaleString()}₫`}
+                        value={`$${dashboardStats.totalRevenue.toLocaleString()}`}
                         icon={<FiDollarSign size={24} />}
                     />
                     <StatCard
                         title="Recent Revenue (30 days)"
-                        value={`${dashboardStats.recentRevenue?.toLocaleString()}₫`}
+                        value={`$${dashboardStats.recentRevenue.toLocaleString()}`}
                         icon={<FiDollarSign size={24} />}
                     />
                     <StatCard
@@ -67,9 +62,10 @@ const Dashboard = () => {
                         icon={<FiShoppingCart size={24} />}
                     />
                 </div>
+
                 <div className="charts-section">
                     <div className="chart-card">
-                        <h3>Monthly Revenue</h3>
+                        <h3>Revenue Trends</h3>
                         <ProfitChart data={monthlyRevenue} />
                     </div>
                 </div>
@@ -81,22 +77,17 @@ const Dashboard = () => {
                 <div className="stats-grid">
                     <StatCard
                         title="Total Packages"
-                        value={ 0}
-                        icon={<FiPackage size={24} />}
-                    />
-                    <StatCard
-                        title="Active Packages"
-                        value={dashboardStats.uniquePackageCount || 0}
+                        value={dashboardStats.uniquePackageCount}
                         icon={<FiPackage size={24} />}
                     />
                 </div>
                 <div className="charts-section">
                     <div className="chart-card">
-                        <h3>Package Statistics</h3>
+                        <h3>Package Distribution</h3>
                         <PackageChart data={dashboardStats.packageStatistics} />
                     </div>
                     <div className="chart-card">
-                        <h3>Top Packages Distribution</h3>
+                        <h3>Top Packages</h3>
                         <TopPackagesChart data={dashboardStats.topPackages} />
                     </div>
                 </div>

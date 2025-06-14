@@ -59,32 +59,31 @@ export default function Members() {
 
 
     return (
-        <div className="members-page">
-            <div className="page-header">
-                <h1 className="page-title">Members Management</h1>
+        <div className="container">
+            <div className="members-page">
+                <div className="page-header">
+                    <h1 className="page-title">Members Management</h1>
+                </div>
+
+                <div className="search-bar">
+                    <FiSearch />
+                    <input
+                        type="text"
+                        placeholder="Search members by name, phone, ..."
+                        value={searchQuery}
+                        onChange={handleSearch}
+                    />
+                </div>
+
+                <div className="card">
+                    <MemberTable
+                        data={members}
+                        onUpdateNote={handleUpdateNote}
+                    />
+                </div>
+
+                <Pagination handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} totalPages={totalPages} page={page} />
             </div>
-
-            <div className="search-bar">
-                <FiSearch />
-                <input
-                    type="text"
-                    placeholder="Search members by name, phone, ..."
-                    value={searchQuery}
-                    onChange={handleSearch}
-                />
-            </div>
-
-            <div className="card">
-                <MemberTable
-                    data={members}
-                    onUpdateNote={handleUpdateNote}
-                />
-            </div>
-
-
-            <Pagination handlePrevPage={handlePrevPage} handleNextPage={handleNextPage} totalPages={totalPages} page={page} />
         </div>
-
-
     )
 }

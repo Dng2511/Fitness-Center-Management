@@ -18,10 +18,9 @@ a {
 }
 
 .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
+    padding: 2rem;
+    background-color: var(--background-color);
+    min-height: 100vh;
 }
 
 /* Remove any button[type="submit"] styles that might interfere */
@@ -106,11 +105,10 @@ button[type="submit"] {
 }
 
 .card {
-    background-color: white;
+    background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    overflow: hidden;
 }
 
 .card-header {
@@ -268,11 +266,23 @@ button[type="submit"] {
     padding: 2rem;
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
 .page-title {
+    color: var(--primary-color);
     font-size: 2rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 2rem;
+    font-weight: bold;
+    margin: 0;
 }
 
 /* Stats Section */
@@ -554,19 +564,14 @@ button[type="submit"] {
     gap: 1.5rem;
 }
 
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .search-bar {
     display: flex;
     align-items: center;
     background: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
 }
 
 .search-bar input {
@@ -574,6 +579,7 @@ button[type="submit"] {
     outline: none;
     margin-left: 0.5rem;
     width: 100%;
+    font-size: 1rem;
 }
 
 .member-grid {
@@ -592,12 +598,6 @@ button[type="submit"] {
 .page-container {
     display: grid;
     gap: 1.5rem;
-}
-
-.page-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 .search-bar {

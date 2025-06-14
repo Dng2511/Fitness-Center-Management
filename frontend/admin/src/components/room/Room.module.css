@@ -7,6 +7,8 @@
     background: white;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .table th,
@@ -18,9 +20,17 @@
 
 .table th {
     font-weight: 600;
-    color: #2d3748;
-    background-color: #f7fafc;
+    color: white;
+    background-color: var(--primary-color);
     border-bottom: 2px solid #e2e8f0;
+}
+
+.table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table th:last-child {
+    border-top-right-radius: 8px;
 }
 
 .table tbody tr:hover {
